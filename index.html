@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Soho Bites × Istiknanah | Modern Culinary & Libations</title>
+  <!-- Google Fonts + Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- AOS Library for scroll animations -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #FFFFFF;
+      color: #2E3B2C;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* soft, fresh color palette — all light tones */
+    :root {
+      --pure-white: #FFFFFF;
+      --off-white: #FEFCF8;
+      --soft-sage: #DCE9D4;
+      --sage-accent: #9BBF8F;
+      --warm-sand: #F5F0E6;
+      --charcoal-soft: #3A4A35;
+      --mint-light: #EFF7EC;
+      --shadow-sm: 0 12px 28px -8px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0,0,0,0.02);
+      --shadow-hover: 0 28px 38px -16px rgba(100, 110, 80, 0.12);
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* hero */
+    .hero {
+      background: var(--pure-white);
+      padding: 5rem 0 6rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--soft-sage);
+      padding: 0.35rem 1.2rem;
+      border-radius: 60px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #4B6E3B;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400;
+      color: #2C4426;
+      letter-spacing: -0.01em;
+    }
+
+    .hero h1 span {
+      color: var(--sage-accent);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      max-width: 620px;
+      margin: 1.2rem auto 0;
+      color: #5E6E56;
+      line-height: 1.5;
+    }
+
+    /* about */
+    .about {
+      background: var(--off-white);
+      padding: 5rem 0;
+    }
+
+    .section-title {
+      font-size: 2.6rem;
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400;
+      color: #2C4426;
+      text-align: center;
+      margin-bottom: 2.8rem;
+      position: relative;
+    }
+
+    .section-title:after {
+      content: '';
+      display: block;
+      width: 70px;
+      height: 3px;
+      background: var(--sage-accent);
+      margin: 0.8rem auto 0;
+      border-radius: 4px;
+    }
+
+    .about-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .about-text {
+      flex: 1.2;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #495B42;
+    }
+
+    .about-text p {
+      margin-bottom: 1.2rem;
+    }
+
+    .quote-card {
+      background: white;
+      padding: 1.3rem 1.8rem;
+      border-radius: 28px;
+      border-left: 5px solid var(--sage-accent);
+      box-shadow: var(--shadow-sm);
+      margin-top: 1rem;
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    .about-icon {
+      flex: 0.8;
+      text-align: center;
+      background: var(--pure-white);
+      padding: 2rem;
+      border-radius: 48px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .about-icon i {
+      font-size: 3.6rem;
+      color: var(--sage-accent);
+      margin: 0 0.3rem;
+    }
+
+    /* gallery */
+    .gallery {
+      background: var(--pure-white);
+      padding: 5rem 0;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .gallery-card {
+      background: var(--off-white);
+      border-radius: 32px;
+      padding: 2rem 1.2rem;
+      text-align: center;
+      transition: all 0.35s ease;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(155, 191, 143, 0.2);
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--sage-accent);
+    }
+
+    .gallery-icon {
+      font-size: 2.8rem;
+      color: var(--sage-accent);
+      margin-bottom: 1rem;
+    }
+
+    .gallery-card h4 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #2E4428;
+    }
+
+    .gallery-card p {
+      font-size: 0.9rem;
+      color: #6F8265;
+    }
+
+    /* menu buttons */
+    .menu-buttons-area {
+      padding: 4rem 0 2rem;
+      text-align: center;
+      background: white;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .menu-btn {
+      border: none;
+      padding: 0.9rem 2.2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 80px;
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: 'Inter', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      background: white;
+      border: 1px solid #E2D9CC;
+      color: #3A5533;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    .menu-btn.soho-btn {
+      background: #FFFBF4;
+      border-color: #F3DCB2;
+    }
+
+    .menu-btn.soho-btn:hover {
+      background: #F15A24;
+      border-color: #F15A24;
+      color: white;
+      transform: scale(1.02);
+      box-shadow: 0 15px 25px -10px rgba(241,90,36,0.3);
+    }
+
+    .menu-btn.istik-btn {
+      background: #F4F9EF;
+      border-color: #C6DEB5;
+    }
+
+    .menu-btn.istik-btn:hover {
+      background: #8BA989;
+      border-color: #8BA989;
+      color: white;
+      transform: scale(1.02);
+      box-shadow: 0 15px 25px -10px rgba(139,169,137,0.35);
+    }
+
+    /* menu containers */
+    .menu-showcase {
+      background: linear-gradient(145deg, #FEFCF8, #FCF9F2);
+      border-radius: 48px 48px 0 0;
+      margin-top: 1rem;
+      padding: 2rem 0 3.5rem;
+      transition: all 0.3s;
+    }
+
+    .menu-hidden {
+      display: none;
+    }
+
+    .menu-category {
+      margin-bottom: 3rem;
+    }
+
+    .cat-title {
+      font-size: 1.8rem;
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+      color: #44633E;
+      padding-left: 0.8rem;
+      border-left: 5px solid var(--sage-accent);
+    }
+
+    .menu-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .menu-card {
+      background: white;
+      border-radius: 24px;
+      padding: 1.1rem 1.2rem;
+      transition: all 0.25s;
+      border: 1px solid #EFE6DA;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+      cursor: pointer;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--sage-accent);
+      box-shadow: 0 18px 28px -12px rgba(0,0,0,0.08);
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #2A4524;
+    }
+
+    .price {
+      background: var(--mint-light);
+      padding: 0.2rem 0.8rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #578242;
+    }
+
+    .desc {
+      font-size: 0.78rem;
+      color: #7C8E70;
+      margin-top: 0.5rem;
+      line-height: 1.35;
+    }
+
+    footer {
+      background: var(--off-white);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      color: #A2B598;
+      border-top: 1px solid #EDE5D8;
+    }
+
+    .back-to-top {
+      display: inline-block;
+      margin-top: 0.8rem;
+      color: var(--sage-accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    /* ----- MODAL STYLES (beautiful product details) ----- */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.2s, opacity 0.2s ease;
+    }
+
+    .modal-overlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal-container {
+      background: white;
+      max-width: 500px;
+      width: 90%;
+      border-radius: 48px;
+      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.15);
+      transform: scale(0.95);
+      transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      overflow: hidden;
+    }
+
+    .modal-overlay.active .modal-container {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, #F9F7F2, #FFFFFF);
+      padding: 1.8rem 2rem 1rem;
+      position: relative;
+      border-bottom: 1px solid #F0E8DD;
+    }
+
+    .modal-icon {
+      font-size: 2.6rem;
+      color: var(--sage-accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-header h3 {
+      font-size: 1.8rem;
+      font-family: 'DM Serif Display', serif;
+      font-weight: 500;
+      color: #2C4426;
+      margin-right: 1.5rem;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      font-size: 1.6rem;
+      cursor: pointer;
+      color: #B7AA96;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+      color: #F15A24;
+    }
+
+    .modal-body {
+      padding: 1.8rem 2rem 2.2rem;
+    }
+
+    .modal-price {
+      display: inline-block;
+      background: var(--mint-light);
+      padding: 0.3rem 1rem;
+      border-radius: 60px;
+      font-weight: 700;
+      color: #578242;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    .modal-description {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #4D6243;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-divider {
+      height: 2px;
+      background: linear-gradient(90deg, var(--sage-accent), transparent);
+      margin: 1rem 0;
+    }
+
+    .modal-footer {
+      text-align: right;
+      padding: 0.5rem 2rem 1.8rem;
+    }
+
+    .modal-footer button {
+      background: var(--sage-accent);
+      border: none;
+      padding: 0.6rem 1.4rem;
+      border-radius: 40px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .modal-footer button:hover {
+      background: #7DA36E;
+    }
+
+    @media (max-width: 780px) {
+      .container { padding: 0 1.2rem; }
+      .hero h1 { font-size: 2.4rem; }
+      .section-title { font-size: 2rem; }
+      .btn-group { gap: 1rem; }
+      .menu-btn { padding: 0.7rem 1.4rem; font-size: 0.9rem; }
+      .modal-header h3 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="container" data-aos="fade-up" data-aos-duration="1000">
+    <div class="hero-badge">SOHO LONDON ✦ NEW YORK RHYTHM</div>
+    <h1>SOHO BITES <span>✕</span> ISTIKNANAH</h1>
+    <p>Bold bites meet crafted sips — an immersive journey of energy, expression, and moments meant to be shared.</p>
+  </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section class="about">
+  <div class="container">
+    <h2 class="section-title" data-aos="fade-up">Our Story</h2>
+    <div class="about-grid">
+      <div class="about-text" data-aos="fade-right" data-aos-duration="700">
+        <p><strong>Soho Bites</strong> captures the electric spirit of Soho, London — vibrant plates, bold flavors, and a menu built for connection. From sizzling fajitas to signature burgers, every dish is a celebration.</p>
+        <p><strong>Istiknanah</strong> flows naturally beside it: artisanal coffees, fresh juices, smoothies, and signature elixirs designed to complement every bite. Sip slow, stay in the moment.</p>
+        <div class="quote-card">
+          <i class="fas fa-leaf" style="color: #9BBF8F; margin-right: 8px;"></i> “Two names, one seamless rhythm. From bite to sip, from flavor to feeling.”
+        </div>
+      </div>
+      <div class="about-icon" data-aos="fade-left" data-aos-duration="700">
+        <i class="fas fa-utensils"></i>
+        <i class="fas fa-mug-hot"></i>
+        <p style="margin-top: 1rem; font-weight: 500;">Eat Bold · Sip Slow</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery">
+  <div class="container">
+    <h2 class="section-title" data-aos="fade-up">Moments & Atmosphere</h2>
+    <div class="gallery-grid">
+      <div class="gallery-card" data-aos="zoom-in" data-aos-delay="100">
+        <div class="gallery-icon"><i class="fas fa-hamburger"></i></div>
+        <h4>Bold Bites</h4>
+        <p>Smoked briskets, juicy burgers & loaded nachos</p>
+      </div>
+      <div class="gallery-card" data-aos="zoom-in" data-aos-delay="200">
+        <div class="gallery-icon"><i class="fas fa-cocktail"></i></div>
+        <h4>Artisanal Elixirs</h4>
+        <p>Spanish lattes, matcha, mojitos & fresh juices</p>
+      </div>
+      <div class="gallery-card" data-aos="zoom-in" data-aos-delay="300">
+        <div class="gallery-icon"><i class="fas fa-drumstick-bite"></i></div>
+        <h4>Shared Feasts</h4>
+        <p>Fajitas, wings, and family-style favorites</p>
+      </div>
+      <div class="gallery-card" data-aos="zoom-in" data-aos-delay="400">
+        <div class="gallery-icon"><i class="fas fa-hand-peace"></i></div>
+        <h4>Urban Elegance</h4>
+        <p>Warm neutrals, natural textures, modern energy</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TWO MENU BUTTONS -->
+<section class="menu-buttons-area">
+  <div class="container">
+    <h2 class="section-title" data-aos="fade-up">Explore Menus</h2>
+    <div class="btn-group" data-aos="fade-up" data-aos-delay="100">
+      <button id="showSohoBtn" class="menu-btn soho-btn"><i class="fas fa-fire"></i> SOHO BITES · EAT BOLD</button>
+      <button id="showIstikBtn" class="menu-btn istik-btn"><i class="fas fa-mug-hot"></i> ISTIKNANAH · SIP SLOW</button>
+    </div>
+  </div>
+</section>
+
+<!-- MENU DISPLAY AREA -->
+<div id="sohoMenuContainer" class="menu-showcase menu-hidden">
+  <div class="container" id="sohoMenuRender"></div>
+</div>
+<div id="istikMenuContainer" class="menu-showcase menu-hidden">
+  <div class="container" id="istikMenuRender"></div>
+</div>
+
+<footer>
+  <p>From Soho London to New York — one space, one atmosphere, one continuous experience.</p>
+  <a href="#" class="back-to-top"><i class="fas fa-arrow-up"></i> Back to top</a>
+</footer>
+
+<!-- MODAL STRUCTURE -->
+<div id="productModal" class="modal-overlay">
+  <div class="modal-container">
+    <div class="modal-header">
+      <div class="modal-icon" id="modalIcon"><i class="fas fa-utensils"></i></div>
+      <h3 id="modalTitle">Product Name</h3>
+      <button class="modal-close" id="closeModalBtn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-price" id="modalPrice">0 EGP</div>
+      <div class="modal-description" id="modalDesc">Delicious description appears here.</div>
+      <div class="modal-divider"></div>
+      <p style="font-size: 0.85rem; color:#7F8E74;"><i class="fas fa-info-circle"></i> Savor every detail</p>
+    </div>
+    <div class="modal-footer">
+      <button id="closeModalFooterBtn">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({ duration: 800, once: true, offset: 60 });
+
+  // ----------------------------- SOHO MENU DATA ---------------------------------
+  const sohoMenu = {
+    "🥤 Cold Beverages": [
+      { name: "Still Mineral Water", desc: "Pure & refreshing", price: 35 },
+      { name: "Sparkling Water", desc: "Crisp bubbles", price: 55 },
+      { name: "Pepsi / 7Up", desc: "Classic soda", price: 40 },
+      { name: "Perrier / Schweppes / Fayrouz", desc: "Premium selection", price: 45 },
+      { name: "Red Bull", desc: "Energy boost", price: 85 },
+      { name: "Red Bull + Sauce Shot", desc: "Extra kick", price: 105 }
+    ],
+    "🍜 Soups": [
+      { name: "Creamy Chicken Soup", desc: "Velvety smooth chicken", price: 89 },
+      { name: "Creamy Mushroom Soup", desc: "Earthy & rich", price: 85 }
+    ],
+    "🥗 Salads": [
+      { name: "Caesar Salad with Chicken", desc: "Grilled chicken, romaine, croutons, parmesan", price: 169 },
+      { name: "Cobb Salad", desc: "Crispy chicken, egg, bacon, cheese, corn, beans, pico", price: 209 },
+      { name: "Taco Salad", desc: "Lettuce, tortilla strips, chicken, bacon, cheese, ranch, beans", price: 199 }
+    ],
+    "🍟 Appetizers": [
+      { name: "Chicken Strips", desc: "Crispy outside, tender inside, honey mustard or buffalo", price: 189 },
+      { name: "Chicken Wings", desc: "Fried wings with buffalo/BBQ/dynamite sauce", price: 169 },
+      { name: "Mozzarella Sticks", desc: "Golden with marinara", price: 99 },
+      { name: "Chili Cheese Fries", desc: "Fries, cheese sauce, pico, jalapeños", price: 129 },
+      { name: "Soho Chips", desc: "Crispy chips + signature Soho sauce", price: 110 },
+      { name: "Nacho Land", desc: "Nachos, melted cheese, jalapeños, sour cream, pico", price: 149 },
+      { name: "Mac & Cheese", desc: "Creamy white sauce pasta, special cheese blend", price: 159 }
+    ],
+    "🍔 Sandwiches & Burgers": [
+      { name: "Brisket Star", desc: "Smoked brisket, cheese sauce, crispy onions, BBQ, pickles, mayo", price: 269 },
+      { name: "Steak Sandwich", desc: "Sliced steak, grilled veggies, Soho cheese, smoky sauce", price: 299 },
+      { name: "Classic Soho Chicken", desc: "Grilled/fried chicken, Soho sauce, cheddar, lettuce, tomato, onion", price: 279 },
+      { name: "Chicken Quesadilla", desc: "Marinated chicken, grilled veggies, melted cheese, ranch", price: 289 },
+      { name: "Beef Quesadilla", desc: "Marinated beef strips, veggies, cheese, ranch", price: 299 },
+      { name: "Shrimp Quesadilla", desc: "Spiced shrimp, grilled veggies, melted cheese, ranch", price: 289 },
+      { name: "Classic Burger", desc: "Flame-grilled patty, lettuce, tomato, onion, mayo", price: 279 },
+      { name: "Classic Burger Basic", desc: "120g patty, lettuce, tomato, onion, special sauce", price: 209 },
+      { name: "Soho Mushroom Burger", desc: "Beef patty, cheese, grilled mushrooms, caramelized onion, smoky mayo", price: 309 },
+      { name: "Soho Mushroom Burger Basic", desc: "120g patty, mushrooms, onion, smoky mayo, cheese", price: 239 },
+      { name: "Bacon Burger", desc: "Patty, cheddar, smoked bacon, caramelized onion, jalapeños, mayo", price: 269 },
+      { name: "Bacon Burger Basic", desc: "120g patty, bacon, cheese, jalapeños, mayo", price: 199 },
+      { name: "Texas Burger", desc: "Smoked patty, crispy onion, cheddar, BBQ, smoky mayo", price: 299 },
+      { name: "Texas Burger Basic", desc: "120g smoked patty, crispy onion, cheddar, BBQ", price: 229 }
+    ],
+    "🍝 Pasta": [
+      { name: "Fettuccine Alfredo", desc: "Creamy sauce, mushrooms, grilled chicken, parmesan", price: 279 },
+      { name: "Spaghetti Bolognese", desc: "Rich Italian meat sauce, parmesan", price: 289 },
+      { name: "Shrimp Pasta", desc: "White or red sauce, shrimp, grilled veggies", price: 259 }
+    ],
+    "🥩 Main Courses": [
+      { name: "Chicken Fajita", desc: "Grilled chicken, peppers, onions, rice, tortillas + 2 sides", price: 299 },
+      { name: "Beef Fajita", desc: "Tender beef strips, peppers, onions, rice, tortillas + 2 sides", price: 339 },
+      { name: "Mixed Fajita", desc: "Chicken, beef & shrimp, peppers, onion, rice, tortillas + 2 sides", price: 359 },
+      { name: "Escalope Schnitzel", desc: "Thin breaded veal, crispy, white sauce + 2 sides", price: 399 },
+      { name: "Crispy Chicken with Mushrooms", desc: "Crispy chicken, fresh mushrooms, creamy sauce + 2 sides", price: 329 },
+      { name: "Ribeye Steak", desc: "Grilled ribeye, mushroom/pepper/BBQ sauce + 2 sides", price: 449 }
+    ],
+    "🍟 Sides": [
+      { name: "French Fries", desc: "Golden & crispy", price: 50 },
+      { name: "Mashed Potato", desc: "Smooth buttery mash", price: 70 },
+      { name: "Soho Rice", desc: "Seasoned aromatic rice", price: 50 },
+      { name: "Coleslaw", desc: "Creamy cabbage slaw", price: 50 },
+      { name: "Corn Cup", desc: "Sweet corn kernels", price: 50 },
+      { name: "Sautéed Vegetables", desc: "Seasonal medley", price: 70 },
+      { name: "Side Mac & Cheese", desc: "Creamy pasta side", price: 70 }
+    ],
+    "👶 Kids Menu": [
+      { name: "Kids Chicken Strips", desc: "Crispy strips, fries, ketchup & juice", price: 189 },
+      { name: "Kids Chicken Burger", desc: "Mini chicken burger, fries, juice", price: 189 },
+      { name: "Kids Beef Burger", desc: "Mini beef patty, cheese, fries, juice", price: 189 }
+    ],
+    "🍰 Desserts": [
+      { name: "Molten Cake", desc: "Warm chocolate lava cake", price: 130 },
+      { name: "Cheesecake", desc: "Creamy NY style", price: 125 },
+      { name: "Brownie", desc: "Rich fudge brownie", price: 130 }
+    ],
+    "🧂 Sauces (Extra)": [
+      { name: "Honey Mustard", desc: "Sweet & tangy", price: 30 },
+      { name: "Buffalo Sauce", desc: "Spicy classic", price: 30 },
+      { name: "Blue Cheese", desc: "Creamy bold", price: 30 },
+      { name: "Ranch", desc: "Herb buttermilk", price: 30 },
+      { name: "Cheese Sauce", desc: "Velvety cheddar", price: 30 },
+      { name: "Caesar", desc: "Classic dressing", price: 30 },
+      { name: "Dynamite Sauce", desc: "Fiery kick", price: 30 },
+      { name: "Pico de Gallo", desc: "Fresh salsa", price: 30 }
+    ]
+  };
+
+  // ----------------------------- ISTIKNANAH MENU ---------------------------------
+  const istikMenu = {
+    "☕ Hot Drinks": [
+      { name: "Tea / Green Tea", desc: "Classic or green infusion", price: 35 }, { name: "Tea Pot (2 cups)", desc: "Serves two", price: 70 }, { name: "Tea Pot (4 cups)", desc: "Sharing pot", price: 120 }, { name: "Karak Tea Pot", desc: "Spiced strong tea", price: 140 }, { name: "Matcha (cup)", desc: "Ceremonial matcha", price: 100 }, { name: "Nescafe", desc: "Classic instant", price: 60 }, { name: "Americano", desc: "Smooth black coffee", price: 85 }, { name: "Espresso Single", desc: "Intense shot", price: 80 }, { name: "Espresso Double", desc: "Double shot", price: 90 }, { name: "Macchiato Single", desc: "Espresso stained with milk", price: 85 }, { name: "Macchiato Double", desc: "Double espresso macchiato", price: 95 }, { name: "Herbal Cocktail", desc: "Soothing herbs blend", price: 55 }, { name: "Mocha", desc: "Chocolate & espresso", price: 110 }, { name: "Cappuccino", desc: "Perfect foam", price: 100 }, { name: "Cafe Latte", desc: "Creamy steamed milk", price: 100 }, { name: "Hot Chocolate", desc: "Rich dark cocoa", price: 110 }, { name: "Hot Cider", desc: "Warm spiced apple", price: 90 }, { name: "Turkish Coffee Single", desc: "Traditional unfiltered", price: 70 }, { name: "Turkish Coffee Double", desc: "Double strength", price: 80 }, { name: "French Coffee", desc: "Smooth dark roast", price: 85 }, { name: "Sahlab with Nuts", desc: "Creamy orchid drink, topped nuts", price: 85 }, { name: "Flat White", desc: "Velvety microfoam", price: 90 }, { name: "Ginger Infusion", desc: "Fresh zesty ginger", price: 50 }, { name: "Arabic Coffee Pot (Dallah)", desc: "Cardamom-infused, serves 3-4", price: 210 }, { name: "Hot Istikanah", desc: "House signature hot blend", price: 125 }, { name: "Spanish Latte", desc: "Sweetened condensed milk latte", price: 115 }
+    ],
+    "🍹 Fresh Juices": [
+      { name: "Orange Juice", desc: "Freshly squeezed", price: 80 }, { name: "Mango Juice", desc: "Tropical sweet", price: 80 }, { name: "Strawberry Juice", desc: "Bright & fresh", price: 80 }, { name: "Guava Juice", desc: "Exotic nectar", price: 80 }, { name: "Watermelon Juice", desc: "Refreshing summer", price: 80 }, { name: "Banana Milk", desc: "Creamy banana blend", price: 90 }, { name: "Kiwi Juice", desc: "Tangy vibrant", price: 90 }, { name: "Lemon Mint", desc: "Zesty cooler", price: 60 }
+    ],
+    "🌿 Healthy Drinks": [
+      { name: "Matcha Coconut / Honey", desc: "Matcha with coconut milk or honey", price: 130 }, { name: "Power Healing", desc: "Energizing superfood blend", price: 100 }, { name: "Yogurt Fruits", desc: "Creamy yogurt with fresh fruits", price: 105 }, { name: "Yogurt Honey & Berries", desc: "Greek yogurt, honey, mixed berries", price: 115 }, { name: "Yogurt Avocado Honey & Nuts", desc: "Rich avocado, nuts, honey", price: 145 }, { name: "Avocado Honey & Nuts", desc: "Creamy avocado with honey crunch", price: 130 }
+    ],
+    "🧊 Iced Drinks": [
+      { name: "Iced Matcha", desc: "Chilled pure matcha", price: 125 }, { name: "Iced Matcha Latte", desc: "Smooth iced latte", price: 130 }, { name: "Hibiscus Iced Tea", desc: "Tangy floral", price: 80 }, { name: "Iced Tea with Hibiscus", desc: "Refreshing blend", price: 90 }, { name: "Iced Latte", desc: "Chilled espresso & milk", price: 85 }, { name: "Iced Spanish Latte", desc: "Sweet iced latte", price: 120 }, { name: "Iced Mocha", desc: "Cold chocolate coffee", price: 125 }, { name: "Frappe (Caramel/Chocolate)", desc: "Blended frozen delight", price: 125 }, { name: "Iced Istikanah", desc: "Signature iced blend", price: 100 }, { name: "Iced Coffee", desc: "Classic chilled coffee", price: 115 }
+    ],
+    "🥛 Milkshakes": [
+      { name: "Vanilla / Chocolate Shake", desc: "Creamy classic", price: 120 }, { name: "Strawberry / Mango Shake", desc: "Fruity indulgence", price: 120 }, { name: "Matcha Shake", desc: "Earthy & sweet", price: 135 }, { name: "Oreo Shake", desc: "Cookies & cream", price: 130 }, { name: "Blueberry Shake", desc: "Berry bliss", price: 120 }
+    ],
+    "✨ Specialty Drinks": [
+      { name: "Dates with Vanilla Ice Cream", desc: "Decadent date fusion", price: 125 }, { name: "Hibiscus with Banana & Berries", desc: "Floral & fruity", price: 105 }, { name: "Watermelon Passion", desc: "Passionfruit watermelon", price: 120 }, { name: "Florida", desc: "Citrus sunrise blend", price: 110 }, { name: "Dates Milk Rose Water", desc: "Middle Eastern elegance", price: 95 }
+    ],
+    "🍸 Soda Cocktails": [
+      { name: "Mojito (Passion/Blueberry/Strawberry)", desc: "Fruit infused mojito", price: 105 }, { name: "Classic Mojito", desc: "Lime & mint soda", price: 95 }, { name: "Kiwi Red Bull", desc: "Energizing kiwi fusion", price: 150 }, { name: "Power Lemon", desc: "Zesty lemon spark", price: 140 }
+    ],
+    "🥤 Smoothies": [
+      { name: "Pina Colada", desc: "Coconut pineapple dream", price: 110 }, { name: "Lemon Mint Smoothie", desc: "Refreshing slush", price: 60 }, { name: "Istikana Smoothie", desc: "House signature", price: 75 }, { name: "Mango / Strawberry Smoothie", desc: "Tropical or berry", price: 80 }, { name: "Blueberry Smoothie", desc: "Antioxidant rich", price: 85 }
+    ]
+  };
+
+  // ---------- MODAL LOGIC ----------
+  const modalOverlay = document.getElementById('productModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalPrice = document.getElementById('modalPrice');
+  const modalDesc = document.getElementById('modalDesc');
+  const modalIcon = document.getElementById('modalIcon');
+
+  function openModal(item, menuType = 'soho') {
+    modalTitle.innerText = item.name;
+    modalPrice.innerText = `${item.price} EGP`;
+    modalDesc.innerText = item.desc || (menuType === 'soho' ? 'Soho signature flavor' : 'Artisanal creation');
+    // choose icon based on menu type or simple category guess
+    if (menuType === 'soho') {
+      modalIcon.innerHTML = '<i class="fas fa-utensils" style="font-size:2rem;"></i>';
+    } else {
+      modalIcon.innerHTML = '<i class="fas fa-mug-hot" style="font-size:2rem;"></i>';
+    }
+    modalOverlay.classList.add('active');
+  }
+
+  function closeModal() {
+    modalOverlay.classList.remove('active');
+  }
+
+  document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+  document.getElementById('closeModalFooterBtn').addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) closeModal();
+  });
+
+  // ---------- RENDER MENU WITH CLICK HANDLERS ----------
+  function renderMenuToContainer(menuData, containerId, menuType) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    for (const [category, items] of Object.entries(menuData)) {
+      if (!items.length) continue;
+      const section = document.createElement('div');
+      section.className = 'menu-category';
+      const title = document.createElement('h3');
+      title.className = 'cat-title';
+      title.innerText = category;
+      section.appendChild(title);
+      const grid = document.createElement('div');
+      grid.className = 'menu-items';
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'menu-card';
+        card.innerHTML = `
+          <div class="item-header">
+            <span>${item.name}</span>
+            <span class="price">${item.price} EGP</span>
+          </div>
+          <div class="desc">${item.desc || ''}</div>
+        `;
+        card.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openModal(item, menuType);
+        });
+        grid.appendChild(card);
+      });
+      section.appendChild(grid);
+      container.appendChild(section);
+    }
+    if (container.children.length === 0) container.innerHTML = '<p style="text-align:center;">Menu curated with love</p>';
+  }
+
+  renderMenuToContainer(sohoMenu, 'sohoMenuRender', 'soho');
+  renderMenuToContainer(istikMenu, 'istikMenuRender', 'istik');
+
+  const sohoContainer = document.getElementById('sohoMenuContainer');
+  const istikContainer = document.getElementById('istikMenuContainer');
+  const sohoBtn = document.getElementById('showSohoBtn');
+  const istikBtn = document.getElementById('showIstikBtn');
+
+  function showMenu(showSoho) {
+    if (showSoho) {
+      sohoContainer.classList.remove('menu-hidden');
+      istikContainer.classList.add('menu-hidden');
+      setTimeout(() => sohoContainer.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+    } else {
+      istikContainer.classList.remove('menu-hidden');
+      sohoContainer.classList.add('menu-hidden');
+      setTimeout(() => istikContainer.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+    }
+  }
+
+  sohoBtn.addEventListener('click', () => showMenu(true));
+  istikBtn.addEventListener('click', () => showMenu(false));
+
+  sohoContainer.classList.add('menu-hidden');
+  istikContainer.classList.add('menu-hidden');
+</script>
+</body>
+</html>
