@@ -1,1302 +1,2083 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Soho Bites × Istiknanah</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
-
-:root {
-  /* Soho: neon-dark electric palette */
-  --soho-dark: #0A0E1A;
-  --soho-blue: #1A9FF5;
-  --soho-blue-glow: #4DBAFF;
-  --soho-red: #FF3D3D;
-  --soho-yellow: #FFD000;
-  --soho-card: #111827;
-  --soho-card2: #151D2E;
-  --soho-border: rgba(26,159,245,0.3);
-  --soho-text: #E8F4FD;
-  --soho-sub: #8BAFC5;
-
-  /* Istiknanah: warm cream & red palette */
-  --istik-cream: #FBF6EE;
-  --istik-warm: #F5EDD8;
-  --istik-red: #C13B2A;
-  --istik-red2: #E04530;
-  --istik-dark: #1A1008;
-  --istik-brown: #6B3F28;
-  --istik-gold: #B8860B;
-  --istik-card: #FFFFFF;
-  --istik-border: rgba(193,59,42,0.2);
-  --istik-text: #2A1505;
-  --istik-sub: #8B6555;
-}
-
-html { scroll-behavior: smooth; }
-
-body {
-  font-family: 'Outfit', sans-serif;
-  background: #0A0E1A;
-  color: #E8F4FD;
-  overflow-x: hidden;
-}
-
-/* ===== NEON GLOW UTILITIES ===== */
-.neon-blue { text-shadow: 0 0 10px #1A9FF5, 0 0 30px #1A9FF5, 0 0 60px #4DBAFF; }
-.neon-red { text-shadow: 0 0 10px #FF3D3D, 0 0 30px #FF3D3D, 0 0 60px #FF6B6B; }
-.neon-yellow { text-shadow: 0 0 10px #FFD000, 0 0 30px #FFD000, 0 0 60px #FFE040; }
-.glow-box { box-shadow: 0 0 20px rgba(26,159,245,0.3), 0 0 60px rgba(26,159,245,0.1); }
-
-/* ===== HERO SECTION ===== */
-.hero {
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: var(--soho-dark);
-  overflow: hidden;
-  padding: 4rem 1.5rem 5rem;
-}
-
-/* animated grid background */
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(26,159,245,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(26,159,245,0.06) 1px, transparent 1px);
-  background-size: 60px 60px;
-  animation: gridMove 20s linear infinite;
-}
-@keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 60px 60px; } }
-
-/* radial glow behind hero */
-.hero::after {
-  content: '';
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 70vw; height: 70vw;
-  max-width: 700px; max-height: 700px;
-  background: radial-gradient(ellipse, rgba(26,159,245,0.12) 0%, rgba(255,61,61,0.06) 40%, transparent 70%);
-  pointer-events: none;
-}
-
-.hero-content { position: relative; z-index: 2; text-align: center; }
-
-.hero-eyebrow {
-  display: inline-block;
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.35em;
-  color: var(--soho-yellow);
-  text-shadow: 0 0 8px rgba(255,208,0,0.6);
-  border: 1px solid rgba(255,208,0,0.3);
-  padding: 0.4rem 1.5rem;
-  border-radius: 2px;
-  margin-bottom: 2rem;
-  animation: fadeSlideUp 0.8s ease both;
-}
-
-.hero-soho {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(4rem, 15vw, 10rem);
-  line-height: 0.85;
-  letter-spacing: 0.03em;
-  color: #FFFFFF;
-  text-shadow:
-    0 0 15px #1A9FF5,
-    0 0 40px #1A9FF5,
-    0 0 100px rgba(26,159,245,0.5),
-    2px 2px 0 #0A5E99;
-  animation: fadeSlideUp 0.8s 0.15s ease both;
-}
-
-.hero-bites {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(3.5rem, 13vw, 8.5rem);
-  line-height: 0.85;
-  letter-spacing: 0.08em;
-  color: #FF3D3D;
-  text-shadow:
-    0 0 15px #FF3D3D,
-    0 0 40px #FF3D3D,
-    0 0 100px rgba(255,61,61,0.5),
-    2px 2px 0 #9A0000;
-  animation: fadeSlideUp 0.8s 0.25s ease both;
-}
-
-.hero-divider {
-  display: flex; align-items: center; gap: 1rem;
-  margin: 1.5rem auto;
-  width: fit-content;
-  animation: fadeSlideUp 0.8s 0.35s ease both;
-}
-.hero-divider-line { width: 60px; height: 2px; background: linear-gradient(90deg, transparent, var(--soho-yellow)); }
-.hero-divider-line.right { background: linear-gradient(270deg, transparent, var(--soho-yellow)); }
-.hero-x {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 2rem;
-  color: var(--soho-yellow);
-  text-shadow: 0 0 10px rgba(255,208,0,0.8);
-}
-
-.hero-istik {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.8rem, 6vw, 4rem);
-  color: #F5EDD8;
-  letter-spacing: 0.15em;
-  font-style: italic;
-  animation: fadeSlideUp 0.8s 0.45s ease both;
-}
-
-.hero-tagline {
-  font-size: clamp(0.85rem, 2.5vw, 1.05rem);
-  color: var(--soho-sub);
-  margin-top: 2rem;
-  letter-spacing: 0.05em;
-  max-width: 480px;
-  line-height: 1.5;
-  animation: fadeSlideUp 0.8s 0.55s ease both;
-}
-
-.hero-cta-group {
-  display: flex; flex-wrap: wrap; gap: 1rem;
-  justify-content: center;
-  margin-top: 3rem;
-  animation: fadeSlideUp 0.8s 0.65s ease both;
-}
-
-.cta-btn {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 0.85rem;
-  letter-spacing: 0.15em;
-  font-weight: 700;
-  padding: 1rem 2.2rem;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.25s;
-  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-}
-.cta-soho {
-  background: linear-gradient(135deg, #1A9FF5, #0070D0);
-  color: white;
-  box-shadow: 0 0 20px rgba(26,159,245,0.4), 0 0 40px rgba(26,159,245,0.2);
-}
-.cta-soho:hover { box-shadow: 0 0 30px rgba(26,159,245,0.7), 0 0 60px rgba(26,159,245,0.3); transform: translateY(-2px); }
-.cta-istik {
-  background: linear-gradient(135deg, #C13B2A, #8B2010);
-  color: #FBF6EE;
-  box-shadow: 0 0 20px rgba(193,59,42,0.4), 0 0 40px rgba(193,59,42,0.2);
-}
-.cta-istik:hover { box-shadow: 0 0 30px rgba(193,59,42,0.7), 0 0 60px rgba(193,59,42,0.3); transform: translateY(-2px); }
-
-/* floating neon decorations */
-.neon-circle {
-  position: absolute;
-  border-radius: 50%;
-  animation: float 6s ease-in-out infinite;
-  pointer-events: none;
-  z-index: 1;
-}
-.nc1 { width: 300px; height: 300px; border: 1px solid rgba(26,159,245,0.15); top: 10%; left: -10%; animation-delay: 0s; }
-.nc2 { width: 200px; height: 200px; border: 1px solid rgba(255,61,61,0.15); bottom: 10%; right: -5%; animation-delay: -3s; }
-.nc3 { width: 150px; height: 150px; border: 1px solid rgba(255,208,0,0.15); top: 30%; right: 5%; animation-delay: -1.5s; }
-
-@keyframes float { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
-
-/* ===== SCROLL INDICATOR ===== */
-.scroll-indicator {
-  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-  color: var(--soho-sub); font-size: 0.7rem; letter-spacing: 0.2em;
-  font-family: 'Josefin Sans', sans-serif;
-  animation: fadeSlideUp 0.8s 1s ease both;
-  z-index: 2;
-}
-.scroll-line {
-  width: 1px; height: 50px;
-  background: linear-gradient(to bottom, var(--soho-blue), transparent);
-  animation: scrollPulse 2s ease infinite;
-}
-@keyframes scrollPulse { 0%,100% { opacity: 0.4; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(1.2); } }
-
-/* ===== STORY SECTION ===== */
-.story {
-  background: #080C16;
-  padding: 6rem 1.5rem;
-  position: relative;
-  overflow: hidden;
-}
-.story::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--soho-blue), var(--soho-red), var(--soho-yellow), transparent);
-}
-
-.container { max-width: 1200px; margin: 0 auto; }
-
-.section-tag {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.4em;
-  color: var(--soho-yellow);
-  margin-bottom: 1rem;
-  display: block;
-}
-
-.story-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: start;
-  margin-top: 4rem;
-}
-
-/* SOHO card */
-.story-card-soho {
-  background: var(--soho-card);
-  border: 1px solid var(--soho-border);
-  border-radius: 4px;
-  padding: 2.5rem;
-  position: relative;
-  overflow: hidden;
-}
-.story-card-soho::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--soho-blue), var(--soho-red));
-}
-.story-card-soho::after {
-  content: 'SOHO';
-  position: absolute; right: -1rem; top: 50%; transform: translateY(-50%) rotate(90deg);
-  font-family: 'Bebas Neue', sans-serif; font-size: 5rem;
-  color: rgba(26,159,245,0.05); pointer-events: none;
-}
-
-.scard-icon {
-  font-size: 2.5rem; margin-bottom: 1.2rem;
-  filter: drop-shadow(0 0 10px rgba(26,159,245,0.5));
-}
-.story-card-soho h3 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 2rem; letter-spacing: 0.05em;
-  color: var(--soho-blue-glow);
-  text-shadow: 0 0 10px rgba(26,159,245,0.4);
-  margin-bottom: 1rem;
-}
-.story-card-soho p { font-size: 0.9rem; line-height: 1.65; color: var(--soho-sub); }
-
-/* ISTIK card */
-.story-card-istik {
-  background: #FFFAF3;
-  border: 1px solid var(--istik-border);
-  border-radius: 4px;
-  padding: 2.5rem;
-  position: relative;
-  overflow: hidden;
-}
-.story-card-istik::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--istik-red), var(--istik-gold));
-}
-.story-card-istik::after {
-  content: 'إستكنانة';
-  position: absolute; right: 0.5rem; bottom: 0.5rem;
-  font-size: 2rem; color: rgba(193,59,42,0.06); pointer-events: none;
-}
-.story-card-istik h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.8rem; font-style: italic;
-  color: var(--istik-red); margin-bottom: 1rem;
-}
-.story-card-istik p { font-size: 0.9rem; line-height: 1.65; color: var(--istik-brown); }
-
-/* ===== ATMOSPHERE / FEATURE SECTION ===== */
-.atmosphere {
-  background: linear-gradient(180deg, #080C16 0%, #0D0A06 50%, #080C16 100%);
-  padding: 6rem 1.5rem;
-  position: relative;
-}
-
-.atm-title {
-  text-align: center;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(2.5rem, 7vw, 5rem);
-  letter-spacing: 0.08em;
-  margin-bottom: 4rem;
-}
-.atm-title .t-blue { color: var(--soho-blue); text-shadow: 0 0 20px rgba(26,159,245,0.5); }
-.atm-title .t-red { color: var(--istik-red); }
-
-.atm-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-}
-
-.atm-card {
-  padding: 2rem 1.5rem;
-  border-radius: 4px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: default;
-}
-.atm-card:hover { transform: translateY(-6px); }
-
-.atm-card-soho {
-  background: var(--soho-card);
-  border: 1px solid var(--soho-border);
-}
-.atm-card-soho:hover { box-shadow: 0 20px 40px rgba(26,159,245,0.15); }
-.atm-card-soho .atm-icon { color: var(--soho-blue); filter: drop-shadow(0 0 8px rgba(26,159,245,0.6)); }
-.atm-card-soho h4 { color: var(--soho-text); font-family: 'Josefin Sans', sans-serif; letter-spacing: 0.05em; }
-.atm-card-soho p { color: var(--soho-sub); }
-
-.atm-card-istik {
-  background: #FFFAF3;
-  border: 1px solid var(--istik-border);
-}
-.atm-card-istik:hover { box-shadow: 0 20px 40px rgba(193,59,42,0.15); }
-.atm-card-istik .atm-icon { color: var(--istik-red); }
-.atm-card-istik h4 { color: var(--istik-text); font-family: 'Josefin Sans', sans-serif; letter-spacing: 0.05em; }
-.atm-card-istik p { color: var(--istik-sub); }
-
-.atm-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
-.atm-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
-.atm-card p { font-size: 0.8rem; line-height: 1.5; }
-
-/* ===== STATS BAR ===== */
-.stats-bar {
-  background: var(--soho-dark);
-  border-top: 1px solid rgba(26,159,245,0.2);
-  border-bottom: 1px solid rgba(26,159,245,0.2);
-  padding: 2.5rem 1.5rem;
-}
-.stats-inner {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 2rem;
-  max-width: 900px;
-  margin: 0 auto;
-}
-.stat-item { text-align: center; }
-.stat-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  line-height: 1;
-  display: block;
-}
-.stat-num.blue { color: var(--soho-blue); text-shadow: 0 0 15px rgba(26,159,245,0.5); }
-.stat-num.red { color: var(--soho-red); text-shadow: 0 0 15px rgba(255,61,61,0.5); }
-.stat-num.yellow { color: var(--soho-yellow); text-shadow: 0 0 15px rgba(255,208,0,0.5); }
-.stat-label {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.3em;
-  color: var(--soho-sub);
-  margin-top: 0.3rem;
-  display: block;
-}
-
-/* ===== MENU SWITCH SECTION ===== */
-.menu-hub {
-  background: #080C16;
-  padding: 5rem 1.5rem 0;
-  position: relative;
-}
-
-.menu-hub-title {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-.menu-hub-title h2 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(2rem, 6vw, 4rem);
-  letter-spacing: 0.08em;
-  color: #FFFFFF;
-}
-
-/* TAB SWITCHER */
-.tab-switcher {
-  display: flex;
-  border-bottom: 2px solid rgba(255,255,255,0.08);
-  max-width: 700px;
-  margin: 0 auto 0;
-  position: relative;
-  z-index: 10;
-}
-
-.tab-btn {
-  flex: 1;
-  padding: 1.2rem 1rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 0.85rem;
-  letter-spacing: 0.15em;
-  font-weight: 700;
-  transition: all 0.3s;
-  position: relative;
-  display: flex; align-items: center; justify-content: center; gap: 0.6rem;
-}
-.tab-btn::after {
-  content: '';
-  position: absolute; bottom: -2px; left: 0; right: 0; height: 3px;
-  transform: scaleX(0);
-  transition: transform 0.3s ease;
-}
-
-.tab-soho { color: rgba(77,186,255,0.5); }
-.tab-soho.active { color: var(--soho-blue-glow); }
-.tab-soho::after { background: linear-gradient(90deg, var(--soho-blue), var(--soho-red)); }
-.tab-soho.active::after { transform: scaleX(1); }
-
-.tab-istik { color: rgba(193,59,42,0.5); background: rgba(251,246,238,0.03); }
-.tab-istik.active { color: var(--istik-red); }
-.tab-istik::after { background: linear-gradient(90deg, var(--istik-red), var(--istik-gold)); }
-.tab-istik.active::after { transform: scaleX(1); }
-
-/* ===== SOHO MENU ===== */
-#sohoMenuPanel {
-  background: var(--soho-dark);
-  padding: 3rem 1.5rem 5rem;
-  display: block;
-}
-
-.soho-cat-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.8rem;
-  letter-spacing: 0.08em;
-  color: var(--soho-blue-glow);
-  text-shadow: 0 0 10px rgba(26,159,245,0.3);
-  margin-bottom: 1.2rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(26,159,245,0.2);
-  display: flex; align-items: center; gap: 0.8rem;
-}
-
-.soho-menu-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2.5rem;
-}
-
-.soho-menu-card {
-  background: var(--soho-card2);
-  border: 1px solid rgba(26,159,245,0.12);
-  border-radius: 2px;
-  padding: 1.1rem 1.2rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  position: relative;
-  overflow: hidden;
-}
-.soho-menu-card::before {
-  content: '';
-  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-  background: linear-gradient(to bottom, var(--soho-blue), var(--soho-red));
-  transform: scaleY(0);
-  transition: transform 0.2s;
-}
-.soho-menu-card:hover { border-color: rgba(26,159,245,0.4); background: #1A2135; transform: translateX(4px); }
-.soho-menu-card:hover::before { transform: scaleY(1); }
-.soho-menu-card:active { transform: scale(0.98); }
-
-.smcard-header {
-  display: flex; justify-content: space-between; align-items: flex-start; gap: 0.8rem;
-  margin-bottom: 0.4rem;
-}
-.smcard-name {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: var(--soho-text);
-  letter-spacing: 0.03em;
-  line-height: 1.3;
-}
-.smcard-price {
-  background: rgba(26,159,245,0.15);
-  border: 1px solid rgba(26,159,245,0.3);
-  color: var(--soho-blue-glow);
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 0.15rem 0.7rem;
-  border-radius: 2px;
-  white-space: nowrap;
-  font-family: 'Josefin Sans', sans-serif;
-  letter-spacing: 0.05em;
-}
-.smcard-desc { font-size: 0.74rem; color: var(--soho-sub); line-height: 1.35; }
-
-/* ===== ISTIK MENU ===== */
-#istikMenuPanel {
-  background: var(--istik-cream);
-  padding: 3rem 1.5rem 5rem;
-  display: none;
-}
-
-.istik-cat-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.6rem;
-  font-style: italic;
-  color: var(--istik-red);
-  margin-bottom: 1.2rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(193,59,42,0.2);
-  display: flex; align-items: center; gap: 0.8rem;
-}
-
-.istik-menu-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2.5rem;
-}
-
-.istik-menu-card {
-  background: white;
-  border: 1px solid rgba(193,59,42,0.12);
-  border-radius: 4px;
-  padding: 1.1rem 1.2rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  position: relative;
-  overflow: hidden;
-}
-.istik-menu-card::before {
-  content: '';
-  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-  background: linear-gradient(to bottom, var(--istik-red), var(--istik-gold));
-  transform: scaleY(0);
-  transition: transform 0.2s;
-}
-.istik-menu-card:hover { border-color: rgba(193,59,42,0.35); box-shadow: 0 8px 24px rgba(193,59,42,0.1); transform: translateX(4px); }
-.istik-menu-card:hover::before { transform: scaleY(1); }
-.istik-menu-card:active { transform: scale(0.98); }
-
-.imcard-header {
-  display: flex; justify-content: space-between; align-items: flex-start; gap: 0.8rem;
-  margin-bottom: 0.4rem;
-}
-.imcard-name {
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: var(--istik-text);
-  line-height: 1.3;
-}
-.imcard-price {
-  background: rgba(193,59,42,0.08);
-  border: 1px solid rgba(193,59,42,0.25);
-  color: var(--istik-red);
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 0.15rem 0.7rem;
-  border-radius: 60px;
-  white-space: nowrap;
-  font-family: 'Josefin Sans', sans-serif;
-}
-.imcard-desc { font-size: 0.74rem; color: var(--istik-sub); line-height: 1.35; }
-
-/* ===== MODAL - SOHO ===== */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(8px);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 1000;
-  visibility: hidden; opacity: 0;
-  transition: visibility 0.2s, opacity 0.2s;
-  padding: 1rem;
-}
-.modal-overlay.active { visibility: visible; opacity: 1; }
-
-.modal-soho {
-  background: var(--soho-card);
-  border: 1px solid var(--soho-border);
-  border-radius: 4px;
-  max-width: 480px; width: 100%;
-  overflow: hidden;
-  transform: scale(0.9) translateY(20px);
-  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.05);
-  box-shadow: 0 0 40px rgba(26,159,245,0.2), 0 30px 60px rgba(0,0,0,0.5);
-}
-.modal-overlay.active .modal-soho { transform: scale(1) translateY(0); }
-.modal-soho-header {
-  padding: 1.8rem 1.8rem 1rem;
-  background: linear-gradient(135deg, #0D1525, #151D2E);
-  position: relative;
-  border-bottom: 1px solid rgba(26,159,245,0.15);
-}
-.modal-soho-header h3 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.8rem;
-  letter-spacing: 0.05em;
-  color: white;
-  padding-right: 2rem;
-}
-.modal-soho-body { padding: 1.5rem 1.8rem 2rem; }
-.modal-soho-price {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.5rem;
-  color: var(--soho-yellow);
-  text-shadow: 0 0 10px rgba(255,208,0,0.5);
-  letter-spacing: 0.1em;
-  margin-bottom: 1rem;
-  display: block;
-}
-.modal-soho-desc { font-size: 0.9rem; color: var(--soho-sub); line-height: 1.55; }
-
-.modal-istik {
-  background: white;
-  border: 1px solid var(--istik-border);
-  border-radius: 8px;
-  max-width: 480px; width: 100%;
-  overflow: hidden;
-  transform: scale(0.9) translateY(20px);
-  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.05);
-  box-shadow: 0 30px 60px rgba(0,0,0,0.3);
-}
-.modal-overlay.active .modal-istik { transform: scale(1) translateY(0); }
-.modal-istik-header {
-  padding: 1.8rem 1.8rem 1rem;
-  background: linear-gradient(135deg, #FBF6EE, #F5EDD8);
-  border-bottom: 1px solid rgba(193,59,42,0.15);
-  position: relative;
-}
-.modal-istik-header h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.6rem;
-  font-style: italic;
-  color: var(--istik-text);
-  padding-right: 2rem;
-}
-.modal-istik-body { padding: 1.5rem 1.8rem 2rem; }
-.modal-istik-price {
-  display: inline-block;
-  background: var(--istik-red);
-  color: white;
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 1rem; font-weight: 700;
-  letter-spacing: 0.1em;
-  padding: 0.4rem 1.4rem;
-  border-radius: 60px;
-  margin-bottom: 1rem;
-}
-.modal-istik-desc { font-size: 0.9rem; color: var(--istik-brown); line-height: 1.55; }
-
-.modal-close {
-  position: absolute; top: 1rem; right: 1rem;
-  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.7);
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  font-size: 1.2rem; line-height: 1;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s;
-}
-.modal-close:hover { background: rgba(255,255,255,0.2); color: white; }
-.modal-close.dark {
-  background: rgba(0,0,0,0.08); border-color: rgba(0,0,0,0.15);
-  color: rgba(0,0,0,0.5);
-}
-.modal-close.dark:hover { background: rgba(193,59,42,0.1); color: var(--istik-red); }
-
-.modal-footer-row {
-  display: flex; justify-content: flex-end;
-  padding: 0 1.8rem 1.5rem;
-}
-.modal-done-soho {
-  font-family: 'Josefin Sans', sans-serif; font-size: 0.8rem; letter-spacing: 0.1em;
-  font-weight: 700; padding: 0.65rem 1.8rem; border: none; cursor: pointer;
-  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
-  background: linear-gradient(135deg, var(--soho-blue), #0070D0);
-  color: white; transition: all 0.2s;
-}
-.modal-done-soho:hover { box-shadow: 0 0 20px rgba(26,159,245,0.5); }
-.modal-done-istik {
-  font-family: 'Josefin Sans', sans-serif; font-size: 0.8rem; letter-spacing: 0.1em;
-  font-weight: 700; padding: 0.65rem 1.8rem; border: none; cursor: pointer;
-  border-radius: 60px;
-  background: var(--istik-red); color: white; transition: all 0.2s;
-}
-.modal-done-istik:hover { background: var(--istik-red2); }
-
-/* ===== FOOTER ===== */
-.footer {
-  background: #04060F;
-  border-top: 1px solid rgba(26,159,245,0.15);
-  padding: 3rem 1.5rem;
-  text-align: center;
-}
-.footer-logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 2rem;
-  letter-spacing: 0.1em;
-  color: var(--soho-blue);
-  text-shadow: 0 0 15px rgba(26,159,245,0.4);
-}
-.footer-logo span { color: var(--istik-red); }
-.footer p {
-  font-size: 0.75rem;
-  color: rgba(255,255,255,0.3);
-  margin-top: 0.8rem;
-  letter-spacing: 0.1em;
-  font-family: 'Josefin Sans', sans-serif;
-}
-.back-top {
-  display: inline-block; margin-top: 1.5rem;
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 0.7rem; letter-spacing: 0.2em;
-  color: var(--soho-blue); text-decoration: none;
-  border: 1px solid rgba(26,159,245,0.3);
-  padding: 0.5rem 1.5rem;
-  transition: all 0.2s;
-}
-.back-top:hover { background: rgba(26,159,245,0.1); }
-
-/* ===== ANIMATIONS ===== */
-@keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* stagger children */
-.stagger > * { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
-.stagger.visible > *:nth-child(1) { opacity:1; transform:none; transition-delay: 0.05s; }
-.stagger.visible > *:nth-child(2) { opacity:1; transform:none; transition-delay: 0.12s; }
-.stagger.visible > *:nth-child(3) { opacity:1; transform:none; transition-delay: 0.19s; }
-.stagger.visible > *:nth-child(4) { opacity:1; transform:none; transition-delay: 0.26s; }
-.stagger.visible > *:nth-child(5) { opacity:1; transform:none; transition-delay: 0.33s; }
-.stagger.visible > *:nth-child(6) { opacity:1; transform:none; transition-delay: 0.40s; }
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-  .story-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-  .atm-grid { grid-template-columns: 1fr 1fr; }
-  .soho-menu-grid, .istik-menu-grid { grid-template-columns: 1fr; }
-  .stats-inner { gap: 1.5rem; }
-  .tab-btn { font-size: 0.75rem; padding: 1rem 0.5rem; letter-spacing: 0.08em; }
-}
-@media (max-width: 480px) {
-  .atm-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .hero-eyebrow { font-size: 0.6rem; letter-spacing: 0.2em; }
-  .hero-cta-group { flex-direction: column; }
-  .cta-btn { text-align: center; width: 100%; }
-}
-</style>
-</head>
-<body>
-
-<!-- ======= HERO ======= -->
-<section class="hero">
-  <div class="neon-circle nc1"></div>
-  <div class="neon-circle nc2"></div>
-  <div class="neon-circle nc3"></div>
-
-  <div class="hero-content">
-    <div class="hero-eyebrow">CAIRO · EAT BOLD · SIP SLOW</div>
-    <div class="hero-soho">SOHO</div>
-    <div class="hero-bites">BITES</div>
-
-    <div class="hero-divider">
-      <div class="hero-divider-line"></div>
-      <div class="hero-x">×</div>
-      <div class="hero-divider-line right"></div>
-    </div>
-
-    <div class="hero-istik">Istiknanah</div>
-
-    <p class="hero-tagline">Two worlds united — electric urban flavors meet artisanal café warmth. Every bite tells a story. Every sip is a moment.</p>
-
-    <div class="hero-cta-group">
-      <button class="cta-btn cta-soho" onclick="openMenuTab('soho')">⚡ EAT BOLD — SOHO MENU</button>
-      <button class="cta-btn cta-istik" onclick="openMenuTab('istik')">☕ SIP SLOW — ISTIKNANAH</button>
-    </div>
-  </div>
-
-  <div class="scroll-indicator">
-    <span>SCROLL</span>
-    <div class="scroll-line"></div>
-  </div>
-</section>
-
-<!-- ======= STORY ======= -->
-<section class="story">
-  <div class="container">
-    <span class="section-tag">— OUR STORY</span>
-    <div class="story-grid stagger">
-      <div class="story-card-soho">
-        <div class="scard-icon">🔥</div>
-        <h3>SOHO BITES</h3>
-        <p>Born from the electric streets of Soho, London — where art, music, and rebellion collide. Smoked briskets, loaded burgers, sizzling fajitas, and bold sauces designed for those who live out loud. Every plate is an event.</p>
-        <p style="margin-top:1rem; font-size:0.8rem; color:rgba(77,186,255,0.6); font-family:'Josefin Sans',sans-serif; letter-spacing:0.1em;">EAT BOLD · LIVE SOHO</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Soho Bites × Istiknanah</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=Josefin+Sans:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      :root {
+        /* Soho: neon-dark electric palette */
+        --soho-dark: #0a0e1a;
+        --soho-blue: #1a9ff5;
+        --soho-blue-glow: #4dbaff;
+        --soho-red: #ff3d3d;
+        --soho-yellow: #ffd000;
+        --soho-card: #111827;
+        --soho-card2: #151d2e;
+        --soho-border: rgba(26, 159, 245, 0.3);
+        --soho-text: #e8f4fd;
+        --soho-sub: #8bafc5;
+
+        /* Istiknanah: warm cream & red palette */
+        --istik-cream: #fbf6ee;
+        --istik-warm: #f5edd8;
+        --istik-red: #c13b2a;
+        --istik-red2: #e04530;
+        --istik-dark: #1a1008;
+        --istik-brown: #6b3f28;
+        --istik-gold: #b8860b;
+        --istik-card: #ffffff;
+        --istik-border: rgba(193, 59, 42, 0.2);
+        --istik-text: #2a1505;
+        --istik-sub: #8b6555;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Outfit", sans-serif;
+        background: #0a0e1a;
+        color: #e8f4fd;
+        overflow-x: hidden;
+      }
+
+      /* ===== NEON GLOW UTILITIES ===== */
+      .neon-blue {
+        text-shadow:
+          0 0 10px #1a9ff5,
+          0 0 30px #1a9ff5,
+          0 0 60px #4dbaff;
+      }
+      .neon-red {
+        text-shadow:
+          0 0 10px #ff3d3d,
+          0 0 30px #ff3d3d,
+          0 0 60px #ff6b6b;
+      }
+      .neon-yellow {
+        text-shadow:
+          0 0 10px #ffd000,
+          0 0 30px #ffd000,
+          0 0 60px #ffe040;
+      }
+      .glow-box {
+        box-shadow:
+          0 0 20px rgba(26, 159, 245, 0.3),
+          0 0 60px rgba(26, 159, 245, 0.1);
+      }
+
+      /* ===== HERO SECTION ===== */
+      .hero {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--soho-dark);
+        overflow: hidden;
+        padding: 4rem 1.5rem 5rem;
+      }
+
+      /* animated grid background */
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(26, 159, 245, 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(26, 159, 245, 0.06) 1px, transparent 1px);
+        background-size: 60px 60px;
+        animation: gridMove 20s linear infinite;
+      }
+      @keyframes gridMove {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: 60px 60px;
+        }
+      }
+
+      /* radial glow behind hero */
+      .hero::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 70vw;
+        height: 70vw;
+        max-width: 700px;
+        max-height: 700px;
+        background: radial-gradient(
+          ellipse,
+          rgba(26, 159, 245, 0.12) 0%,
+          rgba(255, 61, 61, 0.06) 40%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+      }
+
+      .hero-eyebrow {
+        display: inline-block;
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 0.7rem;
+        letter-spacing: 0.35em;
+        color: var(--soho-yellow);
+        text-shadow: 0 0 8px rgba(255, 208, 0, 0.6);
+        border: 1px solid rgba(255, 208, 0, 0.3);
+        padding: 0.4rem 1.5rem;
+        border-radius: 2px;
+        margin-bottom: 2rem;
+        animation: fadeSlideUp 0.8s ease both;
+      }
+
+      .hero-soho {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(4rem, 15vw, 10rem);
+        line-height: 0.85;
+        letter-spacing: 0.03em;
+        color: #ffffff;
+        text-shadow:
+          0 0 15px #1a9ff5,
+          0 0 40px #1a9ff5,
+          0 0 100px rgba(26, 159, 245, 0.5),
+          2px 2px 0 #0a5e99;
+        animation: fadeSlideUp 0.8s 0.15s ease both;
+      }
+
+      .hero-bites {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(3.5rem, 13vw, 8.5rem);
+        line-height: 0.85;
+        letter-spacing: 0.08em;
+        color: #ff3d3d;
+        text-shadow:
+          0 0 15px #ff3d3d,
+          0 0 40px #ff3d3d,
+          0 0 100px rgba(255, 61, 61, 0.5),
+          2px 2px 0 #9a0000;
+        animation: fadeSlideUp 0.8s 0.25s ease both;
+      }
+
+      .hero-divider {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 1.5rem auto;
+        width: fit-content;
+        animation: fadeSlideUp 0.8s 0.35s ease both;
+      }
+      .hero-divider-line {
+        width: 60px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--soho-yellow));
+      }
+      .hero-divider-line.right {
+        background: linear-gradient(270deg, transparent, var(--soho-yellow));
+      }
+      .hero-x {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 2rem;
+        color: var(--soho-yellow);
+        text-shadow: 0 0 10px rgba(255, 208, 0, 0.8);
+      }
+
+      .hero-istik {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.8rem, 6vw, 4rem);
+        color: #f5edd8;
+        letter-spacing: 0.15em;
+        font-style: italic;
+        animation: fadeSlideUp 0.8s 0.45s ease both;
+      }
+
+      .hero-tagline {
+        font-size: clamp(0.85rem, 2.5vw, 1.05rem);
+        color: var(--soho-sub);
+        margin-top: 2rem;
+        letter-spacing: 0.05em;
+        max-width: 480px;
+        line-height: 1.5;
+        animation: fadeSlideUp 0.8s 0.55s ease both;
+      }
+
+      .hero-cta-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 3rem;
+        animation: fadeSlideUp 0.8s 0.65s ease both;
+      }
+
+      .cta-btn {
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 0.85rem;
+        letter-spacing: 0.15em;
+        font-weight: 700;
+        padding: 1rem 2.2rem;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.25s;
+        clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      }
+      .cta-soho {
+        background: linear-gradient(135deg, #1a9ff5, #0070d0);
+        color: white;
+        box-shadow:
+          0 0 20px rgba(26, 159, 245, 0.4),
+          0 0 40px rgba(26, 159, 245, 0.2);
+      }
+      .cta-soho:hover {
+        box-shadow:
+          0 0 30px rgba(26, 159, 245, 0.7),
+          0 0 60px rgba(26, 159, 245, 0.3);
+        transform: translateY(-2px);
+      }
+      .cta-istik {
+        background: linear-gradient(135deg, #c13b2a, #8b2010);
+        color: #fbf6ee;
+        box-shadow:
+          0 0 20px rgba(193, 59, 42, 0.4),
+          0 0 40px rgba(193, 59, 42, 0.2);
+      }
+      .cta-istik:hover {
+        box-shadow:
+          0 0 30px rgba(193, 59, 42, 0.7),
+          0 0 60px rgba(193, 59, 42, 0.3);
+        transform: translateY(-2px);
+      }
+
+      /* floating neon decorations */
+      .neon-circle {
+        position: absolute;
+        border-radius: 50%;
+        animation: float 6s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 1;
+      }
+      .nc1 {
+        width: 300px;
+        height: 300px;
+        border: 1px solid rgba(26, 159, 245, 0.15);
+        top: 10%;
+        left: -10%;
+        animation-delay: 0s;
+      }
+      .nc2 {
+        width: 200px;
+        height: 200px;
+        border: 1px solid rgba(255, 61, 61, 0.15);
+        bottom: 10%;
+        right: -5%;
+        animation-delay: -3s;
+      }
+      .nc3 {
+        width: 150px;
+        height: 150px;
+        border: 1px solid rgba(255, 208, 0, 0.15);
+        top: 30%;
+        right: 5%;
+        animation-delay: -1.5s;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(5deg);
+        }
+      }
+
+      /* ===== SCROLL INDICATOR ===== */
+      .scroll-indicator {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--soho-sub);
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        font-family: "Josefin Sans", sans-serif;
+        animation: fadeSlideUp 0.8s 1s ease both;
+        z-index: 2;
+      }
+      .scroll-line {
+        width: 1px;
+        height: 50px;
+        background: linear-gradient(to bottom, var(--soho-blue), transparent);
+        animation: scrollPulse 2s ease infinite;
+      }
+      @keyframes scrollPulse {
+        0%,
+        100% {
+          opacity: 0.4;
+          transform: scaleY(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scaleY(1.2);
+        }
+      }
+
+      /* ===== STORY SECTION ===== */
+      .story {
+        background: #080c16;
+        padding: 6rem 1.5rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .story::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--soho-blue),
+          var(--soho-red),
+          var(--soho-yellow),
+          transparent
+        );
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .section-tag {
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 0.65rem;
+        letter-spacing: 0.4em;
+        color: var(--soho-yellow);
+        margin-bottom: 1rem;
+        display: block;
+      }
+
+      .story-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: start;
+        margin-top: 4rem;
+      }
+
+      /* SOHO card */
+      .story-card-soho {
+        background: var(--soho-card);
+        border: 1px solid var(--soho-border);
+        border-radius: 4px;
+        padding: 2.5rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .story-card-soho::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--soho-blue), var(--soho-red));
+      }
+      .story-card-soho::after {
+        content: "SOHO";
+        position: absolute;
+        right: -1rem;
+        top: 50%;
+        transform: translateY(-50%) rotate(90deg);
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 5rem;
+        color: rgba(26, 159, 245, 0.05);
+        pointer-events: none;
+      }
+
+      .scard-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1.2rem;
+        filter: drop-shadow(0 0 10px rgba(26, 159, 245, 0.5));
+      }
+      .story-card-soho h3 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 2rem;
+        letter-spacing: 0.05em;
+        color: var(--soho-blue-glow);
+        text-shadow: 0 0 10px rgba(26, 159, 245, 0.4);
+        margin-bottom: 1rem;
+      }
+      .story-card-soho p {
+        font-size: 0.9rem;
+        line-height: 1.65;
+        color: var(--soho-sub);
+      }
+
+      /* ISTIK card */
+      .story-card-istik {
+        background: #fffaf3;
+        border: 1px solid var(--istik-border);
+        border-radius: 4px;
+        padding: 2.5rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .story-card-istik::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--istik-red), var(--istik-gold));
+      }
+      .story-card-istik::after {
+        content: "إستكنانة";
+        position: absolute;
+        right: 0.5rem;
+        bottom: 0.5rem;
+        font-size: 2rem;
+        color: rgba(193, 59, 42, 0.06);
+        pointer-events: none;
+      }
+      .story-card-istik h3 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.8rem;
+        font-style: italic;
+        color: var(--istik-red);
+        margin-bottom: 1rem;
+      }
+      .story-card-istik p {
+        font-size: 0.9rem;
+        line-height: 1.65;
+        color: var(--istik-brown);
+      }
+
+      /* ===== ATMOSPHERE / FEATURE SECTION ===== */
+      .atmosphere {
+        background: linear-gradient(
+          180deg,
+          #080c16 0%,
+          #0d0a06 50%,
+          #080c16 100%
+        );
+        padding: 6rem 1.5rem;
+        position: relative;
+      }
+
+      .atm-title {
+        text-align: center;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(2.5rem, 7vw, 5rem);
+        letter-spacing: 0.08em;
+        margin-bottom: 4rem;
+      }
+      .atm-title .t-blue {
+        color: var(--soho-blue);
+        text-shadow: 0 0 20px rgba(26, 159, 245, 0.5);
+      }
+      .atm-title .t-red {
+        color: var(--istik-red);
+      }
+
+      .atm-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .atm-card {
+        padding: 2rem 1.5rem;
+        border-radius: 4px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+        cursor: default;
+      }
+      .atm-card:hover {
+        transform: translateY(-6px);
+      }
+
+      .atm-card-soho {
+        background: var(--soho-card);
+        border: 1px solid var(--soho-border);
+      }
+      .atm-card-soho:hover {
+        box-shadow: 0 20px 40px rgba(26, 159, 245, 0.15);
+      }
+      .atm-card-soho .atm-icon {
+        color: var(--soho-blue);
+        filter: drop-shadow(0 0 8px rgba(26, 159, 245, 0.6));
+      }
+      .atm-card-soho h4 {
+        color: var(--soho-text);
+        font-family: "Josefin Sans", sans-serif;
+        letter-spacing: 0.05em;
+      }
+      .atm-card-soho p {
+        color: var(--soho-sub);
+      }
+
+      .atm-card-istik {
+        background: #fffaf3;
+        border: 1px solid var(--istik-border);
+      }
+      .atm-card-istik:hover {
+        box-shadow: 0 20px 40px rgba(193, 59, 42, 0.15);
+      }
+      .atm-card-istik .atm-icon {
+        color: var(--istik-red);
+      }
+      .atm-card-istik h4 {
+        color: var(--istik-text);
+        font-family: "Josefin Sans", sans-serif;
+        letter-spacing: 0.05em;
+      }
+      .atm-card-istik p {
+        color: var(--istik-sub);
+      }
+
+      .atm-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        display: block;
+      }
+      .atm-card h4 {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      .atm-card p {
+        font-size: 0.8rem;
+        line-height: 1.5;
+      }
+
+      /* ===== STATS BAR ===== */
+      .stats-bar {
+        background: var(--soho-dark);
+        border-top: 1px solid rgba(26, 159, 245, 0.2);
+        border-bottom: 1px solid rgba(26, 159, 245, 0.2);
+        padding: 2.5rem 1.5rem;
+      }
+      .stats-inner {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 2rem;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .stat-item {
+        text-align: center;
+      }
+      .stat-num {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        line-height: 1;
+        display: block;
+      }
+      .stat-num.blue {
+        color: var(--soho-blue);
+        text-shadow: 0 0 15px rgba(26, 159, 245, 0.5);
+      }
+      .stat-num.red {
+        color: var(--soho-red);
+        text-shadow: 0 0 15px rgba(255, 61, 61, 0.5);
+      }
+      .stat-num.yellow {
+        color: var(--soho-yellow);
+        text-shadow: 0 0 15px rgba(255, 208, 0, 0.5);
+      }
+      .stat-label {
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 0.65rem;
+        letter-spacing: 0.3em;
+        color: var(--soho-sub);
+        margin-top: 0.3rem;
+        display: block;
+      }
+
+      /* ===== MENU SWITCH SECTION ===== */
+      .menu-hub {
+        background: #080c16;
+        padding: 5rem 1.5rem 0;
+        position: relative;
+      }
+
+      .menu-hub-title {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+      .menu-hub-title h2 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(2rem, 6vw, 4rem);
+        letter-spacing: 0.08em;
+        color: #ffffff;
+      }
+
+      /* TAB SWITCHER */
+      .tab-switcher {
+        display: flex;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+        max-width: 700px;
+        margin: 0 auto 0;
+        position: relative;
+        z-index: 10;
+      }
+
+      .tab-btn {
+        flex: 1;
+        padding: 1.2rem 1rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 0.85rem;
+        letter-spacing: 0.15em;
+        font-weight: 700;
+        transition: all 0.3s;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+      }
+      .tab-btn::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 3px;
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+      }
+
+      .tab-soho {
+        color: rgba(77, 186, 255, 0.5);
+      }
+      .tab-soho.active {
+        color: var(--soho-blue-glow);
+      }
+      .tab-soho::after {
+        background: linear-gradient(90deg, var(--soho-blue), var(--soho-red));
+      }
+      .tab-soho.active::after {
+        transform: scaleX(1);
+      }
+
+      .tab-istik {
+        color: rgba(193, 59, 42, 0.5);
+        background: rgba(251, 246, 238, 0.03);
+      }
+      .tab-istik.active {
+        color: var(--istik-red);
+      }
+      .tab-istik::after {
+        background: linear-gradient(90deg, var(--istik-red), var(--istik-gold));
+      }
+      .tab-istik.active::after {
+        transform: scaleX(1);
+      }
+
+      /* ===== SOHO MENU ===== */
+      #sohoMenuPanel {
+        background: var(--soho-dark);
+        padding: 3rem 1.5rem 5rem;
+        display: block;
+      }
+
+      .soho-cat-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.8rem;
+        letter-spacing: 0.08em;
+        color: var(--soho-blue-glow);
+        text-shadow: 0 0 10px rgba(26, 159, 245, 0.3);
+        margin-bottom: 1.2rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(26, 159, 245, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+      }
+
+      .soho-menu-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .soho-menu-card {
+        background: var(--soho-card2);
+        border: 1px solid rgba(26, 159, 245, 0.12);
+        border-radius: 2px;
+        padding: 1.1rem 1.2rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+        overflow: hidden;
+      }
+      .soho-menu-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(
+          to bottom,
+          var(--soho-blue),
+          var(--soho-red)
+        );
+        transform: scaleY(0);
+        transition: transform 0.2s;
+      }
+      .soho-menu-card:hover {
+        border-color: rgba(26, 159, 245, 0.4);
+        background: #1a2135;
+        transform: translateX(4px);
+      }
+      .soho-menu-card:hover::before {
+        transform: scaleY(1);
+      }
+      .soho-menu-card:active {
+        transform: scale(0.98);
+      }
+
+      .smcard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 0.8rem;
+        margin-bottom: 0.4rem;
+      }
+      .smcard-name {
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: var(--soho-text);
+        letter-spacing: 0.03em;
+        line-height: 1.3;
+      }
+      .smcard-price {
+        background: rgba(26, 159, 245, 0.15);
+        border: 1px solid rgba(26, 159, 245, 0.3);
+        color: var(--soho-blue-glow);
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 0.15rem 0.7rem;
+        border-radius: 2px;
+        white-space: nowrap;
+        font-family: "Josefin Sans", sans-serif;
+        letter-spacing: 0.05em;
+      }
+      .smcard-desc {
+        font-size: 0.74rem;
+        color: var(--soho-sub);
+        line-height: 1.35;
+      }
+
+      /* ===== ISTIK MENU ===== */
+      #istikMenuPanel {
+        background: var(--istik-cream);
+        padding: 3rem 1.5rem 5rem;
+        display: none;
+      }
+
+      .istik-cat-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.6rem;
+        font-style: italic;
+        color: var(--istik-red);
+        margin-bottom: 1.2rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(193, 59, 42, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+      }
+
+      .istik-menu-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .istik-menu-card {
+        background: white;
+        border: 1px solid rgba(193, 59, 42, 0.12);
+        border-radius: 4px;
+        padding: 1.1rem 1.2rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+        overflow: hidden;
+      }
+      .istik-menu-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(
+          to bottom,
+          var(--istik-red),
+          var(--istik-gold)
+        );
+        transform: scaleY(0);
+        transition: transform 0.2s;
+      }
+      .istik-menu-card:hover {
+        border-color: rgba(193, 59, 42, 0.35);
+        box-shadow: 0 8px 24px rgba(193, 59, 42, 0.1);
+        transform: translateX(4px);
+      }
+      .istik-menu-card:hover::before {
+        transform: scaleY(1);
+      }
+      .istik-menu-card:active {
+        transform: scale(0.98);
+      }
+
+      .imcard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 0.8rem;
+        margin-bottom: 0.4rem;
+      }
+      .imcard-name {
+        font-family: "Outfit", sans-serif;
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: var(--istik-text);
+        line-height: 1.3;
+      }
+      .imcard-price {
+        background: rgba(193, 59, 42, 0.08);
+        border: 1px solid rgba(193, 59, 42, 0.25);
+        color: var(--istik-red);
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 0.15rem 0.7rem;
+        border-radius: 60px;
+        white-space: nowrap;
+        font-family: "Josefin Sans", sans-serif;
+      }
+      .imcard-desc {
+        font-size: 0.74rem;
+        color: var(--istik-sub);
+        line-height: 1.35;
+      }
+
+      /* ===== MODAL - SOHO ===== */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        visibility: hidden;
+        opacity: 0;
+        transition:
+          visibility 0.2s,
+          opacity 0.2s;
+        padding: 1rem;
+      }
+      .modal-overlay.active {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .modal-soho {
+        background: var(--soho-card);
+        border: 1px solid var(--soho-border);
+        border-radius: 4px;
+        max-width: 480px;
+        width: 100%;
+        overflow: hidden;
+        transform: scale(0.9) translateY(20px);
+        transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.05);
+        box-shadow:
+          0 0 40px rgba(26, 159, 245, 0.2),
+          0 30px 60px rgba(0, 0, 0, 0.5);
+      }
+      .modal-overlay.active .modal-soho {
+        transform: scale(1) translateY(0);
+      }
+      .modal-soho-header {
+        padding: 1.8rem 1.8rem 1rem;
+        background: linear-gradient(135deg, #0d1525, #151d2e);
+        position: relative;
+        border-bottom: 1px solid rgba(26, 159, 245, 0.15);
+      }
+      .modal-soho-header h3 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.8rem;
+        letter-spacing: 0.05em;
+        color: white;
+        padding-right: 2rem;
+      }
+      .modal-soho-body {
+        padding: 1.5rem 1.8rem 2rem;
+      }
+      .modal-soho-price {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.5rem;
+        color: var(--soho-yellow);
+        text-shadow: 0 0 10px rgba(255, 208, 0, 0.5);
+        letter-spacing: 0.1em;
+        margin-bottom: 1rem;
+        display: block;
+      }
+      .modal-soho-desc {
+        font-size: 0.9rem;
+        color: var(--soho-sub);
+        line-height: 1.55;
+      }
+
+      .modal-istik {
+        background: white;
+        border: 1px solid var(--istik-border);
+        border-radius: 8px;
+        max-width: 480px;
+        width: 100%;
+        overflow: hidden;
+        transform: scale(0.9) translateY(20px);
+        transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.05);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+      }
+      .modal-overlay.active .modal-istik {
+        transform: scale(1) translateY(0);
+      }
+      .modal-istik-header {
+        padding: 1.8rem 1.8rem 1rem;
+        background: linear-gradient(135deg, #fbf6ee, #f5edd8);
+        border-bottom: 1px solid rgba(193, 59, 42, 0.15);
+        position: relative;
+      }
+      .modal-istik-header h3 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.6rem;
+        font-style: italic;
+        color: var(--istik-text);
+        padding-right: 2rem;
+      }
+      .modal-istik-body {
+        padding: 1.5rem 1.8rem 2rem;
+      }
+      .modal-istik-price {
+        display: inline-block;
+        background: var(--istik-red);
+        color: white;
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        padding: 0.4rem 1.4rem;
+        border-radius: 60px;
+        margin-bottom: 1rem;
+      }
+      .modal-istik-desc {
+        font-size: 0.9rem;
+        color: var(--istik-brown);
+        line-height: 1.55;
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: rgba(255, 255, 255, 0.7);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+      .modal-close:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+      }
+      .modal-close.dark {
+        background: rgba(0, 0, 0, 0.08);
+        border-color: rgba(0, 0, 0, 0.15);
+        color: rgba(0, 0, 0, 0.5);
+      }
+      .modal-close.dark:hover {
+        background: rgba(193, 59, 42, 0.1);
+        color: var(--istik-red);
+      }
+
+      .modal-footer-row {
+        display: flex;
+        justify-content: flex-end;
+        padding: 0 1.8rem 1.5rem;
+      }
+      .modal-done-soho {
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 0.8rem;
+        letter-spacing: 0.1em;
+        font-weight: 700;
+        padding: 0.65rem 1.8rem;
+        border: none;
+        cursor: pointer;
+        clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+        background: linear-gradient(135deg, var(--soho-blue), #0070d0);
+        color: white;
+        transition: all 0.2s;
+      }
+      .modal-done-soho:hover {
+        box-shadow: 0 0 20px rgba(26, 159, 245, 0.5);
+      }
+      .modal-done-istik {
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 0.8rem;
+        letter-spacing: 0.1em;
+        font-weight: 700;
+        padding: 0.65rem 1.8rem;
+        border: none;
+        cursor: pointer;
+        border-radius: 60px;
+        background: var(--istik-red);
+        color: white;
+        transition: all 0.2s;
+      }
+      .modal-done-istik:hover {
+        background: var(--istik-red2);
+      }
+
+      /* ===== FOOTER ===== */
+      .footer {
+        background: #04060f;
+        border-top: 1px solid rgba(26, 159, 245, 0.15);
+        padding: 3rem 1.5rem;
+        text-align: center;
+      }
+      .footer-logo {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 2rem;
+        letter-spacing: 0.1em;
+        color: var(--soho-blue);
+        text-shadow: 0 0 15px rgba(26, 159, 245, 0.4);
+      }
+      .footer-logo span {
+        color: var(--istik-red);
+      }
+      .footer p {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.3);
+        margin-top: 0.8rem;
+        letter-spacing: 0.1em;
+        font-family: "Josefin Sans", sans-serif;
+      }
+      .back-top {
+        display: inline-block;
+        margin-top: 1.5rem;
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        color: var(--soho-blue);
+        text-decoration: none;
+        border: 1px solid rgba(26, 159, 245, 0.3);
+        padding: 0.5rem 1.5rem;
+        transition: all 0.2s;
+      }
+      .back-top:hover {
+        background: rgba(26, 159, 245, 0.1);
+      }
+
+      /* ===== ANIMATIONS ===== */
+      @keyframes fadeSlideUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition:
+          opacity 0.6s ease,
+          transform 0.6s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* stagger children */
+      .stagger > * {
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+          opacity 0.5s ease,
+          transform 0.5s ease;
+      }
+      .stagger.visible > *:nth-child(1) {
+        opacity: 1;
+        transform: none;
+        transition-delay: 0.05s;
+      }
+      .stagger.visible > *:nth-child(2) {
+        opacity: 1;
+        transform: none;
+        transition-delay: 0.12s;
+      }
+      .stagger.visible > *:nth-child(3) {
+        opacity: 1;
+        transform: none;
+        transition-delay: 0.19s;
+      }
+      .stagger.visible > *:nth-child(4) {
+        opacity: 1;
+        transform: none;
+        transition-delay: 0.26s;
+      }
+      .stagger.visible > *:nth-child(5) {
+        opacity: 1;
+        transform: none;
+        transition-delay: 0.33s;
+      }
+      .stagger.visible > *:nth-child(6) {
+        opacity: 1;
+        transform: none;
+        transition-delay: 0.4s;
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 768px) {
+        .story-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+        .atm-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .soho-menu-grid,
+        .istik-menu-grid {
+          grid-template-columns: 1fr;
+        }
+        .stats-inner {
+          gap: 1.5rem;
+        }
+        .tab-btn {
+          font-size: 0.75rem;
+          padding: 1rem 0.5rem;
+          letter-spacing: 0.08em;
+        }
+      }
+      @media (max-width: 480px) {
+        .atm-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 1rem;
+        }
+        .hero-eyebrow {
+          font-size: 0.6rem;
+          letter-spacing: 0.2em;
+        }
+        .hero-cta-group {
+          flex-direction: column;
+        }
+        .cta-btn {
+          text-align: center;
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ======= HERO ======= -->
+    <section class="hero">
+      <div class="neon-circle nc1"></div>
+      <div class="neon-circle nc2"></div>
+      <div class="neon-circle nc3"></div>
+
+      <div class="hero-content">
+        <div class="hero-eyebrow">CAIRO · EAT BOLD · SIP SLOW</div>
+        <div class="hero-soho">SOHO</div>
+        <div class="hero-bites">BITES</div>
+
+        <div class="hero-divider">
+          <div class="hero-divider-line"></div>
+          <div class="hero-x">×</div>
+          <div class="hero-divider-line right"></div>
+        </div>
+
+        <div class="hero-istik">Istiknanah</div>
+
+        <p class="hero-tagline">
+          Two worlds united — electric urban flavors meet artisanal café warmth.
+          Every bite tells a story. Every sip is a moment.
+        </p>
+
+        <div class="hero-cta-group">
+          <button class="cta-btn cta-soho" onclick="openMenuTab('soho')">
+            ⚡ EAT BOLD — SOHO MENU
+          </button>
+          <button class="cta-btn cta-istik" onclick="openMenuTab('istik')">
+            ☕ SIP SLOW — ISTIKNANAH
+          </button>
+        </div>
       </div>
-      <div class="story-card-istik">
-        <div style="font-size:2.5rem; margin-bottom:1.2rem;">☕</div>
-        <h3>Istiknanah</h3>
-        <p>Named from the Arabic word for contentment — إستكنانة — this is a sanctuary of warmth. Spanish lattes, ceremonial matcha, fresh juices, and signature elixirs. Each sip is an invitation to pause, breathe, and stay a little longer.</p>
-        <p style="margin-top:1rem; font-size:0.8rem; color:rgba(193,59,42,0.6); font-family:'Josefin Sans',sans-serif; letter-spacing:0.1em;">SIP SLOW · FIND YOUR MOMENT</p>
+
+      <div class="scroll-indicator">
+        <span>SCROLL</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ======= STORY ======= -->
+    <section class="story">
+      <div class="container">
+        <span class="section-tag">— OUR STORY</span>
+        <div class="story-grid stagger">
+          <div class="story-card-soho">
+            <div class="scard-icon">🔥</div>
+            <h3>SOHO BITES</h3>
+            <p>
+              Born from the electric streets of Soho, London — where art, music,
+              and rebellion collide. Smoked briskets, loaded burgers, sizzling
+              fajitas, and bold sauces designed for those who live out loud.
+              Every plate is an event.
+            </p>
+            <p
+              style="
+                margin-top: 1rem;
+                font-size: 0.8rem;
+                color: rgba(77, 186, 255, 0.6);
+                font-family: &quot;Josefin Sans&quot;, sans-serif;
+                letter-spacing: 0.1em;
+              "
+            >
+              EAT BOLD · LIVE SOHO
+            </p>
+          </div>
+          <div class="story-card-istik">
+            <div style="font-size: 2.5rem; margin-bottom: 1.2rem">☕</div>
+            <h3>Istiknanah</h3>
+            <p>
+              Named from the Arabic word for contentment — إستكنانة — this is a
+              sanctuary of warmth. Spanish lattes, ceremonial matcha, fresh
+              juices, and signature elixirs. Each sip is an invitation to pause,
+              breathe, and stay a little longer.
+            </p>
+            <p
+              style="
+                margin-top: 1rem;
+                font-size: 0.8rem;
+                color: rgba(193, 59, 42, 0.6);
+                font-family: &quot;Josefin Sans&quot;, sans-serif;
+                letter-spacing: 0.1em;
+              "
+            >
+              SIP SLOW · FIND YOUR MOMENT
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= ATMOSPHERE ======= -->
+    <section class="atmosphere">
+      <div class="container">
+        <h2 class="atm-title reveal">
+          <span class="t-blue">MOMENTS</span> &amp;
+          <span class="t-red">ATMOSPHERE</span>
+        </h2>
+        <div class="atm-grid stagger">
+          <div class="atm-card atm-card-soho">
+            <span class="atm-icon">🍔</span>
+            <h4>BOLD BITES</h4>
+            <p>
+              Smashed patties, smoked brisket & loaded nachos crafted for the
+              fearless
+            </p>
+          </div>
+          <div class="atm-card atm-card-istik">
+            <span class="atm-icon">☕</span>
+            <h4>Artisanal Elixirs</h4>
+            <p>Spanish lattes, matcha ceremonials & signature house blends</p>
+          </div>
+          <div class="atm-card atm-card-soho">
+            <span class="atm-icon">🥩</span>
+            <h4>SHARED FEASTS</h4>
+            <p>
+              Fajitas, wings, and family-style mains — food is meant to be
+              shared
+            </p>
+          </div>
+          <div class="atm-card atm-card-istik">
+            <span class="atm-icon">🌿</span>
+            <h4>Healthy Sips</h4>
+            <p>Yogurt blends, avocado honey & fresh juices full of vitality</p>
+          </div>
+          <div class="atm-card atm-card-soho">
+            <span class="atm-icon">🌮</span>
+            <h4>SOHO CLASSICS</h4>
+            <p>Crispy strips, quesadillas, and burgers born to satisfy</p>
+          </div>
+          <div class="atm-card atm-card-istik">
+            <span class="atm-icon">🍹</span>
+            <h4>Specialty Cocktails</h4>
+            <p>
+              Soda mojitos, hibiscus fusions & creative non-alcoholic wonders
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= STATS ======= -->
+    <div class="stats-bar">
+      <div class="stats-inner stagger">
+        <div class="stat-item">
+          <span class="stat-num blue">80+</span>
+          <span class="stat-label">SOHO DISHES</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num red">60+</span>
+          <span class="stat-label">ISTIKNANAH DRINKS</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num yellow">2</span>
+          <span class="stat-label">ICONIC BRANDS</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num blue">1</span>
+          <span class="stat-label">UNFORGETTABLE PLACE</span>
+        </div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- ======= ATMOSPHERE ======= -->
-<section class="atmosphere">
-  <div class="container">
-    <h2 class="atm-title reveal">
-      <span class="t-blue">MOMENTS</span> &amp; <span class="t-red">ATMOSPHERE</span>
-    </h2>
-    <div class="atm-grid stagger">
-      <div class="atm-card atm-card-soho">
-        <span class="atm-icon">🍔</span>
-        <h4>BOLD BITES</h4>
-        <p>Smashed patties, smoked brisket & loaded nachos crafted for the fearless</p>
+    <!-- ======= MENU HUB ======= -->
+    <div class="menu-hub" id="menuHub">
+      <div class="menu-hub-title reveal">
+        <h2>EXPLORE THE MENUS</h2>
       </div>
-      <div class="atm-card atm-card-istik">
-        <span class="atm-icon">☕</span>
-        <h4>Artisanal Elixirs</h4>
-        <p>Spanish lattes, matcha ceremonials & signature house blends</p>
-      </div>
-      <div class="atm-card atm-card-soho">
-        <span class="atm-icon">🥩</span>
-        <h4>SHARED FEASTS</h4>
-        <p>Fajitas, wings, and family-style mains — food is meant to be shared</p>
-      </div>
-      <div class="atm-card atm-card-istik">
-        <span class="atm-icon">🌿</span>
-        <h4>Healthy Sips</h4>
-        <p>Yogurt blends, avocado honey & fresh juices full of vitality</p>
-      </div>
-      <div class="atm-card atm-card-soho">
-        <span class="atm-icon">🌮</span>
-        <h4>SOHO CLASSICS</h4>
-        <p>Crispy strips, quesadillas, and burgers born to satisfy</p>
-      </div>
-      <div class="atm-card atm-card-istik">
-        <span class="atm-icon">🍹</span>
-        <h4>Specialty Cocktails</h4>
-        <p>Soda mojitos, hibiscus fusions & creative non-alcoholic wonders</p>
+      <div class="container">
+        <div class="tab-switcher">
+          <button
+            class="tab-btn tab-soho active"
+            id="tabSoho"
+            onclick="switchTab('soho')"
+          >
+            ⚡ SOHO BITES
+          </button>
+          <button
+            class="tab-btn tab-istik"
+            id="tabIstik"
+            onclick="switchTab('istik')"
+          >
+            ☕ ISTIKNANAH
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- ======= STATS ======= -->
-<div class="stats-bar">
-  <div class="stats-inner stagger">
-    <div class="stat-item">
-      <span class="stat-num blue">80+</span>
-      <span class="stat-label">SOHO DISHES</span>
+    <!-- SOHO MENU PANEL -->
+    <div id="sohoMenuPanel">
+      <div class="container" id="sohoMenuContent"></div>
     </div>
-    <div class="stat-item">
-      <span class="stat-num red">60+</span>
-      <span class="stat-label">ISTIKNANAH DRINKS</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num yellow">2</span>
-      <span class="stat-label">ICONIC BRANDS</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num blue">1</span>
-      <span class="stat-label">UNFORGETTABLE PLACE</span>
-    </div>
-  </div>
-</div>
 
-<!-- ======= MENU HUB ======= -->
-<div class="menu-hub" id="menuHub">
-  <div class="menu-hub-title reveal">
-    <h2>EXPLORE THE MENUS</h2>
-  </div>
-  <div class="container">
-    <div class="tab-switcher">
-      <button class="tab-btn tab-soho active" id="tabSoho" onclick="switchTab('soho')">
-        ⚡ SOHO BITES
-      </button>
-      <button class="tab-btn tab-istik" id="tabIstik" onclick="switchTab('istik')">
-        ☕ ISTIKNANAH
-      </button>
+    <!-- ISTIK MENU PANEL -->
+    <div id="istikMenuPanel">
+      <div class="container" id="istikMenuContent"></div>
     </div>
-  </div>
-</div>
 
-<!-- SOHO MENU PANEL -->
-<div id="sohoMenuPanel">
-  <div class="container" id="sohoMenuContent"></div>
-</div>
+    <!-- ======= FOOTER ======= -->
+    <footer class="footer">
+      <div class="footer-logo">SOHO <span>×</span> ISTIKNANAH</div>
+      <p>
+        FROM SOHO LONDON TO YOUR TABLE — ONE SPACE · ONE FEELING · ONE
+        CONTINUOUS EXPERIENCE
+      </p>
+      <br />
+      <a
+        href="#"
+        class="back-top"
+        onclick="
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          return false;
+        "
+        >↑ BACK TO TOP</a
+      >
+    </footer>
 
-<!-- ISTIK MENU PANEL -->
-<div id="istikMenuPanel">
-  <div class="container" id="istikMenuContent"></div>
-</div>
-
-<!-- ======= FOOTER ======= -->
-<footer class="footer">
-  <div class="footer-logo">SOHO <span>×</span> ISTIKNANAH</div>
-  <p>FROM SOHO LONDON TO YOUR TABLE — ONE SPACE · ONE FEELING · ONE CONTINUOUS EXPERIENCE</p>
-  <br>
-  <a href="#" class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">↑ BACK TO TOP</a>
-</footer>
-
-<!-- SOHO MODAL -->
-<div class="modal-overlay" id="sohoModal">
-  <div class="modal-soho">
-    <div class="modal-soho-header">
-      <h3 id="sohoModalTitle"></h3>
-      <button class="modal-close" onclick="closeModals()">×</button>
+    <!-- SOHO MODAL -->
+    <div class="modal-overlay" id="sohoModal">
+      <div class="modal-soho">
+        <div class="modal-soho-header">
+          <h3 id="sohoModalTitle"></h3>
+          <button class="modal-close" onclick="closeModals()">×</button>
+        </div>
+        <div class="modal-soho-body">
+          <span class="modal-soho-price" id="sohoModalPrice"></span>
+          <p class="modal-soho-desc" id="sohoModalDesc"></p>
+        </div>
+        <div class="modal-footer-row">
+          <button class="modal-done-soho" onclick="closeModals()">CLOSE</button>
+        </div>
+      </div>
     </div>
-    <div class="modal-soho-body">
-      <span class="modal-soho-price" id="sohoModalPrice"></span>
-      <p class="modal-soho-desc" id="sohoModalDesc"></p>
-    </div>
-    <div class="modal-footer-row">
-      <button class="modal-done-soho" onclick="closeModals()">CLOSE</button>
-    </div>
-  </div>
-</div>
 
-<!-- ISTIK MODAL -->
-<div class="modal-overlay" id="istikModal">
-  <div class="modal-istik">
-    <div class="modal-istik-header">
-      <h3 id="istikModalTitle"></h3>
-      <button class="modal-close dark" onclick="closeModals()">×</button>
+    <!-- ISTIK MODAL -->
+    <div class="modal-overlay" id="istikModal">
+      <div class="modal-istik">
+        <div class="modal-istik-header">
+          <h3 id="istikModalTitle"></h3>
+          <button class="modal-close dark" onclick="closeModals()">×</button>
+        </div>
+        <div class="modal-istik-body">
+          <span class="modal-istik-price" id="istikModalPrice"></span>
+          <p class="modal-istik-desc" id="istikModalDesc"></p>
+        </div>
+        <div class="modal-footer-row">
+          <button class="modal-done-istik" onclick="closeModals()">
+            Close
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="modal-istik-body">
-      <span class="modal-istik-price" id="istikModalPrice"></span>
-      <p class="modal-istik-desc" id="istikModalDesc"></p>
-    </div>
-    <div class="modal-footer-row">
-      <button class="modal-done-istik" onclick="closeModals()">Close</button>
-    </div>
-  </div>
-</div>
 
-<script>
-// ===================== MENU DATA =====================
-const sohoMenu = {
-  "🥤 Cold Beverages": [
-    { name: "Still Mineral Water", desc: "Pure & refreshing", price: 35 },
-    { name: "Sparkling Water", desc: "Crisp bubbles", price: 55 },
-    { name: "Pepsi / 7Up", desc: "Classic soda", price: 40 },
-    { name: "Perrier / Schweppes / Fayrouz", desc: "Premium selection", price: 45 },
-    { name: "Red Bull", desc: "Energy boost", price: 85 },
-    { name: "Red Bull + Sauce Shot", desc: "Extra kick", price: 105 }
-  ],
-  "🍜 Soups": [
-    { name: "Creamy Chicken Soup", desc: "Velvety smooth chicken", price: 89 },
-    { name: "Creamy Mushroom Soup", desc: "Earthy & rich", price: 85 }
-  ],
-  "🥗 Salads": [
-    { name: "Caesar Salad with Chicken", desc: "Grilled chicken, romaine, croutons, parmesan", price: 169 },
-    { name: "Cobb Salad", desc: "Crispy chicken, egg, bacon, cheese, corn, beans, pico", price: 209 },
-    { name: "Taco Salad", desc: "Lettuce, tortilla strips, chicken, bacon, cheese, ranch, beans", price: 199 }
-  ],
-  "🍟 Appetizers": [
-    { name: "Chicken Strips", desc: "Crispy outside, tender inside, honey mustard or buffalo", price: 189 },
-    { name: "Chicken Wings", desc: "Fried wings with buffalo/BBQ/dynamite sauce", price: 169 },
-    { name: "Mozzarella Sticks", desc: "Golden with marinara", price: 99 },
-    { name: "Chili Cheese Fries", desc: "Fries, cheese sauce, pico, jalapeños", price: 129 },
-    { name: "Soho Chips", desc: "Crispy chips + signature Soho sauce", price: 110 },
-    { name: "Nacho Land", desc: "Nachos, melted cheese, jalapeños, sour cream, pico", price: 149 },
-    { name: "Mac & Cheese", desc: "Creamy white sauce pasta, special cheese blend", price: 159 }
-  ],
-  "🍔 Burgers & Sandwiches": [
-    { name: "Brisket Star", desc: "Smoked brisket, cheese sauce, crispy onions, BBQ, pickles, mayo", price: 269 },
-    { name: "Steak Sandwich", desc: "Sliced steak, grilled veggies, Soho cheese, smoky sauce", price: 299 },
-    { name: "Classic Soho Chicken", desc: "Grilled/fried chicken, Soho sauce, cheddar, lettuce, tomato", price: 279 },
-    { name: "Chicken Quesadilla", desc: "Marinated chicken, grilled veggies, melted cheese, ranch", price: 289 },
-    { name: "Beef Quesadilla", desc: "Marinated beef strips, veggies, cheese, ranch", price: 299 },
-    { name: "Shrimp Quesadilla", desc: "Spiced shrimp, grilled veggies, melted cheese, ranch", price: 289 },
-    { name: "Classic Burger", desc: "Flame-grilled patty, lettuce, tomato, onion, mayo", price: 279 },
-    { name: "Classic Burger Basic", desc: "120g patty, lettuce, tomato, onion, special sauce", price: 209 },
-    { name: "Soho Mushroom Burger", desc: "Beef patty, cheese, grilled mushrooms, caramelized onion, smoky mayo", price: 309 },
-    { name: "Soho Mushroom Burger Basic", desc: "120g patty, mushrooms, onion, smoky mayo, cheese", price: 239 },
-    { name: "Bacon Burger", desc: "Patty, cheddar, smoked bacon, caramelized onion, jalapeños, mayo", price: 269 },
-    { name: "Bacon Burger Basic", desc: "120g patty, bacon, cheese, jalapeños, mayo", price: 199 },
-    { name: "Texas Burger", desc: "Smoked patty, crispy onion, cheddar, BBQ, smoky mayo", price: 299 },
-    { name: "Texas Burger Basic", desc: "120g smoked patty, crispy onion, cheddar, BBQ", price: 229 }
-  ],
-  "🍝 Pasta": [
-    { name: "Fettuccine Alfredo", desc: "Creamy sauce, mushrooms, grilled chicken, parmesan", price: 279 },
-    { name: "Spaghetti Bolognese", desc: "Rich Italian meat sauce, parmesan", price: 289 },
-    { name: "Shrimp Pasta", desc: "White or red sauce, shrimp, grilled veggies", price: 259 }
-  ],
-  "🥩 Main Courses": [
-    { name: "Chicken Fajita", desc: "Grilled chicken, peppers, onions, rice, tortillas + 2 sides", price: 299 },
-    { name: "Beef Fajita", desc: "Tender beef strips, peppers, onions, rice, tortillas + 2 sides", price: 339 },
-    { name: "Mixed Fajita", desc: "Chicken, beef & shrimp, peppers, onion, rice, tortillas + 2 sides", price: 359 },
-    { name: "Escalope Schnitzel", desc: "Thin breaded veal, crispy, white sauce + 2 sides", price: 399 },
-    { name: "Crispy Chicken with Mushrooms", desc: "Crispy chicken, fresh mushrooms, creamy sauce + 2 sides", price: 329 },
-    { name: "Ribeye Steak", desc: "Grilled ribeye, mushroom/pepper/BBQ sauce + 2 sides", price: 449 }
-  ],
-  "🍟 Sides": [
-    { name: "French Fries", desc: "Golden & crispy", price: 50 },
-    { name: "Mashed Potato", desc: "Smooth buttery mash", price: 70 },
-    { name: "Soho Rice", desc: "Seasoned aromatic rice", price: 50 },
-    { name: "Coleslaw", desc: "Creamy cabbage slaw", price: 50 },
-    { name: "Corn Cup", desc: "Sweet corn kernels", price: 50 },
-    { name: "Sautéed Vegetables", desc: "Seasonal medley", price: 70 },
-    { name: "Side Mac & Cheese", desc: "Creamy pasta side", price: 70 }
-  ],
-  "👶 Kids Menu": [
-    { name: "Kids Chicken Strips", desc: "Crispy strips, fries, ketchup & juice", price: 189 },
-    { name: "Kids Chicken Burger", desc: "Mini chicken burger, fries, juice", price: 189 },
-    { name: "Kids Beef Burger", desc: "Mini beef patty, cheese, fries, juice", price: 189 }
-  ],
-  "🍰 Desserts": [
-    { name: "Molten Cake", desc: "Warm chocolate lava cake", price: 130 },
-    { name: "Cheesecake", desc: "Creamy NY style", price: 125 },
-    { name: "Brownie", desc: "Rich fudge brownie", price: 130 }
-  ],
-  "🧂 Sauces (Extra)": [
-    { name: "Honey Mustard", desc: "Sweet & tangy", price: 30 },
-    { name: "Buffalo Sauce", desc: "Spicy classic", price: 30 },
-    { name: "Blue Cheese", desc: "Creamy bold", price: 30 },
-    { name: "Ranch", desc: "Herb buttermilk", price: 30 },
-    { name: "Cheese Sauce", desc: "Velvety cheddar", price: 30 },
-    { name: "Caesar", desc: "Classic dressing", price: 30 },
-    { name: "Dynamite Sauce", desc: "Fiery kick", price: 30 },
-    { name: "Pico de Gallo", desc: "Fresh salsa", price: 30 }
-  ]
-};
+    <script>
+      // ===================== MENU DATA =====================
+      const sohoMenu = {
+        "🥤 Cold Beverages": [
+          { name: "Still Mineral Water", desc: "Pure & refreshing", price: 35 },
+          { name: "Sparkling Water", desc: "Crisp bubbles", price: 55 },
+          { name: "Pepsi / 7Up", desc: "Classic soda", price: 40 },
+          {
+            name: "Perrier / Schweppes / Fayrouz",
+            desc: "Premium selection",
+            price: 45,
+          },
+          { name: "Red Bull", desc: "Energy boost", price: 85 },
+          { name: "Red Bull + Sauce Shot", desc: "Extra kick", price: 105 },
+        ],
+        "🍜 Soups": [
+          {
+            name: "Creamy Chicken Soup",
+            desc: "Velvety smooth chicken",
+            price: 89,
+          },
+          { name: "Creamy Mushroom Soup", desc: "Earthy & rich", price: 85 },
+        ],
+        "🥗 Salads": [
+          {
+            name: "Caesar Salad with Chicken",
+            desc: "Grilled chicken, romaine, croutons, parmesan",
+            price: 169,
+          },
+          {
+            name: "Cobb Salad",
+            desc: "Crispy chicken, egg, bacon, cheese, corn, beans, pico",
+            price: 209,
+          },
+          {
+            name: "Taco Salad",
+            desc: "Lettuce, tortilla strips, chicken, bacon, cheese, ranch, beans",
+            price: 199,
+          },
+        ],
+        "🍟 Appetizers": [
+          {
+            name: "Chicken Strips",
+            desc: "Crispy outside, tender inside, honey mustard or buffalo",
+            price: 189,
+          },
+          {
+            name: "Chicken Wings",
+            desc: "Fried wings with buffalo/BBQ/dynamite sauce",
+            price: 169,
+          },
+          {
+            name: "Mozzarella Sticks",
+            desc: "Golden with marinara",
+            price: 99,
+          },
+          {
+            name: "Chili Cheese Fries",
+            desc: "Fries, cheese sauce, pico, jalapeños",
+            price: 129,
+          },
+          {
+            name: "Soho Chips",
+            desc: "Crispy chips + signature Soho sauce",
+            price: 110,
+          },
+          {
+            name: "Nacho Land",
+            desc: "Nachos, melted cheese, jalapeños, sour cream, pico",
+            price: 149,
+          },
+          {
+            name: "Mac & Cheese",
+            desc: "Creamy white sauce pasta, special cheese blend",
+            price: 159,
+          },
+        ],
+        "🍔 Burgers & Sandwiches": [
+          {
+            name: "Brisket Star",
+            desc: "Smoked brisket, cheese sauce, crispy onions, BBQ, pickles, mayo",
+            price: 269,
+          },
+          {
+            name: "Steak Sandwich",
+            desc: "Sliced steak, grilled veggies, Soho cheese, smoky sauce",
+            price: 299,
+          },
+          {
+            name: "Classic Soho Chicken",
+            desc: "Grilled/fried chicken, Soho sauce, cheddar, lettuce, tomato",
+            price: 279,
+          },
+          {
+            name: "Chicken Quesadilla",
+            desc: "Marinated chicken, grilled veggies, melted cheese, ranch",
+            price: 289,
+          },
+          {
+            name: "Beef Quesadilla",
+            desc: "Marinated beef strips, veggies, cheese, ranch",
+            price: 299,
+          },
+          {
+            name: "Shrimp Quesadilla",
+            desc: "Spiced shrimp, grilled veggies, melted cheese, ranch",
+            price: 289,
+          },
+          {
+            name: "Classic Burger",
+            desc: "Flame-grilled patty, lettuce, tomato, onion, mayo",
+            price: 279,
+          },
+          {
+            name: "Classic Burger Basic",
+            desc: "120g patty, lettuce, tomato, onion, special sauce",
+            price: 209,
+          },
+          {
+            name: "Soho Mushroom Burger",
+            desc: "Beef patty, cheese, grilled mushrooms, caramelized onion, smoky mayo",
+            price: 309,
+          },
+          {
+            name: "Soho Mushroom Burger Basic",
+            desc: "120g patty, mushrooms, onion, smoky mayo, cheese",
+            price: 239,
+          },
+          {
+            name: "Bacon Burger",
+            desc: "Patty, cheddar, smoked bacon, caramelized onion, jalapeños, mayo",
+            price: 269,
+          },
+          {
+            name: "Bacon Burger Basic",
+            desc: "120g patty, bacon, cheese, jalapeños, mayo",
+            price: 199,
+          },
+          {
+            name: "Texas Burger",
+            desc: "Smoked patty, crispy onion, cheddar, BBQ, smoky mayo",
+            price: 299,
+          },
+          {
+            name: "Texas Burger Basic",
+            desc: "120g smoked patty, crispy onion, cheddar, BBQ",
+            price: 229,
+          },
+        ],
+        "🍝 Pasta": [
+          {
+            name: "Fettuccine Alfredo",
+            desc: "Creamy sauce, mushrooms, grilled chicken, parmesan",
+            price: 279,
+          },
+          {
+            name: "Spaghetti Bolognese",
+            desc: "Rich Italian meat sauce, parmesan",
+            price: 289,
+          },
+          {
+            name: "Shrimp Pasta",
+            desc: "White or red sauce, shrimp, grilled veggies",
+            price: 259,
+          },
+        ],
+        "🥩 Main Courses": [
+          {
+            name: "Chicken Fajita",
+            desc: "Grilled chicken, peppers, onions, rice, tortillas + 2 sides",
+            price: 299,
+          },
+          {
+            name: "Beef Fajita",
+            desc: "Tender beef strips, peppers, onions, rice, tortillas + 2 sides",
+            price: 339,
+          },
+          {
+            name: "Mixed Fajita",
+            desc: "Chicken, beef & shrimp, peppers, onion, rice, tortillas + 2 sides",
+            price: 359,
+          },
+          {
+            name: "Escalope Schnitzel",
+            desc: "Thin breaded veal, crispy, white sauce + 2 sides",
+            price: 399,
+          },
+          {
+            name: "Crispy Chicken with Mushrooms",
+            desc: "Crispy chicken, fresh mushrooms, creamy sauce + 2 sides",
+            price: 329,
+          },
+          {
+            name: "Ribeye Steak",
+            desc: "Grilled ribeye, mushroom/pepper/BBQ sauce + 2 sides",
+            price: 449,
+          },
+        ],
+        "🍟 Sides": [
+          { name: "French Fries", desc: "Golden & crispy", price: 50 },
+          { name: "Mashed Potato", desc: "Smooth buttery mash", price: 70 },
+          { name: "Soho Rice", desc: "Seasoned aromatic rice", price: 50 },
+          { name: "Coleslaw", desc: "Creamy cabbage slaw", price: 50 },
+          { name: "Corn Cup", desc: "Sweet corn kernels", price: 50 },
+          { name: "Sautéed Vegetables", desc: "Seasonal medley", price: 70 },
+          { name: "Side Mac & Cheese", desc: "Creamy pasta side", price: 70 },
+        ],
+        "👶 Kids Menu": [
+          {
+            name: "Kids Chicken Strips",
+            desc: "Crispy strips, fries, ketchup & juice",
+            price: 189,
+          },
+          {
+            name: "Kids Chicken Burger",
+            desc: "Mini chicken burger, fries, juice",
+            price: 189,
+          },
+          {
+            name: "Kids Beef Burger",
+            desc: "Mini beef patty, cheese, fries, juice",
+            price: 189,
+          },
+        ],
+        "🍰 Desserts": [
+          { name: "Molten Cake", desc: "Warm chocolate lava cake", price: 130 },
+          { name: "Cheesecake", desc: "Creamy NY style", price: 125 },
+          { name: "Brownie", desc: "Rich fudge brownie", price: 130 },
+        ],
+        "🧂 Sauces (Extra)": [
+          { name: "Honey Mustard", desc: "Sweet & tangy", price: 30 },
+          { name: "Buffalo Sauce", desc: "Spicy classic", price: 30 },
+          { name: "Blue Cheese", desc: "Creamy bold", price: 30 },
+          { name: "Ranch", desc: "Herb buttermilk", price: 30 },
+          { name: "Cheese Sauce", desc: "Velvety cheddar", price: 30 },
+          { name: "Caesar", desc: "Classic dressing", price: 30 },
+          { name: "Dynamite Sauce", desc: "Fiery kick", price: 30 },
+          { name: "Pico de Gallo", desc: "Fresh salsa", price: 30 },
+        ],
+      };
 
-const istikMenu = {
-  "☕ Hot Drinks": [
-    { name: "Tea / Green Tea", desc: "Classic or green infusion", price: 35 },
-    { name: "Tea Pot (2 cups)", desc: "Serves two", price: 70 },
-    { name: "Tea Pot (4 cups)", desc: "Sharing pot", price: 120 },
-    { name: "Karak Tea Pot", desc: "Spiced strong tea", price: 140 },
-    { name: "Matcha (cup)", desc: "Ceremonial matcha", price: 100 },
-    { name: "Nescafe", desc: "Classic instant", price: 60 },
-    { name: "Americano", desc: "Smooth black coffee", price: 85 },
-    { name: "Espresso Single", desc: "Intense shot", price: 80 },
-    { name: "Espresso Double", desc: "Double shot", price: 90 },
-    { name: "Macchiato Single", desc: "Espresso stained with milk", price: 85 },
-    { name: "Macchiato Double", desc: "Double espresso macchiato", price: 95 },
-    { name: "Mocha", desc: "Chocolate & espresso", price: 110 },
-    { name: "Cappuccino", desc: "Perfect foam", price: 100 },
-    { name: "Cafe Latte", desc: "Creamy steamed milk", price: 100 },
-    { name: "Hot Chocolate", desc: "Rich dark cocoa", price: 110 },
-    { name: "Hot Cider", desc: "Warm spiced apple", price: 90 },
-    { name: "Turkish Coffee Single", desc: "Traditional unfiltered", price: 70 },
-    { name: "Turkish Coffee Double", desc: "Double strength", price: 80 },
-    { name: "French Coffee", desc: "Smooth dark roast", price: 85 },
-    { name: "Sahlab with Nuts", desc: "Creamy orchid drink, topped nuts", price: 85 },
-    { name: "Flat White", desc: "Velvety microfoam", price: 90 },
-    { name: "Ginger Infusion", desc: "Fresh zesty ginger", price: 50 },
-    { name: "Arabic Coffee Pot (Dallah)", desc: "Cardamom-infused, serves 3-4", price: 210 },
-    { name: "Hot Istikanah", desc: "House signature hot blend", price: 125 },
-    { name: "Spanish Latte", desc: "Sweetened condensed milk latte", price: 115 },
-    { name: "Herbal Cocktail", desc: "Soothing herbs blend", price: 55 }
-  ],
-  "🍹 Fresh Juices": [
-    { name: "Orange Juice", desc: "Freshly squeezed", price: 80 },
-    { name: "Mango Juice", desc: "Tropical sweet", price: 80 },
-    { name: "Strawberry Juice", desc: "Bright & fresh", price: 80 },
-    { name: "Guava Juice", desc: "Exotic nectar", price: 80 },
-    { name: "Watermelon Juice", desc: "Refreshing summer", price: 80 },
-    { name: "Banana Milk", desc: "Creamy banana blend", price: 90 },
-    { name: "Kiwi Juice", desc: "Tangy vibrant", price: 90 },
-    { name: "Lemon Mint", desc: "Zesty cooler", price: 60 }
-  ],
-  "🌿 Healthy Drinks": [
-    { name: "Matcha Coconut / Honey", desc: "Matcha with coconut milk or honey", price: 130 },
-    { name: "Power Healing", desc: "Energizing superfood blend", price: 100 },
-    { name: "Yogurt Fruits", desc: "Creamy yogurt with fresh fruits", price: 105 },
-    { name: "Yogurt Honey & Berries", desc: "Greek yogurt, honey, mixed berries", price: 115 },
-    { name: "Yogurt Avocado Honey & Nuts", desc: "Rich avocado, nuts, honey", price: 145 },
-    { name: "Avocado Honey & Nuts", desc: "Creamy avocado with honey crunch", price: 130 }
-  ],
-  "🧊 Iced Drinks": [
-    { name: "Iced Matcha", desc: "Chilled pure matcha", price: 125 },
-    { name: "Iced Matcha Latte", desc: "Smooth iced latte", price: 130 },
-    { name: "Hibiscus Iced Tea", desc: "Tangy floral", price: 80 },
-    { name: "Iced Tea with Hibiscus", desc: "Refreshing blend", price: 90 },
-    { name: "Iced Latte", desc: "Chilled espresso & milk", price: 85 },
-    { name: "Iced Spanish Latte", desc: "Sweet iced latte", price: 120 },
-    { name: "Iced Mocha", desc: "Cold chocolate coffee", price: 125 },
-    { name: "Frappe (Caramel/Chocolate)", desc: "Blended frozen delight", price: 125 },
-    { name: "Iced Istikanah", desc: "Signature iced blend", price: 100 },
-    { name: "Iced Coffee", desc: "Classic chilled coffee", price: 115 }
-  ],
-  "🥛 Milkshakes": [
-    { name: "Vanilla / Chocolate Shake", desc: "Creamy classic", price: 120 },
-    { name: "Strawberry / Mango Shake", desc: "Fruity indulgence", price: 120 },
-    { name: "Matcha Shake", desc: "Earthy & sweet", price: 135 },
-    { name: "Oreo Shake", desc: "Cookies & cream", price: 130 },
-    { name: "Blueberry Shake", desc: "Berry bliss", price: 120 }
-  ],
-  "✨ Specialty Drinks": [
-    { name: "Dates with Vanilla Ice Cream", desc: "Decadent date fusion", price: 125 },
-    { name: "Hibiscus with Banana & Berries", desc: "Floral & fruity", price: 105 },
-    { name: "Watermelon Passion", desc: "Passionfruit watermelon", price: 120 },
-    { name: "Florida", desc: "Citrus sunrise blend", price: 110 },
-    { name: "Dates Milk Rose Water", desc: "Middle Eastern elegance", price: 95 }
-  ],
-  "🍸 Soda Cocktails": [
-    { name: "Mojito (Passion/Blueberry/Strawberry)", desc: "Fruit infused mojito", price: 105 },
-    { name: "Classic Mojito", desc: "Lime & mint soda", price: 95 },
-    { name: "Kiwi Red Bull", desc: "Energizing kiwi fusion", price: 150 },
-    { name: "Power Lemon", desc: "Zesty lemon spark", price: 140 }
-  ],
-  "🥤 Smoothies": [
-    { name: "Pina Colada", desc: "Coconut pineapple dream", price: 110 },
-    { name: "Lemon Mint Smoothie", desc: "Refreshing slush", price: 60 },
-    { name: "Istikana Smoothie", desc: "House signature", price: 75 },
-    { name: "Mango / Strawberry Smoothie", desc: "Tropical or berry", price: 80 },
-    { name: "Blueberry Smoothie", desc: "Antioxidant rich", price: 85 }
-  ]
-};
+      const istikMenu = {
+        "☕ Hot Drinks": [
+          {
+            name: "Tea / Green Tea",
+            desc: "Classic or green infusion",
+            price: 35,
+          },
+          { name: "Tea Pot (2 cups)", desc: "Serves two", price: 70 },
+          { name: "Tea Pot (4 cups)", desc: "Sharing pot", price: 120 },
+          { name: "Karak Tea Pot", desc: "Spiced strong tea", price: 140 },
+          { name: "Matcha (cup)", desc: "Ceremonial matcha", price: 100 },
+          { name: "Nescafe", desc: "Classic instant", price: 60 },
+          { name: "Americano", desc: "Smooth black coffee", price: 85 },
+          { name: "Espresso Single", desc: "Intense shot", price: 80 },
+          { name: "Espresso Double", desc: "Double shot", price: 90 },
+          {
+            name: "Macchiato Single",
+            desc: "Espresso stained with milk",
+            price: 85,
+          },
+          {
+            name: "Macchiato Double",
+            desc: "Double espresso macchiato",
+            price: 95,
+          },
+          { name: "Mocha", desc: "Chocolate & espresso", price: 110 },
+          { name: "Cappuccino", desc: "Perfect foam", price: 100 },
+          { name: "Cafe Latte", desc: "Creamy steamed milk", price: 100 },
+          { name: "Hot Chocolate", desc: "Rich dark cocoa", price: 110 },
+          { name: "Hot Cider", desc: "Warm spiced apple", price: 90 },
+          {
+            name: "Turkish Coffee Single",
+            desc: "Traditional unfiltered",
+            price: 70,
+          },
+          { name: "Turkish Coffee Double", desc: "Double strength", price: 80 },
+          { name: "French Coffee", desc: "Smooth dark roast", price: 85 },
+          {
+            name: "Sahlab with Nuts",
+            desc: "Creamy orchid drink, topped nuts",
+            price: 85,
+          },
+          { name: "Flat White", desc: "Velvety microfoam", price: 90 },
+          { name: "Ginger Infusion", desc: "Fresh zesty ginger", price: 50 },
+          {
+            name: "Arabic Coffee Pot (Dallah)",
+            desc: "Cardamom-infused, serves 3-4",
+            price: 210,
+          },
+          {
+            name: "Hot Istikanah",
+            desc: "House signature hot blend",
+            price: 125,
+          },
+          {
+            name: "Spanish Latte",
+            desc: "Sweetened condensed milk latte",
+            price: 115,
+          },
+          { name: "Herbal Cocktail", desc: "Soothing herbs blend", price: 55 },
+        ],
+        "🍹 Fresh Juices": [
+          { name: "Orange Juice", desc: "Freshly squeezed", price: 80 },
+          { name: "Mango Juice", desc: "Tropical sweet", price: 80 },
+          { name: "Strawberry Juice", desc: "Bright & fresh", price: 80 },
+          { name: "Guava Juice", desc: "Exotic nectar", price: 80 },
+          { name: "Watermelon Juice", desc: "Refreshing summer", price: 80 },
+          { name: "Banana Milk", desc: "Creamy banana blend", price: 90 },
+          { name: "Kiwi Juice", desc: "Tangy vibrant", price: 90 },
+          { name: "Lemon Mint", desc: "Zesty cooler", price: 60 },
+        ],
+        "🌿 Healthy Drinks": [
+          {
+            name: "Matcha Coconut / Honey",
+            desc: "Matcha with coconut milk or honey",
+            price: 130,
+          },
+          {
+            name: "Power Healing",
+            desc: "Energizing superfood blend",
+            price: 100,
+          },
+          {
+            name: "Yogurt Fruits",
+            desc: "Creamy yogurt with fresh fruits",
+            price: 105,
+          },
+          {
+            name: "Yogurt Honey & Berries",
+            desc: "Greek yogurt, honey, mixed berries",
+            price: 115,
+          },
+          {
+            name: "Yogurt Avocado Honey & Nuts",
+            desc: "Rich avocado, nuts, honey",
+            price: 145,
+          },
+          {
+            name: "Avocado Honey & Nuts",
+            desc: "Creamy avocado with honey crunch",
+            price: 130,
+          },
+        ],
+        "🧊 Iced Drinks": [
+          { name: "Iced Matcha", desc: "Chilled pure matcha", price: 125 },
+          { name: "Iced Matcha Latte", desc: "Smooth iced latte", price: 130 },
+          { name: "Hibiscus Iced Tea", desc: "Tangy floral", price: 80 },
+          {
+            name: "Iced Tea with Hibiscus",
+            desc: "Refreshing blend",
+            price: 90,
+          },
+          { name: "Iced Latte", desc: "Chilled espresso & milk", price: 85 },
+          { name: "Iced Spanish Latte", desc: "Sweet iced latte", price: 120 },
+          { name: "Iced Mocha", desc: "Cold chocolate coffee", price: 125 },
+          {
+            name: "Frappe (Caramel/Chocolate)",
+            desc: "Blended frozen delight",
+            price: 125,
+          },
+          { name: "Iced Istikanah", desc: "Signature iced blend", price: 100 },
+          { name: "Iced Coffee", desc: "Classic chilled coffee", price: 115 },
+        ],
+        "🥛 Milkshakes": [
+          {
+            name: "Vanilla / Chocolate Shake",
+            desc: "Creamy classic",
+            price: 120,
+          },
+          {
+            name: "Strawberry / Mango Shake",
+            desc: "Fruity indulgence",
+            price: 120,
+          },
+          { name: "Matcha Shake", desc: "Earthy & sweet", price: 135 },
+          { name: "Oreo Shake", desc: "Cookies & cream", price: 130 },
+          { name: "Blueberry Shake", desc: "Berry bliss", price: 120 },
+        ],
+        "✨ Specialty Drinks": [
+          {
+            name: "Dates with Vanilla Ice Cream",
+            desc: "Decadent date fusion",
+            price: 125,
+          },
+          {
+            name: "Hibiscus with Banana & Berries",
+            desc: "Floral & fruity",
+            price: 105,
+          },
+          {
+            name: "Watermelon Passion",
+            desc: "Passionfruit watermelon",
+            price: 120,
+          },
+          { name: "Florida", desc: "Citrus sunrise blend", price: 110 },
+          {
+            name: "Dates Milk Rose Water",
+            desc: "Middle Eastern elegance",
+            price: 95,
+          },
+        ],
+        "🍸 Soda Cocktails": [
+          {
+            name: "Mojito (Passion/Blueberry/Strawberry)",
+            desc: "Fruit infused mojito",
+            price: 105,
+          },
+          { name: "Classic Mojito", desc: "Lime & mint soda", price: 95 },
+          { name: "Kiwi Red Bull", desc: "Energizing kiwi fusion", price: 150 },
+          { name: "Power Lemon", desc: "Zesty lemon spark", price: 140 },
+        ],
+        "🥤 Smoothies": [
+          { name: "Pina Colada", desc: "Coconut pineapple dream", price: 110 },
+          { name: "Lemon Mint Smoothie", desc: "Refreshing slush", price: 60 },
+          { name: "Istikana Smoothie", desc: "House signature", price: 75 },
+          {
+            name: "Mango / Strawberry Smoothie",
+            desc: "Tropical or berry",
+            price: 80,
+          },
+          { name: "Blueberry Smoothie", desc: "Antioxidant rich", price: 85 },
+        ],
+      };
 
-// ===================== RENDER MENUS =====================
-function esc(str) {
-  if(!str) return '';
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
+      // ===================== RENDER MENUS =====================
+      function esc(str) {
+        if (!str) return "";
+        return str
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
 
-function renderSohoMenu() {
-  const container = document.getElementById('sohoMenuContent');
-  let html = '';
-  for(const [cat, items] of Object.entries(sohoMenu)) {
-    html += `<div class="menu-category">
-      <div class="soho-cat-title">${esc(cat)}</div>
+      function getCategoryDisplay(cat) {
+        const iconMap = {
+          "🍟 Sides":
+            '<img src="sides.png" alt="Sides" style="width: 28px; height: 28px; vertical-align: middle;">',
+          "👶 Kids Menu":
+            '<img src="kids_meal.png" alt="Kids Menu" style="width: 28px; height: 28px; vertical-align: middle;">',
+          "🥛 Milkshakes":
+            '<img src="milk-shake.png" alt="Milkshakes" style="width: 28px; height: 28px; vertical-align: middle;">',
+        };
+
+        if (iconMap[cat]) {
+          const catText = cat.substring(2).trim();
+          return iconMap[cat] + " " + esc(catText);
+        }
+        return esc(cat);
+      }
+
+      function renderSohoMenu() {
+        const container = document.getElementById("sohoMenuContent");
+        let html = "";
+        for (const [cat, items] of Object.entries(sohoMenu)) {
+          html += `<div class="menu-category">
+      <div class="soho-cat-title">${getCategoryDisplay(cat)}</div>
       <div class="soho-menu-grid">`;
-    items.forEach((item, i) => {
-      html += `<div class="soho-menu-card" onclick="openSohoModal('${esc(item.name).replace(/'/g,"\\'")}','${item.price}','${esc(item.desc).replace(/'/g,"\\'")}')">
+          items.forEach((item, i) => {
+            html += `<div class="soho-menu-card" onclick="openSohoModal('${esc(item.name).replace(/'/g, "\\'")}','${item.price}','${esc(item.desc).replace(/'/g, "\\'")}')">
         <div class="smcard-header">
           <span class="smcard-name">${esc(item.name)}</span>
           <span class="smcard-price">${item.price} EGP</span>
         </div>
         <div class="smcard-desc">${esc(item.desc)}</div>
       </div>`;
-    });
-    html += `</div></div>`;
-  }
-  container.innerHTML = html;
-}
+          });
+          html += `</div></div>`;
+        }
+        container.innerHTML = html;
+      }
 
-function renderIstikMenu() {
-  const container = document.getElementById('istikMenuContent');
-  let html = '';
-  for(const [cat, items] of Object.entries(istikMenu)) {
-    html += `<div class="menu-category">
-      <div class="istik-cat-title">${esc(cat)}</div>
+      function renderIstikMenu() {
+        const container = document.getElementById("istikMenuContent");
+        let html = "";
+        for (const [cat, items] of Object.entries(istikMenu)) {
+          html += `<div class="menu-category">
+      <div class="istik-cat-title">${getCategoryDisplay(cat)}</div>
       <div class="istik-menu-grid">`;
-    items.forEach(item => {
-      html += `<div class="istik-menu-card" onclick="openIstikModal('${esc(item.name).replace(/'/g,"\\'")}','${item.price}','${esc(item.desc).replace(/'/g,"\\'")}')">
+          items.forEach((item) => {
+            html += `<div class="istik-menu-card" onclick="openIstikModal('${esc(item.name).replace(/'/g, "\\'")}','${item.price}','${esc(item.desc).replace(/'/g, "\\'")}')">
         <div class="imcard-header">
           <span class="imcard-name">${esc(item.name)}</span>
           <span class="imcard-price">${item.price} EGP</span>
         </div>
         <div class="imcard-desc">${esc(item.desc)}</div>
       </div>`;
-    });
-    html += `</div></div>`;
-  }
-  container.innerHTML = html;
-}
+          });
+          html += `</div></div>`;
+        }
+        container.innerHTML = html;
+      }
 
-renderSohoMenu();
-renderIstikMenu();
+      renderSohoMenu();
+      renderIstikMenu();
 
-// ===================== TAB LOGIC =====================
-let currentTab = 'soho';
+      // ===================== TAB LOGIC =====================
+      let currentTab = "soho";
 
-function switchTab(tab) {
-  currentTab = tab;
-  const sohoPanel = document.getElementById('sohoMenuPanel');
-  const istikPanel = document.getElementById('istikMenuPanel');
-  const tSoho = document.getElementById('tabSoho');
-  const tIstik = document.getElementById('tabIstik');
+      function switchTab(tab) {
+        currentTab = tab;
+        const sohoPanel = document.getElementById("sohoMenuPanel");
+        const istikPanel = document.getElementById("istikMenuPanel");
+        const tSoho = document.getElementById("tabSoho");
+        const tIstik = document.getElementById("tabIstik");
 
-  if(tab === 'soho') {
-    sohoPanel.style.display = 'block';
-    istikPanel.style.display = 'none';
-    tSoho.classList.add('active');
-    tIstik.classList.remove('active');
-  } else {
-    istikPanel.style.display = 'block';
-    sohoPanel.style.display = 'none';
-    tIstik.classList.add('active');
-    tSoho.classList.remove('active');
-  }
-}
+        if (tab === "soho") {
+          sohoPanel.style.display = "block";
+          istikPanel.style.display = "none";
+          tSoho.classList.add("active");
+          tIstik.classList.remove("active");
+        } else {
+          istikPanel.style.display = "block";
+          sohoPanel.style.display = "none";
+          tIstik.classList.add("active");
+          tSoho.classList.remove("active");
+        }
+      }
 
-function openMenuTab(tab) {
-  switchTab(tab);
-  setTimeout(() => {
-    document.getElementById('menuHub').scrollIntoView({ behavior: 'smooth' });
-  }, 100);
-}
+      function openMenuTab(tab) {
+        switchTab(tab);
+        setTimeout(() => {
+          document
+            .getElementById("menuHub")
+            .scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
 
-// ===================== MODALS =====================
-function openSohoModal(name, price, desc) {
-  document.getElementById('sohoModalTitle').textContent = name;
-  document.getElementById('sohoModalPrice').textContent = price + ' EGP';
-  document.getElementById('sohoModalDesc').textContent = desc || 'A Soho signature creation.';
-  document.getElementById('sohoModal').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
+      // ===================== MODALS =====================
+      function openSohoModal(name, price, desc) {
+        document.getElementById("sohoModalTitle").textContent = name;
+        document.getElementById("sohoModalPrice").textContent = price + " EGP";
+        document.getElementById("sohoModalDesc").textContent =
+          desc || "A Soho signature creation.";
+        document.getElementById("sohoModal").classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
 
-function openIstikModal(name, price, desc) {
-  document.getElementById('istikModalTitle').textContent = name;
-  document.getElementById('istikModalPrice').textContent = price + ' EGP';
-  document.getElementById('istikModalDesc').textContent = desc || 'An Istiknanah artisanal creation.';
-  document.getElementById('istikModal').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
+      function openIstikModal(name, price, desc) {
+        document.getElementById("istikModalTitle").textContent = name;
+        document.getElementById("istikModalPrice").textContent = price + " EGP";
+        document.getElementById("istikModalDesc").textContent =
+          desc || "An Istiknanah artisanal creation.";
+        document.getElementById("istikModal").classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
 
-function closeModals() {
-  document.getElementById('sohoModal').classList.remove('active');
-  document.getElementById('istikModal').classList.remove('active');
-  document.body.style.overflow = '';
-}
+      function closeModals() {
+        document.getElementById("sohoModal").classList.remove("active");
+        document.getElementById("istikModal").classList.remove("active");
+        document.body.style.overflow = "";
+      }
 
-document.getElementById('sohoModal').addEventListener('click', function(e) {
-  if(e.target === this) closeModals();
-});
-document.getElementById('istikModal').addEventListener('click', function(e) {
-  if(e.target === this) closeModals();
-});
-document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModals(); });
+      document
+        .getElementById("sohoModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeModals();
+        });
+      document
+        .getElementById("istikModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeModals();
+        });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModals();
+      });
 
-// ===================== SCROLL REVEAL =====================
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+      // ===================== SCROLL REVEAL =====================
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
+      );
 
-document.querySelectorAll('.reveal, .stagger').forEach(el => revealObserver.observe(el));
-</script>
-</body>
+      document
+        .querySelectorAll(".reveal, .stagger")
+        .forEach((el) => revealObserver.observe(el));
+    </script>
+  </body>
 </html>
