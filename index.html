@@ -2869,8 +2869,12 @@
       function openSohoModal(name, price, desc) {
         document.getElementById("sohoModalTitle").textContent = name;
         document.getElementById("sohoModalPrice").textContent = price + " EGP";
-        document.getElementById("sohoModalDesc").textContent =
-          desc || "A Soho signature creation.";
+        // Ensure description is shown, with fallback if description is empty
+        const finalDesc =
+          desc && desc.trim()
+            ? desc
+            : "Premium item from our SOHO menu. Carefully crafted with quality ingredients.";
+        document.getElementById("sohoModalDesc").textContent = finalDesc;
         document.getElementById("sohoModal").classList.add("active");
         document.body.style.overflow = "hidden";
       }
@@ -2878,8 +2882,12 @@
       function openIstikModal(name, price, desc) {
         document.getElementById("istikModalTitle").textContent = name;
         document.getElementById("istikModalPrice").textContent = price + " EGP";
-        document.getElementById("istikModalDesc").textContent =
-          desc || "An Istiknanah artisanal creation.";
+        // Ensure description is shown, with fallback if description is empty
+        const finalDesc =
+          desc && desc.trim()
+            ? desc
+            : "Artisanal creation from ISTIKNANAH. Made with premium care and quality.";
+        document.getElementById("istikModalDesc").textContent = finalDesc;
         document.getElementById("istikModal").classList.add("active");
         document.body.style.overflow = "hidden";
       }

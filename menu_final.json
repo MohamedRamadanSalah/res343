@@ -1,0 +1,834 @@
+{
+  "soho": {
+    "المشروبات الباردة": [
+      {
+        "name": "مياه معدنيه فلو",
+        "price": 35,
+        "desc": "مياه معدنية منعشة",
+        "descEn": "Fresh mineral water"
+      },
+      {
+        "name": "مياه فواره",
+        "price": 55,
+        "desc": "مياه غازية منعشة",
+        "descEn": "Sparkling water with bubbles"
+      },
+      {
+        "name": "بيبسي \\ سفن اب",
+        "price": 40,
+        "desc": "مشروبات غازية باردة",
+        "descEn": "Ice-cold soft drink choices"
+      },
+      {
+        "name": "بيريل \\شويبس \\ فيروز",
+        "price": 45,
+        "desc": "مشروبات غازية فاخرة",
+        "descEn": "Premium carbonated beverages"
+      },
+      {
+        "name": "ريد بول",
+        "price": 85,
+        "desc": "مشروب الطاقة البارد والمنعش",
+        "descEn": "Energy drink - cold and refreshing"
+      },
+      {
+        "name": "ريد بول اضافة صوص",
+        "price": 105,
+        "desc": "ريد بول مع نكهة صوص خاص",
+        "descEn": "Red Bull with special sauce twist"
+      }
+    ],
+    "الشوربة": [
+      {
+        "name": "شوربة كريمة الدجاج",
+        "price": 89,
+        "desc": "شوربة دجاج كريمية مع أعشاب طازة",
+        "descEn": "Creamy chicken soup with fresh herbs"
+      },
+      {
+        "name": "شوربة كريمة المشروم",
+        "price": 85,
+        "desc": "شوربة الفطر الكريمية مع بهارات العطرية",
+        "descEn": "Creamy mushroom soup with aromatic spices"
+      }
+    ],
+    "السلطات": [
+      {
+        "name": "سيزر سلاد بالدجاج",
+        "price": 169,
+        "desc": "سلطة سيزر كلاسيكية مع الدجاج المشوى",
+        "descEn": "Classic Caesar salad with grilled chicken"
+      },
+      {
+        "name": "سلطة كوب",
+        "price": 209,
+        "desc": "سلطة سيزر بالدجاج المشوى مع الخس وقطع الكرتون وصوص السيزر والجبنة بارميزان",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "تاكو سلاد",
+        "price": 199,
+        "desc": "خس مقرمش مع الدجاج المقلى والبيض والبيكون والجبن المشكلة مع الذرة الحلوة والفاصولياء الحمراء والبيكو ديجالو",
+        "descEn": "Specialty dish from SOHO"
+      }
+    ],
+    "المقبلات": [
+      {
+        "name": " تشيكن استربس",
+        "price": 189,
+        "desc": "قطع دجاج طازة مع صوصات منتقاة بعناية",
+        "descEn": "Fresh chicken pieces with carefully selected sauces"
+      },
+      {
+        "name": "تشيكن وينجز",
+        "price": 169,
+        "desc": "قطع دجاج طرية من الداخل ومقرمشة من الخارج مع اختيارك من الصوصات (هانى مسطردة او بافلو صوص ) ",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "اصابع الموزاريلا",
+        "price": 99,
+        "desc": "اجنحة دجاج مقلية وتقدر تختار صوصك المفضل من البافلو او الباربيكيو او صوص الدينميت  ",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "شيبس تشيز",
+        "price": 129,
+        "desc": "اصابع ذهبية مقرمشة تخفى بداخلها جبنة موزاريلا سايحة ولذيذة ,تقدم ساخنة مع صوص المارينارا",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "سوهو شيبس ",
+        "price": 110,
+        "desc": "شيبس مع صوص الجبنة مع سلطة البيكو والهالبينو (يوجد اضافة شيلى)",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "ناتشو لاند",
+        "price": 149,
+        "desc": "شيبس كريسبي مع صلصة سوهو الخاصه",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "ماك تشيز",
+        "price": 159,
+        "desc": " رقائق ناتشوز مقرمشة مغطاة يجبنة سايحة مع الهالبينو والسور كريم وسلطة البيكوديجالو ويمكن اضافة فراخ او تشلى او بيكون او مشروم او بريسكت",
+        "descEn": "Specialty dish from SOHO"
+      }
+    ],
+    "الساندوتشات": [
+      {
+        "name": "بريسكت ستار",
+        "price": 269,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ستيك ساندوتش",
+        "price": 299,
+        "desc": "شرائح لحم البريسكت المشوى مع صوص الجبنة وشرائح البصل المقرمشة وصو الباربكيو والخيار المخلل وصوص المايونيز",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "كلاسيك سوهو تشيكن",
+        "price": 279,
+        "desc": "شرائح ستيك مع خضار مشوى وجبنة سوهو وصوص الاسموك يقدم مع الخبز الفرنسى",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": " تشيكن كاساديا",
+        "price": 289,
+        "desc": "اختيارك من الدجاج مشوى او مقلى يقدم مع صوص سوهو وقطع الجبنة الشيدر والخيار المخلل والخس والطماطم والبصل الفريش",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": " بيف كاساديا",
+        "price": 299,
+        "desc": "شرائح دجاج متبلة مع خضار مشوى تقدم فى تورتيلا مقرمشة ومحشية بخليط من الجبن الذائبة مع صوص الرانش",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "شرمب كاساديا",
+        "price": 289,
+        "desc": "شرائح بيف متبلة مع خضار مشوى تقدم فى تورتيلا مقرمشة ومحشية بخليط من الجبن الذائبة مع صوص الرانش",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "كلاسيك برجر",
+        "price": 279,
+        "desc": "قطع جمبرى متبلة مع خضار مشوى تقدم فى تورتيلا مقرمشة ومحشية بخليط من الجبن الذائبة مع صوص الرانش",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "كلاسيك برجر بيزك",
+        "price": 209,
+        "desc": "قطعة برجرمشوية مع الطماطم والخس والبصل وصوص المايونيز",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "سوهو مشروم برجر",
+        "price": 309,
+        "desc": "قطعة برجر بوزن 120 جرام،مع الخس، الطماطم، البصل، وصوصنا الخاص",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "سوهو مشروم برجر بيزك",
+        "price": 239,
+        "desc": "قطع برجر مغطاة بالجبنة والمشروم المشوى والبصل المكرمل وصوص السموك مايونيز",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "بيكون برجر",
+        "price": 269,
+        "desc": "قطع برجر  120جرام مغطاة بالجبنة والمشروم المشوى والبصل المكرمل وصوص السموك مايونيز",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "بيكون برجر بيزك",
+        "price": 199,
+        "desc": " برجر مشوى مغطاة بالجبنة والبيكون المدخن والبصل المكرمل وقطع الهالبينو الحار مع صوص المايونيز",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "تكساس برجر",
+        "price": 299,
+        "desc": " برجر مشوى 120 جرام مغطاة بالجبنة والبيكون المدخن والبصل المكرمل وقطع الهالبينو الحار مع صوص المايونيز",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "تكساس برجر بيزك",
+        "price": 229,
+        "desc": "برجر مدخن مع بصل مقرمش وشرائح الجبنة الشيدر , وصوص الباربيكيو الكلاسيكى مع صوص السموك مايونيز",
+        "descEn": "Specialty dish from SOHO"
+      }
+    ],
+    "ركن الباستا": [
+      {
+        "name": "باستا الفريدو",
+        "price": 279,
+        "desc": "باستا الفريدو غنية بصوص كريمي ومشروم طازج مع الدجاج المشوى",
+        "descEn": "Rich creamy Alfredo pasta with fresh mushrooms and grilled chicken"
+      },
+      {
+        "name": "اسباجيتي بلونيز",
+        "price": 289,
+        "desc": "باستا الفريدو غنية بصوص كريمي ومشروم طازج مع قطع الدجاج المشوى والجبن البارميزان",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "باستا جمبرى",
+        "price": 259,
+        "desc": "سباجيتي بصلصة اللحم الغنية على الطريقة الإيطالية مع زيت الزيتون والبارميزان",
+        "descEn": "Specialty dish from SOHO"
+      }
+    ],
+    "الاطباق الرئيسية": [
+      {
+        "name": "تشيكن فاهيتا",
+        "price": 299,
+        "desc": "قطع دجاج طازة مع صوصات منتقاة بعناية",
+        "descEn": "Fresh chicken pieces with carefully selected sauces"
+      },
+      {
+        "name": "بيف فاهيتا",
+        "price": 339,
+        "desc": "قطع دجاج مشوى مع البصل والفلفل تقدم مع ارز وخبز التورتيلا  ويقدم مع 2 سايد من اختيارك",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "فاهيتا مكس",
+        "price": 359,
+        "desc": "قطع اللحم مشوى مع البصل والفلفل تقدم مع ارز وخبز التورتيلا  ويقدم مع 2 سايد من اختيارك",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "اسكالوب بانيه",
+        "price": 399,
+        "desc": "قطع دجاج وبيف وجمبرى مع الفلفل والبصل تقدم مع ارز وخبز التورتيلا  ويقدم مع 2 سايد من اختيارك",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "صدور  دجاج بالمشروم",
+        "price": 329,
+        "desc": "لحم بوفتيك رفيع ومتبل ومغلف بطبقة مقرمشة من الخارج وطرية من الداخل ويقدم مع الصوص الابيض ومع  2 سايد من اختيارك",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "ريب آى ستيك",
+        "price": 449,
+        "desc": "قطع دجاج مقلى كرسبى مع الشروم الطازج وصو الابيض مع 2 سايد من اختيارك",
+        "descEn": "Specialty dish from SOHO"
+      }
+    ],
+    "وجبات الاطفال": [
+      {
+        "name": "كيدز استربس",
+        "price": 189,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "كيدز تشيكن",
+        "price": 189,
+        "desc": "قطع دجاج مقرمشة تقدم مع بطاطس مقلية و الكاتشب مع عصير كيدز",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "كيدز برجر",
+        "price": 189,
+        "desc": "قطع دجاج تقدم مع الخس والطماطم والكاتشب فى لقمة كيزر مع البطاطس المقلية مع عصير كيدز",
+        "descEn": "Specialty dish from SOHO"
+      }
+    ],
+    "اكسترا": [
+      {
+        "name": "بطاطس مقلية",
+        "price": 50,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ماش بوتيتو",
+        "price": 70,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ارز سوهو",
+        "price": 50,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "سلطة كولسلو",
+        "price": 50,
+        "desc": "سلطة طازة مع خضار منتقاة يومياً",
+        "descEn": "Fresh salad with daily selected vegetables"
+      },
+      {
+        "name": "كوب الذرة",
+        "price": 50,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "خضروات سوتيه",
+        "price": 70,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "سايد ماك تشيز",
+        "price": 70,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      }
+    ],
+    "الصوصات": [
+      {
+        "name": "صوص مستردة بالعسل",
+        "price": 30,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "صوص بافالو",
+        "price": 30,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "صوص البلو تشيز",
+        "price": 30,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "صوص الرانش",
+        "price": 30,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "صوص الجبنة",
+        "price": 30,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "صوص السيزر",
+        "price": 30,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "صوص الدينميت",
+        "price": 30,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "بيكوديجالو",
+        "price": 30,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      }
+    ],
+    "الحلويات": [
+      {
+        "name": "مولتن كيك",
+        "price": 130,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "تشيز كيك",
+        "price": 125,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "براونيز",
+        "price": 130,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      }
+    ]
+  },
+  "istiknanah": {
+    "المشروبات الساخنه": [
+      {
+        "name": "شاي/شاى اخضر",
+        "price": 35,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ابريق شاي ( 4 استكانة )",
+        "price": 120,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ابريق شاى(٢استكانه)",
+        "price": 70,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ابريق شاى كرك",
+        "price": 140,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "استكنانة ماتشا",
+        "price": 100,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "نسكافيه",
+        "price": 60,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "امريكان كوفي",
+        "price": 85,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "اسبرسو سينجل",
+        "price": 80,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "اسبرسو دبل",
+        "price": 90,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ميكاتو سينجل",
+        "price": 85,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ميكاتو دبل",
+        "price": 95,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "كوكتيل اعشاب",
+        "price": 55,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "موكا",
+        "price": 110,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "كابيتشينو",
+        "price": 100,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "كافيه لاتيه",
+        "price": 100,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "هوت شوكليت",
+        "price": 110,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "هوت سيدر",
+        "price": 90,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "قهوه تركى سينجل",
+        "price": 70,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "قهوه تركى دبل",
+        "price": 80,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "فرينش كوفي",
+        "price": 85,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "سحلب بالمكسرات",
+        "price": 85,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "فلات وايت",
+        "price": 90,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "جنزبيل",
+        "price": 50,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "دلة قهوة عربى",
+        "price": 210,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "هوت استكنانه",
+        "price": 125,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "سبانيش لاتيه",
+        "price": 115,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      }
+    ],
+    "عصائر فريش": [
+      {
+        "name": "برتقال",
+        "price": 80,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "مانجو",
+        "price": 80,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "فراولة",
+        "price": 80,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "جوافة",
+        "price": 80,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "بطيخ",
+        "price": 80,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "موز بالحليب ",
+        "price": 90,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "كيوى",
+        "price": 90,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ليمون نعناع",
+        "price": 60,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      }
+    ],
+    "مشروبات صحيه": [
+      {
+        "name": "ماتشا بجوز الهند او العسل",
+        "price": 130,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "باور هيلن",
+        "price": 100,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "زبادى فواكه",
+        "price": 105,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "زبادى عسل وتوت",
+        "price": 115,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "زبادى افوكادو وعسل ومكسرات",
+        "price": 145,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "افوكادو عسل ومكسرات",
+        "price": 130,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      }
+    ],
+    "ايس درينك": [
+      {
+        "name": "ماتشا مثلج",
+        "price": 125,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ماتشا لاتيه مثلج",
+        "price": 130,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "كركديه ",
+        "price": 80,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ايس تى مع الكركديه والثلج ",
+        "price": 90,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ايس لاتيه",
+        "price": 85,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ايس سبانيش لاتيه",
+        "price": 120,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ايس موكا",
+        "price": 125,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "فرابيه (كراميل/شوكليت)",
+        "price": 125,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ايس استكنانة",
+        "price": 100,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ايس كوفى",
+        "price": 115,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ميلك شيك فانيليا/شوكليت",
+        "price": 120,
+        "desc": "ميلك شيك ",
+        "descEn": "Specialty dish from SOHO"
+      },
+      {
+        "name": "ميلك شيك فراوله/مانجا",
+        "price": 120,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ميلك شيك ماتشا",
+        "price": 135,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ميلك شيك اوريو ",
+        "price": 130,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ميلك شيك بلوبيرى",
+        "price": 120,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      }
+    ],
+    "مشروبات مميزة": [
+      {
+        "name": " تمر مع ايس كريم فانيليا ",
+        "price": 125,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "كركديه بالموز والتوت",
+        "price": 105,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "بطيخ باشون",
+        "price": 120,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "فلوريدا",
+        "price": 110,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "تمر بالحليب وروز ووتر",
+        "price": 95,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      }
+    ],
+    "صودا كوكتيل": [
+      {
+        "name": "موهيتو (باشون/بلوبيرى/فراوله)",
+        "price": 105,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "موهيتو ",
+        "price": 95,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "كيوى ريدبول",
+        "price": 150,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "باور ليمون",
+        "price": 140,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      }
+    ],
+    "سموزى": [
+      {
+        "name": "بينا كولادا",
+        "price": 110,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "ليمون نعناع",
+        "price": 60,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "استكنانه سموزيز",
+        "price": 75,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "مانجو/فراوله",
+        "price": 80,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      },
+      {
+        "name": "بلوبيرى",
+        "price": 85,
+        "desc": "طبق شهي من أطباقنا الخاصة",
+        "descEn": "A tasty dish from our special menu"
+      }
+    ]
+  },
+  "totals": {
+    "soho": 62,
+    "istiknanah": 69,
+    "soho_with_desc": 30,
+    "istik_with_desc": 1
+  }
+}
