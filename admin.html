@@ -613,7 +613,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"></script>
 
     <script>
-      // ===== FIREBASE CONFIG - REPLACE WITH YOUR CONFIG =====
+      // ===== FIREBASE CONFIG =====
       const firebaseConfig = {
         apiKey: "AIzaSyCoiuHbVfclITv_Ah6UOQeV33QGPGRVeXw",
         authDomain: "menu1-ec4bc.firebaseapp.com",
@@ -624,10 +624,39 @@
         measurementId: "G-TWGX9H42FV",
       };
 
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      const auth = firebase.auth();
-      const db = firebase.firestore();
+      // Initialize Firebase with error handling
+      let auth = null;
+      let db = null;
+
+      function initializeFirebaseAdmin() {
+        try {
+          if (typeof firebase === "undefined") {
+            console.error("❌ Firebase library not loaded");
+            return false;
+          }
+
+          if (firebase.apps.length === 0) {
+            firebase.initializeApp(firebaseConfig);
+            console.log("✅ Firebase initialized (Admin)");
+          }
+
+          auth = firebase.auth();
+          db = firebase.firestore();
+          console.log("✅ Firebase Auth & Firestore connected (Admin)");
+          return true;
+        } catch (error) {
+          console.error("❌ Firebase initialization error:", error);
+          alert("Firebase initialization failed: " + error.message);
+          return false;
+        }
+      }
+
+      // Initialize on load
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initializeFirebaseAdmin);
+      } else {
+        initializeFirebaseAdmin();
+      }
 
       // DOM Elements
       const loginScreen = document.getElementById("loginScreen");
@@ -647,18 +676,32 @@
       let editingItemMenu = null;
 
       // ===== AUTHENTICATION =====
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          currentUser = user;
-          loginScreen.classList.add("hidden");
-          dashboard.classList.add("active");
-          loadItems();
-        } else {
-          currentUser = null;
-          loginScreen.classList.remove("hidden");
-          dashboard.classList.remove("active");
+      // Wait for auth to be initialized before setting up listener
+      function setupAuthListener() {
+        if (!auth) {
+          console.warn("⚠️ Auth not ready, retrying...");
+          setTimeout(setupAuthListener, 500);
+          return;
         }
-      });
+
+        auth.onAuthStateChanged((user) => {
+          if (user) {
+            currentUser = user;
+            loginScreen.classList.add("hidden");
+            dashboard.classList.add("active");
+            loadItems();
+            console.log("✅ User logged in:", user.email);
+          } else {
+            currentUser = null;
+            loginScreen.classList.remove("hidden");
+            dashboard.classList.remove("active");
+            console.log("ℹ️ User logged out");
+          }
+        });
+      }
+
+      // Call setup once Firebase is initialized
+      setTimeout(setupAuthListener, 100);
 
       loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -667,16 +710,23 @@
         const errorDiv = document.getElementById("loginError");
 
         try {
+          if (!auth) {
+            throw new Error("Firebase not initialized");
+          }
           await auth.signInWithEmailAndPassword(email, password);
           loginForm.reset();
           errorDiv.textContent = "";
+          console.log("✅ Login successful");
         } catch (error) {
-          errorDiv.textContent = error.message;
+          errorDiv.textContent = "❌ " + error.message;
+          console.error("Login error:", error);
         }
       });
 
       logoutBtn.addEventListener("click", () => {
+        if (!auth) return;
         auth.signOut();
+        console.log("ℹ️ User signed out");
       });
 
       // ===== ADD ITEM =====
