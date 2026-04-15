@@ -465,7 +465,10 @@
       <div class="container">
         <div class="header">
           <h1>📋 Menu Manager</h1>
-          <button class="logout-btn" id="logoutBtn">Logout</button>
+          <div style="display: flex; align-items: center; gap: 20px">
+            <span id="userEmail" style="color: white; font-weight: 600"></span>
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+          </div>
         </div>
 
         <div class="content">
@@ -623,12 +626,6 @@
     </script>
 
     <script>
-      // Admin credentials (simple local validation)
-      const ADMIN_CREDENTIALS = {
-        email: "admin@menu.com",
-        password: "admin123",
-      };
-
       // Initialize Admin Dashboard
       function initializeAdmin() {
         console.log("✅ Admin Dashboard initialized with Backend");
@@ -660,32 +657,23 @@
       let editingItemMenu = null;
 
       // ===== AUTHENTICATION =====
-      // Setup auth listener after Firebase and DOM are ready
-      async function setupAuthListener() {
-        if (!auth) {
-          console.warn("⚠️ Auth not ready, retrying...");
-          setTimeout(setupAuthListener, 500);
-          return;
+      // Update UI based on login state
+      function updateAuthUI() {
+        if (currentUser) {
+          loginScreen.classList.add("hidden");
+          dashboard.classList.add("active");
+          document.getElementById("userEmail").textContent = currentUser.email;
+          loadItems();
+          console.log("✅ User logged in:", currentUser.email);
+        } else {
+          loginScreen.classList.remove("hidden");
+          dashboard.classList.remove("active");
+          console.log("ℹ️ User logged out");
         }
-
-        auth.onAuthStateChanged((user) => {
-          if (user) {
-            currentUser = user;
-            loginScreen.classList.add("hidden");
-            dashboard.classList.add("active");
-            loadItems();
-            console.log("✅ User logged in:", user.email);
-          } else {
-            currentUser = null;
-            loginScreen.classList.remove("hidden");
-            dashboard.classList.remove("active");
-            console.log("ℹ️ User logged out");
-          }
-        });
       }
 
-      // Call setup once Firebase is initialized
-      setTimeout(setupAuthListener, 100);
+      // Initialize authentication UI on page load
+      window.addEventListener("DOMContentLoaded", updateAuthUI);
 
       loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -703,7 +691,7 @@
             loginForm.reset();
             errorDiv.textContent = "";
             console.log("✅ Login successful");
-            setupAuthListener();
+            updateAuthUI();
           } else {
             throw new Error("Invalid email or password");
           }
@@ -715,7 +703,7 @@
 
       logoutBtn.addEventListener("click", () => {
         currentUser = null;
-        setupAuthListener();
+        updateAuthUI();
         console.log("ℹ️ User signed out");
       });
 

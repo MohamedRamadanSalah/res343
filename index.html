@@ -3042,7 +3042,9 @@
           renderSohoMenu();
           renderIstikMenu();
 
-          console.log("✅ Menus loaded from backend (" + data.count + " items)");
+          console.log(
+            "✅ Menus loaded from backend (" + data.count + " items)",
+          );
         } catch (error) {
           console.error("❌ Error loading menus from backend:", error);
           console.log("ℹ️ Using local menus instead.");
@@ -3060,8 +3062,6 @@
         document.addEventListener("DOMContentLoaded", initializeApp);
       } else {
         initializeApp();
-      }
-        }
       }
     </script>
   </body>
