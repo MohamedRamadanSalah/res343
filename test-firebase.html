@@ -107,28 +107,63 @@
       <div class="console-output" id="consoleLogs"></div>
     </div>
 
-    <!-- Firebase Scripts with Error Handling -->
+    <!-- Firebase Scripts with CDN Fallbacks -->
     <script>
       window.firebaseLoadError = false;
-      function onFirebaseError() {
-        window.firebaseLoadError = true;
-        console.error("❌ Firebase SDK failed to load from CDN");
-        log("❌ Firebase SDK failed to load from CDN", "error");
-        updateTest(
-          1,
-          "error",
-          "Firebase CDN is not accessible - network or permission issue",
-        );
+      window.firebaseReady = false;
+
+      const firebaseCDNs = {
+        app: [
+          "https://cdn.jsdelivr.net/npm/firebase@10.5.0/app/dist/index.iife.js",
+          "https://unpkg.com/firebase@10.5.0/app/dist/index.iife.js",
+          "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js",
+        ],
+        firestore: [
+          "https://cdn.jsdelivr.net/npm/firebase@10.5.0/firestore/dist/index.iife.js",
+          "https://unpkg.com/firebase@10.5.0/firestore/dist/index.iife.js",
+          "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js",
+        ],
+      };
+
+      async function loadScriptWithFallback(cdnList, name) {
+        for (let i = 0; i < cdnList.length; i++) {
+          try {
+            await new Promise((resolve, reject) => {
+              setTimeout(() => reject(new Error("Timeout")), 5000);
+              const script = document.createElement("script");
+              script.src = cdnList[i];
+              script.async = true;
+              script.crossOrigin = "anonymous";
+              script.onload = () => resolve(true);
+              script.onerror = () => resolve(false);
+              document.head.appendChild(script);
+            });
+            return true;
+          } catch (e) {
+            // Try next
+          }
+        }
+        return false;
       }
+
+      (async () => {
+        try {
+          await loadScriptWithFallback(firebaseCDNs.app, "Firebase App");
+          await loadScriptWithFallback(firebaseCDNs.firestore, "Firestore");
+          window.firebaseReady = true;
+          console.log("✅ Firebase scripts loaded");
+        } catch (error) {
+          window.firebaseLoadError = true;
+          console.error("❌ Firebase load failed:", error.message);
+          log("❌ Firebase SDK failed to load from all CDNs", "error");
+          updateTest(
+            1,
+            "error",
+            "Firebase CDN is not accessible from your network",
+          );
+        }
+      })();
     </script>
-    <script
-      src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"
-      onerror="onFirebaseError()"
-    ></script>
-    <script
-      src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"
-      onerror="onFirebaseError()"
-    ></script>
 
     <script>
       const consoleLogs = [];
@@ -165,11 +200,27 @@
         clearConsole();
         log("🚀 Starting Firebase Connection Tests...", "info");
 
-        // Test 1: Firebase Library
+        // Test 1: Firebase Library with wait
         log("Test 1: Checking Firebase library...");
-        if (typeof firebase !== "undefined") {
+
+        // Wait up to 15 seconds for Firebase to load
+        let attempts = 0;
+        while (typeof firebase === "undefined" && attempts < 30) {
+          await new Promise((r) => setTimeout(r, 500));
+          attempts++;
+        }
+
+        if (typeof firebase !== "undefined" && window.firebaseReady) {
           log("✅ Firebase library loaded", "info");
           updateTest(1, "success", "Firebase library is loaded");
+        } else if (window.firebaseLoadError) {
+          log("❌ Firebase CDN failed to load", "error");
+          updateTest(
+            1,
+            "error",
+            "Firebase CDN is blocked or unavailable in your network",
+          );
+          return;
         } else {
           log("❌ Firebase library NOT loaded", "error");
           updateTest(1, "error", "Firebase library failed to load");

@@ -2987,56 +2987,84 @@
         .forEach((el) => revealObserver.observe(el));
     </script>
 
-    <!-- Firebase Integration with Error Detection -->
+    <!-- Firebase Integration with Fallback CDN & Offline Support -->
     <script>
-      // Detect if Firebase loads or fails
+      // Firebase loading with multiple CDN fallbacks
       window.firebaseReady = false;
       window.firebaseError = null;
 
-      // Set a timeout to detect if Firebase doesn't load
-      setTimeout(() => {
-        if (!window.firebaseReady && typeof firebase === "undefined") {
-          window.firebaseError =
-            "Firebase SDK failed to load from CDN (timeout)";
-          console.error("❌ " + window.firebaseError);
-        }
-      }, 5000);
+      // Try multiple CDNs in order
+      const firebaseCDNs = [
+        "https://cdn.jsdelivr.net/npm/firebase@10.5.0/app/dist/index.iife.js",
+        "https://unpkg.com/firebase@10.5.0/app/dist/index.iife.js",
+        "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js", // Fallback to original
+      ];
 
-      // Create script loader function
-      function loadScript(src) {
-        return new Promise((resolve, reject) => {
-          const script = document.createElement("script");
-          script.src = src;
-          script.async = true;
-          script.onload = () => {
-            console.log("✅ Loaded: " + src);
-            resolve(true);
-          };
-          script.onerror = () => {
-            console.error("❌ Failed to load: " + src);
-            window.firebaseError = "Failed to load: " + src;
-            reject(new Error("Script load failed: " + src));
-          };
-          document.head.appendChild(script);
-        });
+      const firestoreCDNs = [
+        "https://cdn.jsdelivr.net/npm/firebase@10.5.0/firestore/dist/index.iife.js",
+        "https://unpkg.com/firebase@10.5.0/firestore/dist/index.iife.js",
+        "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js", // Fallback
+      ];
+
+      // Try to load script from multiple sources
+      async function loadScriptWithFallback(cdnList) {
+        for (let i = 0; i < cdnList.length; i++) {
+          const src = cdnList[i];
+          try {
+            console.log(`[${i + 1}/${cdnList.length}] Trying: ${src}`);
+            const success = await new Promise((resolve, reject) => {
+              setTimeout(() => reject(new Error("Timeout")), 5000);
+              const script = document.createElement("script");
+              script.src = src;
+              script.async = true;
+              script.onload = () => resolve(true);
+              script.onerror = () => resolve(false); // Try next instead of error
+              document.head.appendChild(script);
+            });
+            if (success) {
+              console.log("✅ Load successful: " + src);
+              return true;
+            }
+          } catch (e) {
+            console.warn(`❌ Failed (${i + 1}/${cdnList.length}): ${src}`);
+          }
+        }
+        return false;
       }
 
-      // Load Firebase scripts
+      // Load Firebase with fallback CDNs
       (async () => {
         try {
-          await loadScript(
-            "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js",
-          );
-          await loadScript(
-            "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js",
-          );
+          console.log("🔄 Loading Firebase from CDNs...");
+          const appReady = await loadScriptWithFallback(firebaseCDNs);
+          if (!appReady) {
+            throw new Error("Firebase app module failed to load from all CDNs");
+          }
+
+          const firestoreReady = await loadScriptWithFallback(firestoreCDNs);
+          if (!firestoreReady) {
+            throw new Error("Firestore module failed to load from all CDNs");
+          }
+
           window.firebaseReady = true;
           console.log("✅ Firebase SDK loaded successfully");
         } catch (error) {
-          console.error("❌ Firebase SDK load error:", error.message);
+          console.warn("⚠️ Firebase CDN load failed:", error.message);
+          console.log(
+            "ℹ️ Using local menus only. Data won't sync with admin panel.",
+          );
           window.firebaseError = error.message;
         }
       })();
+
+      // Timeout check
+      setTimeout(() => {
+        if (!window.firebaseReady && typeof firebase === "undefined") {
+          console.warn(
+            "⚠️ Firebase not available after 10s. Using local menus.",
+          );
+        }
+      }, 10000);
     </script>
 
     <script>

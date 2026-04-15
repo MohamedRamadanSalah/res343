@@ -607,64 +607,101 @@
       </div>
     </div>
 
-    <!-- Firebase with Error Detection -->
+    <!-- Firebase with Multiple CDN Fallbacks -->
     <script>
-      // Detect if Firebase loads or fails
+      // Firebase loading with fallback CDNs
       window.firebaseReady = false;
       window.firebaseError = null;
 
-      // Set timeout to detect if Firebase doesn't load
-      setTimeout(() => {
-        if (!window.firebaseReady && typeof firebase === "undefined") {
-          window.firebaseError =
-            "Firebase SDK failed to load from CDN (timeout)";
-          console.error("❌ " + window.firebaseError);
-          alert(
-            "⚠️ Warning: Firebase failed to load. Admin features may not work.\n\nError: " +
-              window.firebaseError,
-          );
-        }
-      }, 5000);
+      // Multiple CDN sources for redundancy
+      const firebaseCDNs = {
+        app: [
+          "https://cdn.jsdelivr.net/npm/firebase@10.5.0/app/dist/index.iife.js",
+          "https://unpkg.com/firebase@10.5.0/app/dist/index.iife.js",
+          "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js",
+        ],
+        auth: [
+          "https://cdn.jsdelivr.net/npm/firebase@10.5.0/auth/dist/index.iife.js",
+          "https://unpkg.com/firebase@10.5.0/auth/dist/index.iife.js",
+          "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js",
+        ],
+        firestore: [
+          "https://cdn.jsdelivr.net/npm/firebase@10.5.0/firestore/dist/index.iife.js",
+          "https://unpkg.com/firebase@10.5.0/firestore/dist/index.iife.js",
+          "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js",
+        ],
+      };
 
-      // Create script loader function
-      function loadScript(src) {
-        return new Promise((resolve, reject) => {
-          const script = document.createElement("script");
-          script.src = src;
-          script.async = true;
-          script.onload = () => {
-            console.log("✅ Loaded: " + src);
-            resolve(true);
-          };
-          script.onerror = () => {
-            console.error("❌ Failed to load: " + src);
-            window.firebaseError = "Failed to load: " + src;
-            reject(new Error("Script load failed: " + src));
-          };
-          document.head.appendChild(script);
-        });
+      // Load script from multiple CDN sources with fallback
+      async function loadScriptWithFallback(cdnList, name) {
+        for (let i = 0; i < cdnList.length; i++) {
+          const src = cdnList[i];
+          try {
+            console.log(
+              `[${name}] Trying CDN ${i + 1}/${cdnList.length}: ${src.split("/").pop()}`,
+            );
+            const success = await new Promise((resolve, reject) => {
+              setTimeout(() => reject(new Error("Timeout")), 8000);
+              const script = document.createElement("script");
+              script.src = src;
+              script.async = true;
+              script.onload = () => resolve(true);
+              script.onerror = () => resolve(false); // Try next CDN
+              script.crossOrigin = "anonymous";
+              document.head.appendChild(script);
+            });
+            if (success) {
+              console.log(`✅ [${name}] Loaded successfully`);
+              return true;
+            }
+          } catch (e) {
+            console.warn(`❌ [${name}] CDN ${i + 1} failed - trying next...`);
+          }
+        }
+        return false;
       }
 
-      // Load Firebase scripts in sequence
+      // Load all Firebase modules
       (async () => {
         try {
-          await loadScript(
-            "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js",
+          console.log("🔄 Loading Firebase modules from CDNs...");
+
+          const appReady = await loadScriptWithFallback(
+            firebaseCDNs.app,
+            "Firebase App",
           );
-          await loadScript(
-            "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js",
+          if (!appReady) throw new Error("Firebase app module failed");
+
+          const authReady = await loadScriptWithFallback(
+            firebaseCDNs.auth,
+            "Firebase Auth",
           );
-          await loadScript(
-            "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js",
+          if (!authReady) throw new Error("Firebase auth module failed");
+
+          const firestoreReady = await loadScriptWithFallback(
+            firebaseCDNs.firestore,
+            "Firestore",
           );
+          if (!firestoreReady) throw new Error("Firestore module failed");
+
           window.firebaseReady = true;
-          console.log("✅ Firebase SDK loaded successfully (Admin)");
+          console.log("✅ All Firebase modules loaded successfully (Admin)");
         } catch (error) {
-          console.error("❌ Firebase SDK load error:", error.message);
+          console.error("❌ Firebase loading failed:", error.message);
           window.firebaseError = error.message;
-          alert("❌ Firebase failed to load: " + error.message);
+          alert(
+            "⚠️ Firebase failed to load. Admin dashboard may be limited.\n\nError: " +
+              error.message,
+          );
         }
       })();
+
+      // Verify Firebase loaded after timeout
+      setTimeout(() => {
+        if (!window.firebaseReady && typeof firebase === "undefined") {
+          console.warn("⚠️ Firebase unavailable - admin features limited");
+        }
+      }, 15000);
     </script>
 
     <script>
