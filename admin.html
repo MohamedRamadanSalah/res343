@@ -607,10 +607,65 @@
       </div>
     </div>
 
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"></script>
+    <!-- Firebase with Error Detection -->
+    <script>
+      // Detect if Firebase loads or fails
+      window.firebaseReady = false;
+      window.firebaseError = null;
+
+      // Set timeout to detect if Firebase doesn't load
+      setTimeout(() => {
+        if (!window.firebaseReady && typeof firebase === "undefined") {
+          window.firebaseError =
+            "Firebase SDK failed to load from CDN (timeout)";
+          console.error("❌ " + window.firebaseError);
+          alert(
+            "⚠️ Warning: Firebase failed to load. Admin features may not work.\n\nError: " +
+              window.firebaseError,
+          );
+        }
+      }, 5000);
+
+      // Create script loader function
+      function loadScript(src) {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = src;
+          script.async = true;
+          script.onload = () => {
+            console.log("✅ Loaded: " + src);
+            resolve(true);
+          };
+          script.onerror = () => {
+            console.error("❌ Failed to load: " + src);
+            window.firebaseError = "Failed to load: " + src;
+            reject(new Error("Script load failed: " + src));
+          };
+          document.head.appendChild(script);
+        });
+      }
+
+      // Load Firebase scripts in sequence
+      (async () => {
+        try {
+          await loadScript(
+            "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js",
+          );
+          await loadScript(
+            "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js",
+          );
+          await loadScript(
+            "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js",
+          );
+          window.firebaseReady = true;
+          console.log("✅ Firebase SDK loaded successfully (Admin)");
+        } catch (error) {
+          console.error("❌ Firebase SDK load error:", error.message);
+          window.firebaseError = error.message;
+          alert("❌ Firebase failed to load: " + error.message);
+        }
+      })();
+    </script>
 
     <script>
       // ===== FIREBASE CONFIG =====
@@ -630,8 +685,20 @@
 
       function initializeFirebaseAdmin() {
         try {
+          // Check for script load errors
+          if (window.firebaseError) {
+            console.error("❌ Firebase load error:", window.firebaseError);
+            alert(
+              "⚠️ Firebase connection failed:\n" +
+                window.firebaseError +
+                "\n\nAdmin features may not work properly.",
+            );
+            return false;
+          }
+
+          // Check if Firebase SDK is available
           if (typeof firebase === "undefined") {
-            console.error("❌ Firebase library not loaded");
+            console.error("❌ Firebase library not loaded yet");
             return false;
           }
 
@@ -645,17 +712,39 @@
           console.log("✅ Firebase Auth & Firestore connected (Admin)");
           return true;
         } catch (error) {
-          console.error("❌ Firebase initialization error:", error);
-          alert("Firebase initialization failed: " + error.message);
+          console.error("❌ Firebase initialization error:", error.message);
+          alert("❌ Firebase initialization failed: " + error.message);
           return false;
         }
       }
 
-      // Initialize on load
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initializeFirebaseAdmin);
-      } else {
+      // Initialize on load - wait for Firebase to be ready
+      async function initiateAdmin() {
+        // Wait for Firebase SDK to load
+        let retries = 0;
+        while (typeof firebase === "undefined" && retries < 10) {
+          console.log(
+            "⏳ Waiting for Firebase SDK " + (retries + 1) + "/10...",
+          );
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          retries++;
+        }
+
+        if (typeof firebase === "undefined") {
+          console.error("❌ Firebase SDK never loaded");
+          alert(
+            "❌ Firebase SDK failed to load. Admin dashboard may not function correctly.",
+          );
+          return;
+        }
+
         initializeFirebaseAdmin();
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initiateAdmin);
+      } else {
+        initiateAdmin();
       }
 
       // DOM Elements
@@ -676,8 +765,8 @@
       let editingItemMenu = null;
 
       // ===== AUTHENTICATION =====
-      // Wait for auth to be initialized before setting up listener
-      function setupAuthListener() {
+      // Setup auth listener after Firebase and DOM are ready
+      async function setupAuthListener() {
         if (!auth) {
           console.warn("⚠️ Auth not ready, retrying...");
           setTimeout(setupAuthListener, 500);

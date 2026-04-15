@@ -2987,9 +2987,58 @@
         .forEach((el) => revealObserver.observe(el));
     </script>
 
-    <!-- Firebase Integration -->
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"></script>
+    <!-- Firebase Integration with Error Detection -->
+    <script>
+      // Detect if Firebase loads or fails
+      window.firebaseReady = false;
+      window.firebaseError = null;
+
+      // Set a timeout to detect if Firebase doesn't load
+      setTimeout(() => {
+        if (!window.firebaseReady && typeof firebase === "undefined") {
+          window.firebaseError =
+            "Firebase SDK failed to load from CDN (timeout)";
+          console.error("❌ " + window.firebaseError);
+        }
+      }, 5000);
+
+      // Create script loader function
+      function loadScript(src) {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = src;
+          script.async = true;
+          script.onload = () => {
+            console.log("✅ Loaded: " + src);
+            resolve(true);
+          };
+          script.onerror = () => {
+            console.error("❌ Failed to load: " + src);
+            window.firebaseError = "Failed to load: " + src;
+            reject(new Error("Script load failed: " + src));
+          };
+          document.head.appendChild(script);
+        });
+      }
+
+      // Load Firebase scripts
+      (async () => {
+        try {
+          await loadScript(
+            "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js",
+          );
+          await loadScript(
+            "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js",
+          );
+          window.firebaseReady = true;
+          console.log("✅ Firebase SDK loaded successfully");
+        } catch (error) {
+          console.error("❌ Firebase SDK load error:", error.message);
+          window.firebaseError = error.message;
+        }
+      })();
+    </script>
+
     <script>
       // ===== FIREBASE CONFIG - UPDATED =====
       const firebaseConfig = {
@@ -3007,8 +3056,17 @@
       // Initialize Firebase with error handling
       function initializeFirebase() {
         try {
+          // Check for script load errors
+          if (window.firebaseError) {
+            console.error("❌ Firebase error detected:", window.firebaseError);
+            return false;
+          }
+
+          // Check if Firebase loaded
           if (typeof firebase === "undefined") {
-            console.error("❌ Firebase library not loaded");
+            console.error(
+              "❌ Firebase library not loaded - may still loading...",
+            );
             return false;
           }
 
@@ -3021,7 +3079,8 @@
           console.log("✅ Firestore connected");
           return true;
         } catch (error) {
-          console.error("❌ Firebase initialization error:", error);
+          console.error("❌ Firebase initialization error:", error.message);
+          window.firebaseError = error.message;
           return false;
         }
       }
@@ -3089,8 +3148,19 @@
 
       // Initialize Firebase and load menus when libraries are ready
       function startFirebaseSync() {
+        // Wait for Firebase to be ready (scripts loaded)
+        if (!window.firebaseReady && typeof firebase === "undefined") {
+          console.log("⏳ Waiting for Firebase SDK to load...");
+          setTimeout(startFirebaseSync, 500);
+          return;
+        }
+
         if (initializeFirebase()) {
           loadMenusFromFirebase();
+        } else {
+          console.warn(
+            "⚠️ Firebase initialization failed, using local menus only",
+          );
         }
       }
 

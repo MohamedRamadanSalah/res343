@@ -107,9 +107,28 @@
       <div class="console-output" id="consoleLogs"></div>
     </div>
 
-    <!-- Firebase Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"></script>
+    <!-- Firebase Scripts with Error Handling -->
+    <script>
+      window.firebaseLoadError = false;
+      function onFirebaseError() {
+        window.firebaseLoadError = true;
+        console.error("❌ Firebase SDK failed to load from CDN");
+        log("❌ Firebase SDK failed to load from CDN", "error");
+        updateTest(
+          1,
+          "error",
+          "Firebase CDN is not accessible - network or permission issue",
+        );
+      }
+    </script>
+    <script
+      src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"
+      onerror="onFirebaseError()"
+    ></script>
+    <script
+      src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"
+      onerror="onFirebaseError()"
+    ></script>
 
     <script>
       const consoleLogs = [];
