@@ -2987,154 +2987,35 @@
         .forEach((el) => revealObserver.observe(el));
     </script>
 
-    <!-- Firebase Integration with Fallback CDN & Offline Support -->
+    <!-- Backend API Integration -->
     <script>
-      // Firebase loading with multiple CDN fallbacks
-      window.firebaseReady = false;
-      window.firebaseError = null;
+      // ===== BACKEND CONFIG =====
+      // Change this URL when deployed to Railway
+      const BACKEND_URL = "http://localhost:3000"; // Local development
+      // const BACKEND_URL = "https://your-railway-url.railway.app"; // Production
 
-      // Try multiple CDNs in order
-      const firebaseCDNs = [
-        "https://cdn.jsdelivr.net/npm/firebase@10.5.0/app/dist/index.iife.js",
-        "https://unpkg.com/firebase@10.5.0/app/dist/index.iife.js",
-        "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js", // Fallback to original
-      ];
-
-      const firestoreCDNs = [
-        "https://cdn.jsdelivr.net/npm/firebase@10.5.0/firestore/dist/index.iife.js",
-        "https://unpkg.com/firebase@10.5.0/firestore/dist/index.iife.js",
-        "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js", // Fallback
-      ];
-
-      // Try to load script from multiple sources
-      async function loadScriptWithFallback(cdnList) {
-        for (let i = 0; i < cdnList.length; i++) {
-          const src = cdnList[i];
-          try {
-            console.log(`[${i + 1}/${cdnList.length}] Trying: ${src}`);
-            const success = await new Promise((resolve, reject) => {
-              setTimeout(() => reject(new Error("Timeout")), 5000);
-              const script = document.createElement("script");
-              script.src = src;
-              script.async = true;
-              script.onload = () => resolve(true);
-              script.onerror = () => resolve(false); // Try next instead of error
-              document.head.appendChild(script);
-            });
-            if (success) {
-              console.log("✅ Load successful: " + src);
-              return true;
-            }
-          } catch (e) {
-            console.warn(`❌ Failed (${i + 1}/${cdnList.length}): ${src}`);
-          }
-        }
-        return false;
-      }
-
-      // Load Firebase with fallback CDNs
-      (async () => {
+      // Load menus from Backend API
+      async function loadMenusFromBackend() {
         try {
-          console.log("🔄 Loading Firebase from CDNs...");
-          const appReady = await loadScriptWithFallback(firebaseCDNs);
-          if (!appReady) {
-            throw new Error("Firebase app module failed to load from all CDNs");
+          console.log("🔄 Fetching menus from backend...");
+          const response = await fetch(`${BACKEND_URL}/api/menus`);
+
+          if (!response.ok) {
+            throw new Error(`Backend error: ${response.statusText}`);
           }
 
-          const firestoreReady = await loadScriptWithFallback(firestoreCDNs);
-          if (!firestoreReady) {
-            throw new Error("Firestore module failed to load from all CDNs");
-          }
+          const data = await response.json();
 
-          window.firebaseReady = true;
-          console.log("✅ Firebase SDK loaded successfully");
-        } catch (error) {
-          console.warn("⚠️ Firebase CDN load failed:", error.message);
-          console.log(
-            "ℹ️ Using local menus only. Data won't sync with admin panel.",
-          );
-          window.firebaseError = error.message;
-        }
-      })();
-
-      // Timeout check
-      setTimeout(() => {
-        if (!window.firebaseReady && typeof firebase === "undefined") {
-          console.warn(
-            "⚠️ Firebase not available after 10s. Using local menus.",
-          );
-        }
-      }, 10000);
-    </script>
-
-    <script>
-      // ===== FIREBASE CONFIG - UPDATED =====
-      const firebaseConfig = {
-        apiKey: "AIzaSyCoiuHbVfclITv_Ah6UOQeV33QGPGRVeXw",
-        authDomain: "menu1-ec4bc.firebaseapp.com",
-        projectId: "menu1-ec4bc",
-        storageBucket: "menu1-ec4bc.firebasestorage.app",
-        messagingSenderId: "821506994719",
-        appId: "1:821506994719:web:6f6474af176845f64e1b2a",
-        measurementId: "G-TWGX9H42FV",
-      };
-
-      let db = null;
-
-      // Initialize Firebase with error handling
-      function initializeFirebase() {
-        try {
-          // Check for script load errors
-          if (window.firebaseError) {
-            console.error("❌ Firebase error detected:", window.firebaseError);
-            return false;
-          }
-
-          // Check if Firebase loaded
-          if (typeof firebase === "undefined") {
-            console.error(
-              "❌ Firebase library not loaded - may still loading...",
-            );
-            return false;
-          }
-
-          if (firebase.apps.length === 0) {
-            firebase.initializeApp(firebaseConfig);
-            console.log("✅ Firebase initialized");
-          }
-
-          db = firebase.firestore();
-          console.log("✅ Firestore connected");
-          return true;
-        } catch (error) {
-          console.error("❌ Firebase initialization error:", error.message);
-          window.firebaseError = error.message;
-          return false;
-        }
-      }
-
-      // Load menus from Firebase
-      async function loadMenusFromFirebase() {
-        try {
-          if (!db) {
-            console.log("⚠️ Firestore not initialized. Using local menus.");
+          if (!data.success || !data.data || data.data.length === 0) {
+            console.log("⚠️ No menus found in backend. Using local menus.");
             return;
           }
 
-          console.log("🔄 Fetching menus from Firebase...");
-          const snapshot = await db.collection("menus").get();
-
-          if (snapshot.empty) {
-            console.log("⚠️ No menus found in Firebase. Using local menus.");
-            return;
-          }
-
-          // Build menu objects from Firebase data
+          // Build menu objects from backend data
           const sohoItems = {};
           const istikItems = {};
 
-          snapshot.forEach((doc) => {
-            const item = doc.data();
+          data.data.forEach((item) => {
             const category = item.category;
 
             const menuItem = {
@@ -3161,54 +3042,25 @@
           renderSohoMenu();
           renderIstikMenu();
 
-          console.log(
-            "✅ Menus loaded from Firebase (" + snapshot.size + " items)",
-          );
+          console.log("✅ Menus loaded from backend (" + data.count + " items)");
         } catch (error) {
-          console.error(
-            "❌ Error loading menus from Firebase:",
-            error.code,
-            error.message,
-          );
+          console.error("❌ Error loading menus from backend:", error);
           console.log("ℹ️ Using local menus instead.");
         }
       }
 
-      // Initialize Firebase and load menus when libraries are ready
-      function startFirebaseSync() {
-        // Wait for Firebase to be ready (scripts loaded)
-        if (!window.firebaseReady && typeof firebase === "undefined") {
-          console.log("⏳ Waiting for Firebase SDK to load...");
-          setTimeout(startFirebaseSync, 500);
-          return;
-        }
-
-        if (initializeFirebase()) {
-          loadMenusFromFirebase();
-        } else {
-          console.warn(
-            "⚠️ Firebase initialization failed, using local menus only",
-          );
-        }
+      // Initialize and load menus on page load
+      function initializeApp() {
+        console.log("✅ Backend API ready (no CDN required)");
+        loadMenusFromBackend();
       }
 
-      // Wait for Firebase library to load, then initialize
+      // Load on page ready
       if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", startFirebaseSync);
+        document.addEventListener("DOMContentLoaded", initializeApp);
       } else {
-        startFirebaseSync();
+        initializeApp();
       }
-
-      // Setup real-time sync for updates (optional)
-      function setupRealtimeSync() {
-        if (!db) return;
-        try {
-          db.collection("menus").onSnapshot((snapshot) => {
-            console.log("🔄 Real-time sync: " + snapshot.size + " items");
-            loadMenusFromFirebase();
-          });
-        } catch (error) {
-          console.warn("⚠️ Real-time sync error:", error.message);
         }
       }
     </script>
