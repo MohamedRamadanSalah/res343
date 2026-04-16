@@ -275,6 +275,39 @@
         transform: translateY(-2px);
       }
 
+      /* ===== LANGUAGE TOGGLE ===== */
+      .lang-toggle {
+        position: fixed;
+        top: 2rem;
+        right: 2rem;
+        z-index: 1000;
+        background: linear-gradient(
+          135deg,
+          rgba(26, 159, 245, 0.1),
+          rgba(255, 61, 61, 0.1)
+        );
+        border: 1px solid var(--soho-border);
+        border-radius: 4px;
+        padding: 0.6rem 1.2rem;
+        cursor: pointer;
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 0.75rem;
+        letter-spacing: 0.15em;
+        color: var(--soho-yellow);
+        font-weight: 700;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 15px rgba(26, 159, 245, 0.2);
+      }
+      .lang-toggle:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(26, 159, 245, 0.2),
+          rgba(255, 61, 61, 0.2)
+        );
+        box-shadow: 0 0 25px rgba(26, 159, 245, 0.4);
+        transform: scale(1.05);
+      }
+
       /* floating neon decorations */
       .neon-circle {
         position: absolute;
@@ -1243,6 +1276,11 @@
     </style>
   </head>
   <body>
+    <!-- Language Toggle Button -->
+    <button class="lang-toggle" onclick="toggleLanguage()" id="langToggleBtn">
+      ENGLISH | عربي
+    </button>
+
     <!-- ======= HERO ======= -->
     <section class="hero">
       <div class="neon-circle nc1"></div>
@@ -1497,6 +1535,158 @@
     </div>
 
     <script>
+      // ===================== LANGUAGE SYSTEM =====================
+      let currentLanguage = "en";
+
+      const translations = {
+        en: {
+          "CAIRO · EAT BOLD · SIP SLOW": "CAIRO · EAT BOLD · SIP SLOW",
+          "Two worlds united — electric urban flavors meet artisanal café warmth. Every bite tells a story. Every sip is a moment.":
+            "Two worlds united — electric urban flavors meet artisanal café warmth. Every bite tells a story. Every sip is a moment.",
+          "⚡ EAT BOLD — SOHO MENU": "⚡ EAT BOLD — SOHO MENU",
+          "☕ SIP SLOW — ISTIKNANAH": "☕ SIP SLOW — ISTIKNANAH",
+          SCROLL: "SCROLL",
+          "— OUR STORY": "— OUR STORY",
+          "SOHO BITES": "SOHO BITES",
+          "Born from the electric streets of Soho, London — where art, music, and rebellion collide. Smoked briskets, loaded burgers, sizzling fajitas, and bold sauces designed for those who live out loud. Every plate is an event.":
+            "Born from the electric streets of Soho, London — where art, music, and rebellion collide. Smoked briskets, loaded burgers, sizzling fajitas, and bold sauces designed for those who live out loud. Every plate is an event.",
+          Istiknanah: "Istiknanah",
+          "Named from the Arabic word for contentment — إستكنانة — this is a celebration of slowing down. Handpicked coffees, artisanal pastries, and every detail crafted with intention. A refuge from the rush.":
+            "Named from the Arabic word for contentment — إستكنانة — this is a celebration of slowing down. Handpicked coffees, artisanal pastries, and every detail crafted with intention. A refuge from the rush.",
+          "— ATMOSPHERE": "— ATMOSPHERE",
+          SOHO: "SOHO",
+          ISTIKNANAH: "ISTIKNANAH",
+          "Neon Dreams": "Neon Dreams",
+          "Urban beats, electric energy": "Urban beats, electric energy",
+          "Bold Flavors": "Bold Flavors",
+          "Every plate tells a story": "Every plate tells a story",
+          "24/7 Vibe": "24/7 Vibe",
+          "Never stops, always alive": "Never stops, always alive",
+          "Warm Moments": "Warm Moments",
+          "Coffee culture refined": "Coffee culture refined",
+          "Artisanal Craft": "Artisanal Craft",
+          "Handpicked & thoughtful": "Handpicked & thoughtful",
+          "Slow Living": "Slow Living",
+          "Time to breathe": "Time to breathe",
+          "EXPLORE THE MENUS": "EXPLORE THE MENUS",
+          "⚡ SOHO BITES": "⚡ SOHO BITES",
+          "☕ ISTIKNANAH": "☕ ISTIKNANAH",
+          CLOSE: "CLOSE",
+        },
+        ar: {
+          "CAIRO · EAT BOLD · SIP SLOW": "القاهرة · كل بجرأة · تذوق ببطء",
+          "Two worlds united — electric urban flavors meet artisanal café warmth. Every bite tells a story. Every sip is a moment.":
+            "عالمان متحدان — نكهات حضرية كهربائية تلتقي بدفء مقهى حرفي. كل لقمة تحكي قصة. كل رشفة هي لحظة.",
+          "⚡ EAT BOLD — SOHO MENU": "⚡ كل بجرأة — قائمة سوهو",
+          "☕ SIP SLOW — ISTIKNANAH": "☕ تذوق ببطء — إستكنانة",
+          SCROLL: "مرر",
+          "— OUR STORY": "— قصتنا",
+          "SOHO BITES": "لقمات سوهو",
+          "Born from the electric streets of Soho, London — where art, music, and rebellion collide. Smoked briskets, loaded burgers, sizzling fajitas, and bold sauces designed for those who live out loud. Every plate is an event.":
+            "وُلدت من شوارع سوهو الكهربائية في لندن — حيث يتصادم الفن والموسيقى والتمرد. لحم مدخن وبرجر محمل وفاهيتا حارة وصلصات جريئة مصممة لمن يعيشون بصوت عالٍ. كل طبق حدث.",
+          Istiknanah: "إستكنانة",
+          "Named from the Arabic word for contentment — إستكنانة — this is a celebration of slowing down. Handpicked coffees, artisanal pastries, and every detail crafted with intention. A refuge from the rush.":
+            "مستوحاة من الكلمة العربية للرضا — إستكنانة — هذا احتفال بالتباطؤ. قهوة مختارة بعناية ومعجنات حرفية وكل تفصيلة مصنوعة بقصد. ملاذ من العجلة.",
+          "— ATMOSPHERE": "— الأجواء",
+          SOHO: "سوهو",
+          ISTIKNANAH: "إستكنانة",
+          "Neon Dreams": "أحلام نيون",
+          "Urban beats, electric energy": "نبضات حضرية، طاقة كهربائية",
+          "Bold Flavors": "نكهات جريئة",
+          "Every plate tells a story": "كل طبق يحكي قصة",
+          "24/7 Vibe": "حياة ٢٤/٧",
+          "Never stops, always alive": "لا تتوقف أبداً، حية دائماً",
+          "Warm Moments": "لحظات دافئة",
+          "Coffee culture refined": "ثقافة القهوة المكررة",
+          "Artisanal Craft": "الحرفة الفنية",
+          "Handpicked & thoughtful": "مختارة بعناية وتفكير",
+          "Slow Living": "الحياة البطيئة",
+          "Time to breathe": "وقت للتنفس",
+          "EXPLORE THE MENUS": "استكشف القوائم",
+          "⚡ SOHO BITES": "⚡ لقمات سوهو",
+          "☕ ISTIKNANAH": "☕ إستكنانة",
+          CLOSE: "إغلاق",
+        },
+      };
+
+      function getTranslation(text) {
+        return translations[currentLanguage][text] || text;
+      }
+
+      function toggleLanguage() {
+        currentLanguage = currentLanguage === "en" ? "ar" : "en";
+        document.documentElement.lang = currentLanguage;
+        document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
+
+        // Update button text
+        const langBtn = document.getElementById("langToggleBtn");
+        langBtn.textContent =
+          currentLanguage === "en" ? "ENGLISH | عربي" : "إنجليزي | عربي";
+
+        // Update all page text
+        updatePageLanguage();
+
+        // Re-render menus
+        renderSohoMenu();
+        renderIstikMenu();
+      }
+
+      function updatePageLanguage() {
+        // Hero section
+        const eyebrow = document.querySelector(".hero-eyebrow");
+        if (eyebrow)
+          eyebrow.textContent = getTranslation("CAIRO · EAT BOLD · SIP SLOW");
+
+        const tagline = document.querySelector(".hero-tagline");
+        if (tagline)
+          tagline.textContent = getTranslation(
+            "Two worlds united — electric urban flavors meet artisanal café warmth. Every bite tells a story. Every sip is a moment.",
+          );
+
+        const ctaButtons = document.querySelectorAll(".hero-cta-group button");
+        if (ctaButtons[0])
+          ctaButtons[0].textContent = getTranslation("⚡ EAT BOLD — SOHO MENU");
+        if (ctaButtons[1])
+          ctaButtons[1].textContent = getTranslation(
+            "☕ SIP SLOW — ISTIKNANAH",
+          );
+
+        const scrollText = document.querySelector(".scroll-indicator span");
+        if (scrollText) scrollText.textContent = getTranslation("SCROLL");
+
+        // Story section
+        const sectionTag = document.querySelector(".section-tag");
+        if (sectionTag) sectionTag.textContent = getTranslation("— OUR STORY");
+
+        const storyHeaders = document.querySelectorAll(
+          ".story-card-soho h3, .story-card-istik h3",
+        );
+        const storyTexts = document.querySelectorAll(
+          ".story-card-soho p, .story-card-istik p",
+        );
+        if (storyHeaders[0])
+          storyHeaders[0].textContent = getTranslation("SOHO BITES");
+        if (storyHeaders[1])
+          storyHeaders[1].textContent = getTranslation("Istiknanah");
+
+        // Atmosphere section
+        const atmTag =
+          document.querySelector(".atm-grid")?.previousElementSibling
+            ?.previousElementSibling;
+        if (atmTag) atmTag.textContent = getTranslation("— ATMOSPHERE");
+
+        // Menu Hub
+        const menuTitle = document.querySelector(".menu-hub h2");
+        if (menuTitle)
+          menuTitle.textContent = getTranslation("EXPLORE THE MENUS");
+
+        const tabButtons = document.querySelectorAll(".tab-btn");
+        if (tabButtons[0])
+          tabButtons[0].textContent = getTranslation("⚡ SOHO BITES");
+        if (tabButtons[1])
+          tabButtons[1].textContent = getTranslation("☕ ISTIKNANAH");
+      }
+
       // ===================== MENU DATA =====================
       const sohoMenu = {
         "🥤 Cold Beverages": [
@@ -1931,6 +2121,45 @@
       }
 
       function getCategoryDisplay(cat) {
+        const categoryTranslations = {
+          en: {
+            "🥤 Cold Beverages": "Cold Beverages",
+            "🍜 Soups": "Soups",
+            "🥗 Salads": "Salads",
+            "🍟 Appetizers": "Appetizers",
+            "🍔 Burgers & Sandwiches": "Burgers & Sandwiches",
+            "🍝 Pasta": "Pasta",
+            "🥩 Main Courses": "Main Courses",
+            "🍟 Sides": "Sides",
+            "👶 Kids Menu": "Kids Menu",
+            "🍰 Desserts": "Desserts",
+            "🧂 Sauces (Extra)": "Sauces (Extra)",
+            "☕ Hot Drinks": "Hot Drinks",
+            "🥛 Cold Drinks": "Cold Drinks",
+            "🧃 Fresh Juices": "Fresh Juices",
+            "🍰 Pastries & Bakes": "Pastries & Bakes",
+            "🥛 Milkshakes": "Milkshakes",
+          },
+          ar: {
+            "🥤 Cold Beverages": "المشروبات الباردة",
+            "🍜 Soups": "الشوربات",
+            "🥗 Salads": "السلطات",
+            "🍟 Appetizers": "المقبلات",
+            "🍔 Burgers & Sandwiches": "البرجرات والساندويتشات",
+            "🍝 Pasta": "المعكرونة",
+            "🥩 Main Courses": "الأطباق الرئيسية",
+            "🍟 Sides": "الأطباق الجانبية",
+            "👶 Kids Menu": "قائمة الأطفال",
+            "🍰 Desserts": "الحلويات",
+            "🧂 Sauces (Extra)": "الصلصات (إضافية)",
+            "☕ Hot Drinks": "المشروبات الساخنة",
+            "🥛 Cold Drinks": "المشروبات الباردة",
+            "🧃 Fresh Juices": "العصائر الطازجة",
+            "🍰 Pastries & Bakes": "المعجنات والخبز",
+            "🥛 Milkshakes": "الميلك شيك",
+          },
+        };
+
         const iconMap = {
           "🍟 Sides":
             '<img src="sides.png" alt="Sides" style="width: 28px; height: 28px; vertical-align: middle;">',
@@ -1945,8 +2174,15 @@
         };
 
         if (iconMap[cat]) {
-          const catText = cat.substring(2).trim();
+          const catText =
+            categoryTranslations[currentLanguage][cat] ||
+            cat.substring(2).trim();
           return iconMap[cat] + " " + esc(catText);
+        }
+
+        const translatedCat = categoryTranslations[currentLanguage][cat];
+        if (translatedCat) {
+          return cat.substring(0, 2) + " " + esc(translatedCat);
         }
         return esc(cat);
       }
