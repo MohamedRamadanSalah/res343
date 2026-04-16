@@ -53,13 +53,14 @@ class FirebaseAPI {
       const body = {
         fields: this.objectToFields(data),
       };
-      const response = await this.request(`/${collection}?documentId=${Date.now()}`, {
+      const docId = `doc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      const response = await this.request(`/${collection}?documentId=${docId}`, {
         method: "POST",
         body: JSON.stringify(body),
       });
       return this.docToObject(response);
     } catch (error) {
-      console.error(`Error creating ${collection}:`, error);
+      console.error(`❌ Error creating ${collection}:`, error.message);
       throw error;
     }
   }

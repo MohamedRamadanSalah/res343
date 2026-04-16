@@ -119,6 +119,31 @@
           <span id="totalCount">0</span>
         </div>
       </div>
+      <div
+        id="errors"
+        style="
+          margin-top: 20px;
+          padding: 15px;
+          background: #fff3cd;
+          border: 1px solid #ffc107;
+          border-radius: 5px;
+          display: none;
+        "
+      >
+        <p style="margin-top: 0; font-weight: bold">❌ First Error Details:</p>
+        <code
+          id="firstError"
+          style="
+            display: block;
+            word-break: break-word;
+            font-size: 12px;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+          "
+        ></code>
+      </div>
     </div>
 
     <script src="firebase-rest-client.js"></script>
@@ -386,7 +411,13 @@
                 (uploadedCount / totalItems) * 100 + "%";
             } catch (error) {
               errorCount++;
-              console.error(`Error uploading item ${i}:`, error);
+              const errorMsg = error.message || JSON.stringify(error);
+              console.error(`❌ Error uploading item ${i}:`, errorMsg);
+              // Show first error details
+              if (errorCount === 1) {
+                document.getElementById("errors").style.display = "block";
+                document.getElementById("firstError").textContent = errorMsg;
+              }
             }
           }
 
