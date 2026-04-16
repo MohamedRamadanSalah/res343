@@ -2987,39 +2987,50 @@
         .forEach((el) => revealObserver.observe(el));
     </script>
 
-    <!-- Backend API Integration -->
+    <!-- Firebase REST API Integration -->
+    <script src="firebase-rest-client.js"></script>
     <script>
-      // ===== BACKEND CONFIG =====
-      // Change this URL when deployed to Railway
-      const BACKEND_URL = "http://localhost:3000"; // Local development
-      // const BACKEND_URL = "https://your-railway-url.railway.app"; // Production
+      // ===== FIREBASE CONFIG =====
+      const firebaseConfig = {
+        apiKey: "AIzaSyCoiuHbVfclITv_Ah6UOQeV33QGPGRVeXw",
+        projectId: "menu1-ec4bc",
+      };
 
-      // Load menus from Backend API
-      async function loadMenusFromBackend() {
+      let firebaseAPI = null;
+
+      // Initialize Firebase
+      async function initializeApp() {
         try {
-          const response = await fetch(`${BACKEND_URL}/api/menus`);
+          firebaseAPI = new FirebaseAPI(firebaseConfig);
+          console.log("✅ Firebase initialized");
+          loadMenusFromFirebase();
+        } catch (error) {
+          console.error("Firebase error:", error);
+        }
+      }
 
-          if (!response.ok) {
-            throw new Error(`Backend error: ${response.statusText}`);
-          }
+      // Load menus from Firebase Firestore
+      async function loadMenusFromFirebase() {
+        try {
+          console.log("🔄 Loading menus from Firebase...");
+          const items = await firebaseAPI.getAll("menus");
 
-          const data = await response.json();
-
-          if (!data.success || !data.data || data.data.length === 0) {
+          if (!items || items.length === 0) {
+            console.log("⚠️ No menus found in Firebase");
             return;
           }
 
-          // Build menu objects from backend data
+          // Build menu objects from Firebase data
           const sohoItems = {};
           const istikItems = {};
 
-          data.data.forEach((item) => {
-            const category = item.category;
+          items.forEach((item) => {
+            const category = item.category || "Uncategorized";
 
             const menuItem = {
               name: item.name,
               desc: item.desc || "",
-              price: item.price,
+              price: item.price || 0,
               ar: { name: item.nameAr, desc: item.descAr || "" },
             };
 
@@ -3039,13 +3050,17 @@
           // Re-render menus
           renderSohoMenu();
           renderIstikMenu();
-        } catch (error) {}
+
+          console.log(
+            "✅ Menus loaded from Firebase (" + items.length + " items)",
+          );
+        } catch (error) {
+          console.error("Error loading menus:", error);
+        }
       }
 
-      // Initialize and load menus on page load
-      function initializeApp() {
-        loadMenusFromBackend();
-      }
+      // Setup real-time sync - reload every 5 seconds
+      setInterval(loadMenusFromFirebase, 5000);
 
       // Load on page ready
       if (document.readyState === "loading") {

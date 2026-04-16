@@ -610,23 +610,32 @@
       </div>
     </div>
 
-    <!-- Backend API Integration -->
+    <!-- Firebase REST API Integration -->
+    <script src="firebase-rest-client.js"></script>
     <script>
-      // Backend configuration
-      const BACKEND_URL = "http://localhost:3000"; // Local development
-      // const BACKEND_URL = "https://your-railway-url.railway.app"; // Production
+      // ===== FIREBASE CONFIG =====
+      const firebaseConfig = {
+        apiKey: "AIzaSyCoiuHbVfclITv_Ah6UOQeV33QGPGRVeXw",
+        projectId: "menu1-ec4bc",
+      };
 
-      // Admin credentials (simple validation for local demo)
+      // Admin credentials
       const ADMIN_CREDENTIALS = {
         email: "admin@menu.com",
         password: "admin123",
       };
-    </script>
 
-    <script>
-      // Initialize Admin Dashboard
+      let firebaseAPI = null;
+
+      // Initialize Firebase
       function initializeAdmin() {
-        updateAuthUI();
+        try {
+          firebaseAPI = new FirebaseAPI(firebaseConfig);
+          console.log("✅ Firebase initialized for Admin");
+          updateAuthUI();
+        } catch (error) {
+          console.error("Firebase error:", error);
+        }
       }
 
       // Initialize on load
@@ -712,23 +721,19 @@
         const price = parseFloat(document.getElementById("itemPrice").value);
 
         try {
-          const response = await fetch(`${BACKEND_URL}/api/menus`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              menu,
-              category,
-              name: itemName,
-              nameAr: itemNameAr,
-              desc: itemDesc,
-              descAr: itemDescAr,
-              price,
-              createdBy: currentUser.email,
-            }),
-          });
+          const itemData = {
+            menu,
+            category,
+            name: itemName,
+            nameAr: itemNameAr,
+            desc: itemDesc,
+            descAr: itemDescAr,
+            price,
+            createdBy: currentUser.email,
+            createdAt: new Date().toISOString(),
+          };
 
-          const result = await response.json();
-          if (!result.success) throw new Error(result.error);
+          await firebaseAPI.createDoc("menus", itemData);
 
           showNotification("Item added successfully!", "success");
           addItemForm.reset();
@@ -742,14 +747,9 @@
       async function loadItems() {
         try {
           itemsList.innerHTML = '<div class="loading">Loading items...</div>';
-          const response = await fetch(`${BACKEND_URL}/api/menus`);
+          const items = await firebaseAPI.getAll("menus");
 
-          if (!response.ok) throw new Error("Failed to load items");
-
-          const data = await response.json();
-          const items = data.data || [];
-
-          if (items.length === 0) {
+          if (!items || items.length === 0) {
             itemsList.innerHTML =
               '<div class="loading">No items yet. Add your first item!</div>';
             return;
@@ -797,14 +797,10 @@
       // ===== EDIT ITEM =====
       window.editItem = async (itemId, menu) => {
         try {
-          const response = await fetch(
-            `${BACKEND_URL}/api/menus/${menu}/${itemId}`,
-          );
-          const data = await response.json();
+          const item = await firebaseAPI.getDoc("menus", itemId);
 
-          if (!data.success) throw new Error("Item not found");
+          if (!item) throw new Error("Item not found");
 
-          const item = data.data;
           document.getElementById("editItemName").value = item.name;
           document.getElementById("editItemNameAr").value = item.nameAr;
           document.getElementById("editItemDesc").value = item.desc || "";
@@ -823,25 +819,16 @@
         e.preventDefault();
 
         try {
-          const response = await fetch(
-            `${BACKEND_URL}/api/menus/${editingItemId}`,
-            {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                name: document.getElementById("editItemName").value,
-                nameAr: document.getElementById("editItemNameAr").value,
-                desc: document.getElementById("editItemDesc").value,
-                descAr: document.getElementById("editItemDescAr").value,
-                price: parseFloat(
-                  document.getElementById("editItemPrice").value,
-                ),
-              }),
-            },
-          );
+          const updates = {
+            name: document.getElementById("editItemName").value,
+            nameAr: document.getElementById("editItemNameAr").value,
+            desc: document.getElementById("editItemDesc").value,
+            descAr: document.getElementById("editItemDescAr").value,
+            price: parseFloat(document.getElementById("editItemPrice").value),
+            updatedAt: new Date().toISOString(),
+          };
 
-          const result = await response.json();
-          if (!result.success) throw new Error(result.error);
+          await firebaseAPI.updateDoc("menus", editingItemId, updates);
 
           showNotification("Item updated successfully!", "success");
           editModal.classList.remove("active");
@@ -859,12 +846,7 @@
       window.deleteItem = async (itemId) => {
         if (confirm("Are you sure you want to delete this item?")) {
           try {
-            const response = await fetch(`${BACKEND_URL}/api/menus/${itemId}`, {
-              method: "DELETE",
-            });
-
-            const result = await response.json();
-            if (!result.success) throw new Error(result.error);
+            await firebaseAPI.deleteDoc("menus", itemId);
 
             showNotification("Item deleted successfully!", "success");
             loadItems();
