@@ -52,20 +52,6 @@
         scroll-behavior: smooth;
       }
 
-      html[dir="rtl"] {
-        direction: rtl;
-        text-align: right;
-      }
-
-      html[dir="rtl"] .lang-toggle-btn {
-        margin-left: 0;
-        margin-right: 20px;
-      }
-
-      html[dir="rtl"] .hero-divider {
-        flex-direction: row-reverse;
-      }
-
       body {
         font-family: "Outfit", sans-serif;
         background: #0a0e1a;
@@ -1152,36 +1138,6 @@
         background: rgba(26, 159, 245, 0.1);
       }
 
-      /* ===== LANGUAGE TOGGLE ===== */
-      .lang-toggle-btn {
-        background: linear-gradient(135deg, #1a9ff5, #0070d0);
-        color: white;
-        border: 1px solid rgba(26, 159, 245, 0.4);
-        padding: 0.6rem 1.2rem;
-        font-size: 0.8rem;
-        font-weight: 700;
-        letter-spacing: 0.1em;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: all 0.3s;
-        font-family: "Josefin Sans", sans-serif;
-        box-shadow: 0 0 15px rgba(26, 159, 245, 0.3);
-      }
-      .lang-toggle-btn:hover {
-        background: linear-gradient(135deg, #4dbaff, #1a9ff5);
-        box-shadow: 0 0 25px rgba(26, 159, 245, 0.5);
-        transform: translateY(-2px);
-      }
-      .lang-toggle-btn.arabic {
-        background: linear-gradient(135deg, #c13b2a, #8b2010);
-        border-color: rgba(193, 59, 42, 0.4);
-        box-shadow: 0 0 15px rgba(193, 59, 42, 0.3);
-      }
-      .lang-toggle-btn.arabic:hover {
-        background: linear-gradient(135deg, #e04530, #c13b2a);
-        box-shadow: 0 0 25px rgba(193, 59, 42, 0.5);
-      }
-
       /* ===== ANIMATIONS ===== */
       @keyframes fadeSlideUp {
         from {
@@ -1287,17 +1243,6 @@
     </style>
   </head>
   <body>
-    <!-- ======= LANGUAGE TOGGLE ======= -->
-    <div style="position: fixed; top: 20px; right: 20px; z-index: 999">
-      <button
-        id="langToggle"
-        class="lang-toggle-btn"
-        onclick="toggleLanguage()"
-      >
-        <span id="langDisplay">English</span>
-      </button>
-    </div>
-
     <!-- ======= HERO ======= -->
     <section class="hero">
       <div class="neon-circle nc1"></div>
@@ -1552,1254 +1497,427 @@
     </div>
 
     <script>
-      // ===================== LANGUAGE SYSTEM =====================
-      let currentLanguage = localStorage.getItem("language") || "en";
-
-      const translations = {
-        en: {
-          // Hero
-          heroEyebrow: "CAIRO · EAT BOLD · SIP SLOW",
-          heroTagline:
-            "Two worlds united — electric urban flavors meet artisanal café warmth. Every bite tells a story. Every sip is a moment.",
-          eatBoldBtn: "⚡ EAT BOLD — SOHO MENU",
-          sipSlowBtn: "☕ SIP SLOW — ISTIKNANAH",
-          scroll: "SCROLL",
-
-          // Story
-          storyTag: "— OUR STORY",
-          sohoBitesTitle: "SOHO BITES",
-          sohoBitesDesc:
-            "Born from the electric streets of Soho, London — where art, music, and rebellion collide. Smoked briskets, loaded burgers, sizzling fajitas, and bold sauces designed for those who live out loud. Every plate is an event.",
-          sohoBitesTagline: "EAT BOLD · LIVE SOHO",
-          istikTitle: "Istiknanah",
-          istikDesc:
-            "Named from the Arabic word for contentment — إستكنانة — this is a sanctuary of warmth. Spanish lattes, ceremonial matcha, fresh juices, and signature elixirs. Each sip is an invitation to pause, breathe, and stay a little longer.",
-          istikTagline: "SIP SLOW · FIND YOUR MOMENT",
-
-          // Atmosphere
-          moments: "MOMENTS",
-          atmosphere: "ATMOSPHERE",
-          boldBites: "BOLD BITES",
-          boldBitesDesc:
-            "Smashed patties, smoked brisket & loaded nachos crafted for the fearless",
-          artisanalElixirs: "Artisanal Elixirs",
-          artisanalElixirsDesc:
-            "Spanish lattes, matcha ceremonials & signature house blends",
-          sharedFeasts: "SHARED FEASTS",
-          sharedFeastsDesc:
-            "Fajitas, wings, and family-style mains — food is meant to be shared",
-          healthySips: "Healthy Sips",
-          healthySipsDesc:
-            "Yogurt blends, avocado honey & fresh juices full of vitality",
-          sohoClassics: "SOHO CLASSICS",
-          sohoClassicsDesc:
-            "Crispy strips, quesadillas, and burgers born to satisfy",
-          specialtyCocktails: "Specialty Cocktails",
-          specialtyCocktailsDesc:
-            "Soda mojitos, hibiscus fusions & creative non-alcoholic wonders",
-
-          // Stats
-          sohoDishes: "SOHO DISHES",
-          istikDrinks: "ISTIKNANAH DRINKS",
-          iconicBrands: "ICONIC BRANDS",
-          unforgettablePlace: "UNFORGETTABLE PLACE",
-
-          // Menu
-          exploreMenus: "EXPLORE THE MENUS",
-          sohoBitesMenu: "⚡ SOHO BITES",
-          istiknanah: "☕ ISTIKNANAH",
-          close: "Close",
-          closBtn: "CLOSE",
-
-          // Footer
-          footerText:
-            "FROM SOHO LONDON TO YOUR TABLE — ONE SPACE · ONE FEELING · ONE CONTINUOUS EXPERIENCE",
-          backToTop: "↑ BACK TO TOP",
-        },
-        ar: {
-          // Hero
-          heroEyebrow: "القاهرة · كل بجرأة · اشرب ببطء",
-          heroTagline:
-            "عالمان متحدان — نكهات حضرية كهربائية تلتقي بدفء المقهى الحرفي. كل لقمة تحكي قصة. كل رشفة هي لحظة.",
-          eatBoldBtn: "⚡ كل بجرأة — قائمة سوهو",
-          sipSlowBtn: "☕ اشرب ببطء — إستكنانة",
-          scroll: "اسحب",
-
-          // Story
-          storyTag: "— قصتنا",
-          sohoBitesTitle: "لذائذ سوهو",
-          sohoBitesDesc:
-            "وُلدت من شوارع سوهو الكهربائية في لندن — حيث يتصادم الفن والموسيقى والتمرد. لحم الصدر المدخن والبرجر المحمل والفاهيتا الصاخبة والصلصات الجريئة مصممة لأولئك الذين يعيشون بصوت عالٍ. كل طبق حدث.",
-          sohoBitesTagline: "كل بجرأة · عش سوهو",
-          istikTitle: "إستكنانة",
-          istikDesc:
-            "سميت باسم الكلمة العربية للرضا — إستكنانة — وهي ملاذ من الدفء. لاتيه إسباني وحفل الماتشا وعصائر طازة وإكسيرات مميزة. كل رشفة دعوة للتوقف والتنفس والبقاء قليلاً أطول.",
-          istikTagline: "اشرب ببطء · ابحث عن لحظتك",
-
-          // Atmosphere
-          moments: "اللحظات",
-          atmosphere: "الأجواء",
-          boldBites: "لذائذ جريئة",
-          boldBitesDesc:
-            "فطائر مهموسة ولحم صدر مدخن وناتشوز محملة مصنوعة للشجعان",
-          artisanalElixirs: "إكسيرات حرفية",
-          artisanalElixirsDesc:
-            "لاتيه إسباني وحفل الماتشا وخلطات البيت المميزة",
-          sharedFeasts: "وجبات مشتركة",
-          sharedFeastsDesc:
-            "فاهيتا وأجنحة وأطباق عائلية — الطعام يجب أن يُشارك",
-          healthySips: "رشفات صحية",
-          healthySipsDesc:
-            "خلطات الزبادي وعسل الأفوكادو وعصائر طازة مليئة بالحيوية",
-          sohoClassics: "الكلاسيكيات من سوهو",
-          sohoClassicsDesc: "شرائح مقرمشة وكيساديلا وبرجر مصنوع للإرضاء",
-          specialtyCocktails: "كوكتيلات متخصصة",
-          specialtyCocktailsDesc:
-            "موخيتو صودا وفيوزن الكركديه وعجائب غير الكحولية الإبداعية",
-
-          // Stats
-          sohoDishes: "أطباق سوهو",
-          istikDrinks: "مشروبات إستكنانة",
-          iconicBrands: "العلامات التجارية الشهيرة",
-          unforgettablePlace: "مكان لا يُنسى",
-
-          // Menu
-          exploreMenus: "استكشف القوائم",
-          sohoBitesMenu: "⚡ لذائذ سوهو",
-          istiknanah: "☕ إستكنانة",
-          close: "إغلاق",
-          closBtn: "إغلاق",
-
-          // Footer
-          footerText:
-            "من سوهو لندن إلى طاولتك — مساحة واحدة · شعور واحد · تجربة واحدة مستمرة",
-          backToTop: "↑ العودة للأعلى",
-        },
-      };
-
-      function initLanguage() {
-        updateLanguageDisplay();
-        applyLanguageToPage();
-      }
-
-      function toggleLanguage() {
-        currentLanguage = currentLanguage === "en" ? "ar" : "en";
-        localStorage.setItem("language", currentLanguage);
-        document.documentElement.lang = currentLanguage;
-        document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
-        updateLanguageDisplay();
-        applyLanguageToPage();
-      }
-
-      function updateLanguageDisplay() {
-        const btn = document.getElementById("langToggle");
-        const display = document.getElementById("langDisplay");
-
-        if (currentLanguage === "en") {
-          display.textContent = "العربية";
-          btn.classList.remove("arabic");
-        } else {
-          display.textContent = "English";
-          btn.classList.add("arabic");
-        }
-      }
-
-      function applyLanguageToPage() {
-        const t = translations[currentLanguage];
-
-        // Hero
-        const heroEyebrow = document.querySelector(".hero-eyebrow");
-        if (heroEyebrow) heroEyebrow.textContent = t.heroEyebrow;
-
-        const heroTagline = document.querySelector(".hero-tagline");
-        if (heroTagline) heroTagline.textContent = t.heroTagline;
-
-        const ctaSoho = document.querySelector(".cta-soho");
-        if (ctaSoho) ctaSoho.textContent = t.eatBoldBtn;
-
-        const ctaIstik = document.querySelector(".cta-istik");
-        if (ctaIstik) ctaIstik.textContent = t.sipSlowBtn;
-
-        const scrollIndicator = document.querySelector(
-          ".scroll-indicator span",
-        );
-        if (scrollIndicator) scrollIndicator.textContent = t.scroll;
-
-        // Story
-        const storyTag = document.querySelector(".section-tag");
-        if (storyTag) storyTag.textContent = t.storyTag;
-
-        const sohoBitesH3 = document.querySelectorAll(".story-card-soho h3")[0];
-        if (sohoBitesH3) sohoBitesH3.textContent = t.sohoBitesTitle;
-
-        const sohoBitesDesc =
-          document.querySelectorAll(".story-card-soho p")[0];
-        if (sohoBitesDesc) sohoBitesDesc.textContent = t.sohoBitesDesc;
-
-        const sohoBitesTag = document.querySelectorAll(".story-card-soho p")[1];
-        if (sohoBitesTag) sohoBitesTag.textContent = t.sohoBitesTagline;
-
-        const istikH3 = document.querySelectorAll(".story-card-istik h3")[0];
-        if (istikH3) istikH3.textContent = t.istikTitle;
-
-        const istikDesc = document.querySelectorAll(".story-card-istik p")[0];
-        if (istikDesc) istikDesc.textContent = t.istikDesc;
-
-        const istikTag = document.querySelectorAll(".story-card-istik p")[1];
-        if (istikTag) istikTag.textContent = t.istikTagline;
-
-        // Atmosphere - Title
-        const atmTitle = document.querySelector(".atm-title");
-        if (atmTitle) {
-          atmTitle.innerHTML = `<span class="t-blue">${t.moments}</span> &amp; <span class="t-red">${t.atmosphere}</span>`;
-        }
-
-        // Atmosphere - Cards
-        const atmCards = document.querySelectorAll(".atm-card");
-        const atmTexts = [
-          { h4: t.boldBites, p: t.boldBitesDesc },
-          { h4: t.artisanalElixirs, p: t.artisanalElixirsDesc },
-          { h4: t.sharedFeasts, p: t.sharedFeastsDesc },
-          { h4: t.healthySips, p: t.healthySipsDesc },
-          { h4: t.sohoClassics, p: t.sohoClassicsDesc },
-          { h4: t.specialtyCocktails, p: t.specialtyCocktailsDesc },
-        ];
-
-        atmCards.forEach((card, idx) => {
-          if (atmTexts[idx]) {
-            const h4 = card.querySelector("h4");
-            const p = card.querySelector("p");
-            if (h4) h4.textContent = atmTexts[idx].h4;
-            if (p) p.textContent = atmTexts[idx].p;
-          }
-        });
-
-        // Stats
-        const statItems = document.querySelectorAll(".stat-item");
-        const statLabels = [
-          t.sohoDishes,
-          t.istikDrinks,
-          t.iconicBrands,
-          t.unforgettablePlace,
-        ];
-        statItems.forEach((item, idx) => {
-          const label = item.querySelector(".stat-label");
-          if (label && statLabels[idx]) label.textContent = statLabels[idx];
-        });
-
-        // Menu Hub Title
-        const menuHubH2 = document.querySelector(".menu-hub-title h2");
-        if (menuHubH2) menuHubH2.textContent = t.exploreMenus;
-
-        // Tab Buttons
-        const tabSoho = document.getElementById("tabSoho");
-        if (tabSoho) tabSoho.textContent = t.sohoBitesMenu;
-
-        const tabIstik = document.getElementById("tabIstik");
-        if (tabIstik) tabIstik.textContent = t.istiknanah;
-
-        // Footer
-        const footerP = document.querySelector(".footer p");
-        if (footerP) footerP.textContent = t.footerText;
-
-        const backTop = document.querySelector(".back-top");
-        if (backTop) backTop.textContent = t.backToTop;
-
-        // Update menus for language
-        updateMenusForLanguage();
-      }
-
-      // Initialize language on page load
-      document.addEventListener("DOMContentLoaded", () => {
-        initLanguage();
-      });
-
       // ===================== MENU DATA =====================
-      const istikMenu = {
-        "☕ Hot Beverages": [
-          {
-            name: "Tea/Green Tea",
-            ar: { name: "شاي/شاى اخضر", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 35,
-          },
-          {
-            name: "Tea Pot (4 Cups)",
-            ar: {
-              name: "ابريق شاي ( 4 استكانة )",
-              desc: "طبق شهي من أطباقنا الخاصة",
-            },
-            desc: "",
-            price: 120,
-          },
-          {
-            name: "Tea Pot (2 Cups)",
-            ar: {
-              name: "ابريق شاى(٢استكانه)",
-              desc: "طبق شهي من أطباقنا الخاصة",
-            },
-            desc: "",
-            price: 70,
-          },
-          {
-            name: "Tea Pot with Cardamom",
-            ar: { name: "ابريق شاى كرك", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 140,
-          },
-          {
-            name: "Matcha",
-            ar: { name: "استكنانة ماتشا", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 100,
-          },
-          {
-            name: "Nescafé",
-            ar: { name: "نسكافيه", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 60,
-          },
-          {
-            name: "American Coffee",
-            ar: { name: "امريكان كوفي", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 85,
-          },
-          {
-            name: "Espresso Single",
-            ar: { name: "اسبرسو سينجل", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 80,
-          },
-          {
-            name: "Espresso Double",
-            ar: { name: "اسبرسو دبل", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 90,
-          },
-          {
-            name: "Macchiato Single",
-            ar: { name: "ميكاتو سينجل", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 85,
-          },
-          {
-            name: "Macchiato Double",
-            ar: { name: "ميكاتو دبل", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 95,
-          },
-          {
-            name: "Herbal Cocktail",
-            ar: { name: "كوكتيل اعشاب", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 55,
-          },
-          {
-            name: "Mocha",
-            ar: { name: "موكا", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 110,
-          },
-          {
-            name: "Cappuccino",
-            ar: { name: "كابيتشينو", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 100,
-          },
-          {
-            name: "Café Latte",
-            ar: { name: "كافيه لاتيه", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 100,
-          },
-          {
-            name: "Hot Chocolate",
-            ar: { name: "هوت شوكليت", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 110,
-          },
-          {
-            name: "Hot Cider",
-            ar: { name: "هوت سيدر", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 90,
-          },
-          {
-            name: "Turkish Coffee Single",
-            ar: { name: "قهوه تركى سينجل", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 70,
-          },
-          {
-            name: "Turkish Coffee Double",
-            ar: { name: "قهوه تركى دبل", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 80,
-          },
-          {
-            name: "French Coffee",
-            ar: { name: "فرينش كوفي", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 85,
-          },
-          {
-            name: "Sahlab with Nuts",
-            ar: { name: "سحلب بالمكسرات", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 85,
-          },
-          {
-            name: "Flat White",
-            ar: { name: "فلات وايت", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 90,
-          },
-          {
-            name: "Ginger",
-            ar: { name: "جنزبيل", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 50,
-          },
-          {
-            name: "Arabic Coffee Pot",
-            ar: { name: "دلة قهوة عربى", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 210,
-          },
-          {
-            name: "Hot Cup",
-            ar: { name: "هوت استكنانه", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 125,
-          },
-          {
-            name: "Spanish Latte",
-            ar: { name: "سبانيش لاتيه", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 115,
-          },
-        ],
-        "🧃 Fresh Juices": [
-          {
-            name: "Orange",
-            ar: { name: "برتقال", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 80,
-          },
-          {
-            name: "Mango",
-            ar: { name: "مانجو", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 80,
-          },
-          {
-            name: "Strawberry",
-            ar: { name: "فراولة", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 80,
-          },
-          {
-            name: "Guava",
-            ar: { name: "جوافة", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 80,
-          },
-          {
-            name: "Watermelon",
-            ar: { name: "بطيخ", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 80,
-          },
-          {
-            name: "Banana with Milk",
-            ar: { name: "موز بالحليب", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 90,
-          },
-          {
-            name: "Kiwi",
-            ar: { name: "كيوى", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 90,
-          },
-          {
-            name: "Lemon Mint",
-            ar: { name: "ليمون نعناع", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 60,
-          },
-        ],
-        "💪 Healthy Drinks": [
-          {
-            name: "Matcha with Coconut or Honey",
-            ar: {
-              name: "ماتشا بجوز الهند او العسل",
-              desc: "طبق شهي من أطباقنا الخاصة",
-            },
-            desc: "",
-            price: 130,
-          },
-          {
-            name: "Power Helen",
-            ar: { name: "باور هيلن", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 100,
-          },
-          {
-            name: "Fruit Yogurt",
-            ar: { name: "زبادى فواكه", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 105,
-          },
-          {
-            name: "Yogurt with Honey and Berries",
-            ar: { name: "زبادى عسل وتوت", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 115,
-          },
-          {
-            name: "Yogurt with Avocado, Honey and Nuts",
-            ar: {
-              name: "زبادى افوكادو وعسل ومكسرات",
-              desc: "طبق شهي من أطباقنا الخاصة",
-            },
-            desc: "",
-            price: 145,
-          },
-          {
-            name: "Avocado with Honey and Nuts",
-            ar: {
-              name: "افوكادو عسل ومكسرات",
-              desc: "طبق شهي من أطباقنا الخاصة",
-            },
-            desc: "",
-            price: 130,
-          },
-        ],
-        "🧊 Iced Drinks": [
-          {
-            name: "Iced Matcha",
-            ar: { name: "ماتشا مثلج", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 125,
-          },
-          {
-            name: "Iced Matcha Latte",
-            ar: { name: "ماتشا لاتيه مثلج", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 130,
-          },
-          {
-            name: "Hibiscus",
-            ar: { name: "كركديه", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 80,
-          },
-          {
-            name: "Iced Tea with Hibiscus",
-            ar: {
-              name: "ايس تى مع الكركديه والثلج",
-              desc: "طبق شهي من أطباقنا الخاصة",
-            },
-            desc: "",
-            price: 90,
-          },
-          {
-            name: "Iced Latte",
-            ar: { name: "ايس لاتيه", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 85,
-          },
-          {
-            name: "Iced Spanish Latte",
-            ar: { name: "ايس سبانيش لاتيه", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 120,
-          },
-          {
-            name: "Iced Mocha",
-            ar: { name: "ايس موكا", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 125,
-          },
-          {
-            name: "Frappé (Caramel/Chocolate)",
-            ar: {
-              name: "فرابيه (كراميل/شوكليت)",
-              desc: "طبق شهي من أطباقنا الخاصة",
-            },
-            desc: "",
-            price: 125,
-          },
-          {
-            name: "Iced Cup",
-            ar: { name: "ايس استكنانة", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 100,
-          },
-          {
-            name: "Iced Coffee",
-            ar: { name: "ايس كوفى", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 115,
-          },
-        ],
-        "🥤 Milkshakes": [
-          {
-            name: "Vanilla/Chocolate Milkshake",
-            ar: { name: "ميلك شيك فانيليا/شوكليت", desc: "ميلك شيك" },
-            desc: "",
-            price: 120,
-          },
-          {
-            name: "Strawberry/Mango Milkshake",
-            ar: {
-              name: "ميلك شيك فراوله/مانجا",
-              desc: "طبق شهي من أطباقنا الخاصة",
-            },
-            desc: "",
-            price: 120,
-          },
-          {
-            name: "Matcha Milkshake",
-            ar: { name: "ميلك شيك ماتشا", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 135,
-          },
-          {
-            name: "Oreo Milkshake",
-            ar: { name: "ميلك شيك اوريو", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 130,
-          },
-          {
-            name: "Blueberry Milkshake",
-            ar: { name: "ميلك شيك بلوبيرى", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 120,
-          },
-        ],
-        "✨ Special Drinks": [
-          {
-            name: "Dates with Vanilla Ice Cream",
-            ar: {
-              name: "تمر مع ايس كريم فانيليا",
-              desc: "طبق شهي من أطباقنا الخاصة",
-            },
-            desc: "",
-            price: 125,
-          },
-          {
-            name: "Hibiscus with Banana and Berries",
-            ar: {
-              name: "كركديه بالموز والتوت",
-              desc: "طبق شهي من أطباقنا الخاصة",
-            },
-            desc: "",
-            price: 105,
-          },
-          {
-            name: "Watermelon with Passion Fruit",
-            ar: { name: "بطيخ باشون", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 120,
-          },
-          {
-            name: "Florida",
-            ar: { name: "فلوريدا", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 110,
-          },
-          {
-            name: "Dates with Milk, Rose Water",
-            ar: {
-              name: "تمر بالحليب وروز ووتر",
-              desc: "طبق شهي من أطباقنا الخاصة",
-            },
-            desc: "",
-            price: 95,
-          },
-        ],
-        "🍹 Soda Cocktails": [
-          {
-            name: "Mojito (Passion/Blueberry/Strawberry)",
-            ar: {
-              name: "موهيتو (باشون/بلوبيرى/فراوله)",
-              desc: "طبق شهي من أطباقنا الخاصة",
-            },
-            desc: "",
-            price: 105,
-          },
-          {
-            name: "Mojito",
-            ar: { name: "موهيتو", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 95,
-          },
-          {
-            name: "Kiwi Red Bull",
-            ar: { name: "كيوى ريدبول", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 150,
-          },
-          {
-            name: "Power Lemon",
-            ar: { name: "باور ليمون", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 140,
-          },
-        ],
-        "🥛 Smoothies": [
-          {
-            name: "Piña Colada",
-            ar: { name: "بينا كولادا", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 110,
-          },
-          {
-            name: "Lemon Mint",
-            ar: { name: "ليمون نعناع", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 60,
-          },
-          {
-            name: "Istiknanah Smoothies",
-            ar: { name: "استكنانه سموزيز", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 75,
-          },
-          {
-            name: "Mango/Strawberry",
-            ar: { name: "مانجو/فراوله", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 80,
-          },
-          {
-            name: "Blueberry",
-            ar: { name: "بلوبيرى", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 85,
-          },
-        ],
-      };
-
       const sohoMenu = {
-        "❄️ Cold Beverages": [
-          {
-            name: "Mineral Water",
-            ar: { name: "مياه معدنيه فلو", desc: "مياه معدنية منعشة" },
-            desc: "",
-            price: 35,
-          },
-          {
-            name: "Sparkling Water",
-            ar: { name: "مياه فواره", desc: "مياه غازية منعشة" },
-            desc: "",
-            price: 55,
-          },
-          {
-            name: "Pepsi / 7UP",
-            ar: { name: "بيبسي \\ سفن اب", desc: "" },
-            desc: "",
-            price: 40,
-          },
+        "🥤 Cold Beverages": [
+          { name: "Still Mineral Water", desc: "Pure & refreshing", price: 35 },
+          { name: "Sparkling Water", desc: "Crisp bubbles", price: 55 },
+          { name: "Pepsi / 7Up", desc: "Classic soda", price: 40 },
           {
             name: "Perrier / Schweppes / Fayrouz",
-            ar: { name: "بيريل \\شويبس \\ فيروز", desc: "" },
-            desc: "",
+            desc: "Premium selection",
             price: 45,
           },
-          {
-            name: "Red Bull",
-            ar: { name: "ريد بول", desc: "مشروب الطاقة البارد والمنعش" },
-            desc: "",
-            price: 85,
-          },
-          {
-            name: "Red Bull with Extra Sauce",
-            ar: { name: "ريد بول اضافة صوص", desc: "ريد بول مع نكهة صوص خاص" },
-            desc: "",
-            price: 105,
-          },
+          { name: "Red Bull", desc: "Energy boost", price: 85 },
+          { name: "Red Bull + Sauce Shot", desc: "Extra kick", price: 105 },
         ],
-        "🍲 Soups": [
+        "🍜 Soups": [
           {
-            name: "Chicken Cream Soup",
-            ar: {
-              name: "شوربة كريمة الدجاج",
-              desc: "شوربة دجاج كريمية مع أعشاب طازة",
-            },
-            desc: "",
+            name: "Creamy Chicken Soup",
+            desc: "Velvety smooth chicken",
             price: 89,
           },
-          {
-            name: "Mushroom Cream Soup",
-            ar: {
-              name: "شوربة كريمة المشروم",
-              desc: "شوربة الفطر الكريمية مع بهارات العطرية",
-            },
-            desc: "",
-            price: 85,
-          },
+          { name: "Creamy Mushroom Soup", desc: "Earthy & rich", price: 85 },
         ],
         "🥗 Salads": [
           {
             name: "Caesar Salad with Chicken",
-            ar: {
-              name: "سيزر سلاد بالدجاج",
-              desc: "سلطة سيزر بالدجاج المشوى مع الخس وقطع الكرتون وصوص السيزر والجبنة بارميزان",
-            },
-            desc: "Caesar salad with grilled chicken, lettuce, croutons, Caesar sauce and Parmesan cheese",
+            desc: "Grilled chicken, romaine, croutons, parmesan",
             price: 169,
           },
           {
             name: "Cobb Salad",
-            ar: {
-              name: "سلطة كوب",
-              desc: "خس مقرمش مع الدجاج المقلى والبيض والبيكون والجبن المشكلة مع الذرة الحلوة والفاصولياء الحمراء والبيكو ديجالو",
-            },
-            desc: "Crispy lettuce with fried chicken, egg, bacon, mixed cheese, corn, red beans and pico de gallo",
+            desc: "Crispy chicken, egg, bacon, cheese, corn, beans, pico",
             price: 209,
           },
           {
             name: "Taco Salad",
-            ar: {
-              name: "تاكو سلاد",
-              desc: "سلطة الخس وشرائح التورتيلا مع الدجاج المشوى وقطع البيكون والجبنة المكس مغطاة برانش صوص والذرة والفاصولياء الحمراء مع البيكوديجالو",
-            },
-            desc: "Lettuce and tortilla strips with grilled chicken, bacon and mixed cheese covered with ranch sauce, corn and red beans with pico de gallo",
+            desc: "Lettuce, tortilla strips, chicken, bacon, cheese, ranch, beans",
             price: 199,
           },
         ],
         "🍟 Appetizers": [
           {
             name: "Chicken Strips",
-            ar: {
-              name: "تشيكن استربس",
-              desc: "قطع دجاج طرية من الداخل ومقرمشة من الخارج مع اختيارك من الصوصات (هانى مسطردة او بافلو صوص )",
-            },
-            desc: "Tender chicken pieces crispy on the outside with your choice of sauces (honey mustard or buffalo sauce)",
+            desc: "Crispy outside, tender inside, honey mustard or buffalo",
             price: 189,
           },
           {
             name: "Chicken Wings",
-            ar: {
-              name: "تشيكن وينجز",
-              desc: "اجنحة دجاج مقلية وتقدر تختار صوصك المفضل من البافلو او الباربيكيو او صوص الدينميت",
-            },
-            desc: "Fried chicken wings, choose your favorite sauce from buffalo, barbecue or dynamite sauce",
+            desc: "Fried wings with buffalo/BBQ/dynamite sauce",
             price: 169,
           },
           {
             name: "Mozzarella Sticks",
-            ar: {
-              name: "اصابع الموزاريلا",
-              desc: "اصابع ذهبية مقرمشة تخفى بداخلها جبنة موزاريلا سايحة ولذيذة ,تقدم ساخنة مع صوص المارينارا",
-            },
-            desc: "Golden crispy sticks hiding melted mozzarella cheese inside, served hot with marinara sauce",
+            desc: "Golden with marinara",
             price: 99,
           },
           {
-            name: "Cheese Chips",
-            ar: {
-              name: "شيبس تشيز",
-              desc: "شيبس مع صوص الجبنة مع سلطة البيكو والهالبينو (يوجد اضافة شيلى)",
-            },
-            desc: "Chips with cheese sauce, pico salad and jalapeño (can add chili)",
+            name: "Chili Cheese Fries",
+            desc: "Fries, cheese sauce, pico, jalapeños",
             price: 129,
           },
           {
             name: "Soho Chips",
-            ar: {
-              name: "سوهو شيبس",
-              desc: "شيبس مع صوص الجبنة مع سلطة البيكو والهالبينو (يوجد اضافة شيلى)",
-            },
-            desc: "",
+            desc: "Crispy chips + signature Soho sauce",
             price: 110,
           },
-        ],
-        "🥔 Crispy Chips with Soho Special Sauce": [
           {
             name: "Nacho Land",
-            ar: {
-              name: "ناتشو لاند",
-              desc: "رقائق ناتشوز مقرمشة مغطاة يجبنة سايحة مع الهالبينو والسور كريم وسلطة البيكوديجالو ويمكن اضافة فراخ او تشلى او بيكون او مشروم او بريسكت",
-            },
-            desc: "Crispy nacho chips covered with melted cheese, jalapeño, sour cream and pico de gallo salad, can add chicken, chili, bacon, mushroom or brisket",
+            desc: "Nachos, melted cheese, jalapeños, sour cream, pico",
             price: 149,
           },
           {
-            name: "Mac Cheese",
-            ar: {
-              name: "ماك تشيز",
-              desc: "مكرونة بالصوص الابيض مع خليط خاص من الجبن",
-            },
-            desc: "Pasta with white sauce and special cheese mixture",
+            name: "Mac & Cheese",
+            desc: "Creamy white sauce pasta, special cheese blend",
             price: 159,
           },
         ],
-        "🥪 Sandwiches": [
+        "🍔 Burgers & Sandwiches": [
           {
             name: "Brisket Star",
-            ar: {
-              name: "بريسكت ستار",
-              desc: "شرائح لحم البريسكت المشوى مع صوص الجبنة وشرائح البصل المقرمشة وصو الباربكيو والخيار المخلل وصوص المايونيز",
-            },
-            desc: "Sliced grilled brisket with cheese sauce, crispy onion slices, barbecue sauce, pickled cucumber and mayonnaise",
+            desc: "Smoked brisket, cheese sauce, crispy onions, BBQ, pickles, mayo",
             price: 269,
           },
           {
             name: "Steak Sandwich",
-            ar: {
-              name: "ستيك ساندوتش",
-              desc: "شرائح ستيك مع خضار مشوى وجبنة سوهو وصوص الاسموك يقدم مع الخبز الفرنسى",
-            },
-            desc: "Steak slices with grilled vegetables, Soho cheese and smoke sauce, served with French bread",
+            desc: "Sliced steak, grilled veggies, Soho cheese, smoky sauce",
             price: 299,
           },
           {
             name: "Classic Soho Chicken",
-            ar: {
-              name: "كلاسيك سوهو تشيكن",
-              desc: "اختيارك من الدجاج مشوى او مقلى يقدم مع صوص سوهو وقطع الجبنة الشيدر والخيار المخلل والخس والطماطم والبصل الفريش",
-            },
-            desc: "Choice of grilled or fried chicken with Soho sauce, cheddar cheese, pickled cucumber, lettuce, tomato and fresh onion",
+            desc: "Grilled/fried chicken, Soho sauce, cheddar, lettuce, tomato",
             price: 279,
           },
           {
             name: "Chicken Quesadilla",
-            ar: {
-              name: "تشيكن كاساديا",
-              desc: "شرائح دجاج متبلة مع خضار مشوى تقدم فى تورتيلا مقرمشة ومحشية بخليط من الجبن الذائبة مع صوص الرانش",
-            },
-            desc: "Seasoned chicken slices with grilled vegetables served in a crispy tortilla stuffed with melted cheese mixture and ranch sauce",
+            desc: "Marinated chicken, grilled veggies, melted cheese, ranch",
             price: 289,
           },
           {
             name: "Beef Quesadilla",
-            ar: {
-              name: "بيف كاساديا",
-              desc: "شرائح بيف متبلة مع خضار مشوى تقدم فى تورتيلا مقرمشة ومحشية بخليط من الجبن الذائبة مع صوص الرانش",
-            },
-            desc: "Seasoned beef slices with grilled vegetables served in a crispy tortilla stuffed with melted cheese mixture and ranch sauce",
+            desc: "Marinated beef strips, veggies, cheese, ranch",
             price: 299,
           },
           {
             name: "Shrimp Quesadilla",
-            ar: {
-              name: "شرمب كاساديا",
-              desc: "قطع جمبرى متبلة مع خضار مشوى تقدم فى تورتيلا مقرمشة ومحشية بخليط من الجبن الذائبة مع صوص الرانش",
-            },
-            desc: "Seasoned shrimp pieces with grilled vegetables served in a crispy tortilla stuffed with melted cheese mixture and ranch sauce",
+            desc: "Spiced shrimp, grilled veggies, melted cheese, ranch",
             price: 289,
           },
           {
             name: "Classic Burger",
-            ar: {
-              name: "كلاسيك برجر",
-              desc: "قطعة برجرمشوية مع الطماطم والخس والبصل وصوص المايونيز",
-            },
-            desc: "Grilled burger with tomato, lettuce, onion and mayonnaise sauce",
+            desc: "Flame-grilled patty, lettuce, tomato, onion, mayo",
             price: 279,
           },
           {
-            name: "Classic Burger Petite",
-            ar: {
-              name: "كلاسيك برجر بيزك",
-              desc: "قطعة برجر بوزن 120 جرام،مع الخس، الطماطم، البصل، وصوصنا الخاص",
-            },
-            desc: "Burger 120g with lettuce, tomato, onion and our special sauce",
+            name: "Classic Burger Basic",
+            desc: "120g patty, lettuce, tomato, onion, special sauce",
             price: 209,
           },
           {
             name: "Soho Mushroom Burger",
-            ar: {
-              name: "سوهو مشروم برجر",
-              desc: "قطع برجر مغطاة بالجبنة والمشروم المشوى والبصل المكرمل وصوص السموك مايونيز",
-            },
-            desc: "Burger covered with cheese, grilled mushroom, caramelized onion and smoke mayonnaise sauce",
+            desc: "Beef patty, cheese, grilled mushrooms, caramelized onion, smoky mayo",
             price: 309,
           },
           {
-            name: "Soho Mushroom Burger Petite",
-            ar: {
-              name: "سوهو مشروم برجر بيزك",
-              desc: "قطع برجر  120جرام مغطاة بالجبنة والمشروم المشوى والبصل المكرمل وصوص السموك مايونيز",
-            },
-            desc: "Burger 120g covered with cheese, grilled mushroom, caramelized onion and smoke mayonnaise sauce",
+            name: "Soho Mushroom Burger Basic",
+            desc: "120g patty, mushrooms, onion, smoky mayo, cheese",
             price: 239,
           },
           {
             name: "Bacon Burger",
-            ar: {
-              name: "بيكون برجر",
-              desc: "برجر مشوى مغطاة بالجبنة والبيكون المدخن والبصل المكرمل وقطع الهالبينو الحار مع صوص المايونيز",
-            },
-            desc: "Grilled burger covered with cheese, smoked bacon, caramelized onion and spicy jalapeño with mayonnaise sauce",
+            desc: "Patty, cheddar, smoked bacon, caramelized onion, jalapeños, mayo",
             price: 269,
           },
           {
-            name: "Bacon Burger Petite",
-            ar: {
-              name: "بيكون برجر بيزك",
-              desc: "برجر مشوى 120 جرام مغطاة بالجبنة والبيكون المدخن والبصل المكرمل وقطع الهالبينو الحار مع صوص المايونيز",
-            },
-            desc: "Grilled burger 120g covered with cheese, smoked bacon, caramelized onion and spicy jalapeño with mayonnaise sauce",
+            name: "Bacon Burger Basic",
+            desc: "120g patty, bacon, cheese, jalapeños, mayo",
             price: 199,
           },
           {
             name: "Texas Burger",
-            ar: {
-              name: "تكساس برجر",
-              desc: "برجر مدخن مع بصل مقرمش وشرائح الجبنة الشيدر , وصوص الباربيكيو الكلاسيكى مع صوص السموك مايونيز",
-            },
-            desc: "Smoked burger with crispy onion and cheddar cheese slices with classic barbecue sauce and smoke mayonnaise sauce",
+            desc: "Smoked patty, crispy onion, cheddar, BBQ, smoky mayo",
             price: 299,
           },
           {
-            name: "Texas Burger Petite",
-            ar: {
-              name: "تكساس برجر بيزك",
-              desc: "برجر مدخن 120 جرام مع بصل مقرمش وشرائح الجبنة الشيدر , وصوص الباربيكيو الكلاسيكى مع صوص السموك مايونيز",
-            },
-            desc: "Smoked burger 120g with crispy onion and cheddar cheese slices with classic barbecue sauce and smoke mayonnaise sauce",
+            name: "Texas Burger Basic",
+            desc: "120g smoked patty, crispy onion, cheddar, BBQ",
             price: 229,
           },
         ],
         "🍝 Pasta": [
           {
-            name: "Pasta Fredo",
-            ar: {
-              name: "باستا الفريدو",
-              desc: "باستا الفريدو غنية بصوص كريمي ومشروم طازج مع قطع الدجاج المشوى والجبن البارميزان",
-            },
-            desc: "Rich Fredo pasta with creamy sauce and fresh mushroom with pieces of grilled chicken and Parmesan cheese",
+            name: "Fettuccine Alfredo",
+            desc: "Creamy sauce, mushrooms, grilled chicken, parmesan",
             price: 279,
           },
           {
             name: "Spaghetti Bolognese",
-            ar: {
-              name: "اسباجيتي بلونيز",
-              desc: "سباجيتي بصلصة اللحم الغنية على الطريقة الإيطالية مع زيت الزيتون والبارميزان",
-            },
-            desc: "Spaghetti with rich meat sauce in Italian style with olive oil and Parmesan",
+            desc: "Rich Italian meat sauce, parmesan",
             price: 289,
           },
           {
             name: "Shrimp Pasta",
-            ar: {
-              name: "باستا جمبرى",
-              desc: "باستا الجمبرى اختيارك من الصوص الابيض او الاحمر مع قطع جمبرى والخضار المشوى",
-            },
-            desc: "Shrimp pasta, your choice of white or red sauce with shrimp and grilled vegetables",
+            desc: "White or red sauce, shrimp, grilled veggies",
             price: 259,
           },
         ],
-        "🍖 Main Courses": [
+        "🥩 Main Courses": [
           {
             name: "Chicken Fajita",
-            ar: {
-              name: "تشيكن فاهيتا",
-              desc: "قطع دجاج مشوى مع البصل والفلفل تقدم مع ارز وخبز التورتيلا  ويقدم مع 2 سايد من اختيارك",
-            },
-            desc: "Grilled chicken pieces with onion and peppers served with rice and tortilla bread with 2 of your choice sides",
+            desc: "Grilled chicken, peppers, onions, rice, tortillas + 2 sides",
             price: 299,
           },
           {
             name: "Beef Fajita",
-            ar: {
-              name: "بيف فاهيتا",
-              desc: "قطع اللحم مشوى مع البصل والفلفل تقدم مع ارز وخبز التورتيلا  ويقدم مع 2 سايد من اختيارك",
-            },
-            desc: "Grilled meat pieces with onion and peppers served with rice and tortilla bread with 2 of your choice sides",
+            desc: "Tender beef strips, peppers, onions, rice, tortillas + 2 sides",
             price: 339,
           },
           {
             name: "Mixed Fajita",
-            ar: {
-              name: "فاهيتا مكس",
-              desc: "قطع دجاج وبيف وجمبرى مع الفلفل والبصل تقدم مع ارز وخبز التورتيلا  ويقدم مع 2 سايد من اختيارك",
-            },
-            desc: "Chicken, beef and shrimp pieces with peppers and onions served with rice and tortilla bread with 2 of your choice sides",
+            desc: "Chicken, beef & shrimp, peppers, onion, rice, tortillas + 2 sides",
             price: 359,
           },
           {
-            name: "Escalope Breaded",
-            ar: {
-              name: "اسكالوب بانيه",
-              desc: "لحم بوفتيك رفيع ومتبل ومغلف بطبقة مقرمشة من الخارج وطرية من الداخل ويقدم مع الصوص الابيض ومع  2 سايد من اختيارك",
-            },
-            desc: "Thin seasoned filet wrapped in a crispy outer layer and tender inside served with white sauce and 2 of your choice sides",
+            name: "Escalope Schnitzel",
+            desc: "Thin breaded veal, crispy, white sauce + 2 sides",
             price: 399,
           },
           {
-            name: "Chicken Breast with Mushroom",
-            ar: {
-              name: "صدور  دجاج بالمشروم",
-              desc: "قطع دجاج مقلى كرسبى مع الشروم الطازج وصو الابيض مع 2 سايد من اختيارك",
-            },
-            desc: "Crispy fried chicken pieces with fresh mushroom and white sauce with 2 of your choice sides",
+            name: "Crispy Chicken with Mushrooms",
+            desc: "Crispy chicken, fresh mushrooms, creamy sauce + 2 sides",
             price: 329,
           },
           {
-            name: "Rib Eye Steak",
-            ar: {
-              name: "ريب آى ستيك",
-              desc: "قطعة استيك مشوية تقدم مع صوص المشروم او البيبر او الباربكيو ويقدم مع 2 سايد من اختيارك",
-            },
-            desc: "Grilled steak served with mushroom, pepper or barbecue sauce with 2 of your choice sides",
+            name: "Ribeye Steak",
+            desc: "Grilled ribeye, mushroom/pepper/BBQ sauce + 2 sides",
             price: 449,
           },
         ],
-        "🥔 Sides": [
-          {
-            name: "French Fries",
-            ar: { name: "بطاطس مقلية", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 50,
-          },
-          {
-            name: "Mashed Potatoes",
-            ar: { name: "ماش بوتيتو", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 70,
-          },
-          {
-            name: "Soho Rice",
-            ar: { name: "ارز سوهو", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 50,
-          },
-          {
-            name: "Coleslaw Salad",
-            ar: {
-              name: "سلطة كولسلو",
-              desc: "سلطة طازة مع خضار منتقاة يومياً",
-            },
-            desc: "",
-            price: 50,
-          },
-          {
-            name: "Corn Cup",
-            ar: { name: "كوب الذرة", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 50,
-          },
-          {
-            name: "Sautéed Vegetables",
-            ar: { name: "خضروات سوتيه", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 70,
-          },
-          {
-            name: "Mac Cheese Side",
-            ar: { name: "سايد ماك تشيز", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 70,
-          },
+        "🍟 Sides": [
+          { name: "French Fries", desc: "Golden & crispy", price: 50 },
+          { name: "Mashed Potato", desc: "Smooth buttery mash", price: 70 },
+          { name: "Soho Rice", desc: "Seasoned aromatic rice", price: 50 },
+          { name: "Coleslaw", desc: "Creamy cabbage slaw", price: 50 },
+          { name: "Corn Cup", desc: "Sweet corn kernels", price: 50 },
+          { name: "Sautéed Vegetables", desc: "Seasonal medley", price: 70 },
+          { name: "Side Mac & Cheese", desc: "Creamy pasta side", price: 70 },
         ],
         "👶 Kids Menu": [
           {
-            name: "Kids Strips",
-            ar: {
-              name: "كيدز استربس",
-              desc: "قطع دجاج مقرمشة تقدم مع بطاطس مقلية و الكاتشب مع عصير كيدز",
-            },
-            desc: "Crispy chicken pieces served with French fries and ketchup with kids juice",
+            name: "Kids Chicken Strips",
+            desc: "Crispy strips, fries, ketchup & juice",
             price: 189,
           },
           {
-            name: "Kids Chicken",
-            ar: {
-              name: "كيدز تشيكن",
-              desc: "قطع دجاج تقدم مع الخس والطماطم والكاتشب فى لقمة كيزر مع البطاطس المقلية مع عصير كيدز",
-            },
-            desc: "Chicken pieces served with lettuce, tomato and ketchup in a kaiser bite with French fries and kids juice",
+            name: "Kids Chicken Burger",
+            desc: "Mini chicken burger, fries, juice",
             price: 189,
           },
           {
-            name: "Kids Burger",
-            ar: {
-              name: "كيدز برجر",
-              desc: "قطعة برجر تقدم مع الخس والطماطم وشريحة الجبن فى لقمة كيزر مع البطاطس المقلية مع عصير كيدز",
-            },
-            desc: "Burger served with lettuce, tomato and cheese slice in a kaiser bite with French fries and kids juice",
+            name: "Kids Beef Burger",
+            desc: "Mini beef patty, cheese, fries, juice",
             price: 189,
-          },
-        ],
-        "🍯 Sauces": [
-          {
-            name: "Honey Mustard Sauce",
-            ar: {
-              name: "صوص مستردة بالعسل",
-              desc: "طبق شهي من أطباقنا الخاصة",
-            },
-            desc: "",
-            price: 30,
-          },
-          {
-            name: "Buffalo Sauce",
-            ar: { name: "صوص بافالو", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 30,
-          },
-          {
-            name: "Blue Cheese Sauce",
-            ar: { name: "صوص البلو تشيز", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 30,
-          },
-          {
-            name: "Ranch Sauce",
-            ar: { name: "صوص الرانش", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 30,
-          },
-          {
-            name: "Cheese Sauce",
-            ar: { name: "صوص الجبنة", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 30,
-          },
-          {
-            name: "Caesar Sauce",
-            ar: { name: "صوص السيزر", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 30,
-          },
-          {
-            name: "Dynamite Sauce",
-            ar: { name: "صوص الدينميت", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 30,
-          },
-          {
-            name: "Pico de Gallo",
-            ar: { name: "بيكوديجالو", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 30,
           },
         ],
         "🍰 Desserts": [
+          { name: "Molten Cake", desc: "Warm chocolate lava cake", price: 130 },
+          { name: "Cheesecake", desc: "Creamy NY style", price: 125 },
+          { name: "Brownie", desc: "Rich fudge brownie", price: 130 },
+        ],
+        "🧂 Sauces (Extra)": [
+          { name: "Honey Mustard", desc: "Sweet & tangy", price: 30 },
+          { name: "Buffalo Sauce", desc: "Spicy classic", price: 30 },
+          { name: "Blue Cheese", desc: "Creamy bold", price: 30 },
+          { name: "Ranch", desc: "Herb buttermilk", price: 30 },
+          { name: "Cheese Sauce", desc: "Velvety cheddar", price: 30 },
+          { name: "Caesar", desc: "Classic dressing", price: 30 },
+          { name: "Dynamite Sauce", desc: "Fiery kick", price: 30 },
+          { name: "Pico de Gallo", desc: "Fresh salsa", price: 30 },
+        ],
+      };
+
+      const istikMenu = {
+        "☕ Hot Drinks": [
           {
-            name: "Molten Cake",
-            ar: { name: "مولتن كيك", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
-            price: 130,
+            name: "Tea / Green Tea",
+            desc: "Classic or green infusion",
+            price: 35,
+          },
+          { name: "Tea Pot (2 cups)", desc: "Serves two", price: 70 },
+          { name: "Tea Pot (4 cups)", desc: "Sharing pot", price: 120 },
+          { name: "Karak Tea Pot", desc: "Spiced strong tea", price: 140 },
+          { name: "Matcha (cup)", desc: "Ceremonial matcha", price: 100 },
+          { name: "Nescafe", desc: "Classic instant", price: 60 },
+          { name: "Americano", desc: "Smooth black coffee", price: 85 },
+          { name: "Espresso Single", desc: "Intense shot", price: 80 },
+          { name: "Espresso Double", desc: "Double shot", price: 90 },
+          {
+            name: "Macchiato Single",
+            desc: "Espresso stained with milk",
+            price: 85,
           },
           {
-            name: "Cheese Cake",
-            ar: { name: "تشيز كيك", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
+            name: "Macchiato Double",
+            desc: "Double espresso macchiato",
+            price: 95,
+          },
+          { name: "Mocha", desc: "Chocolate & espresso", price: 110 },
+          { name: "Cappuccino", desc: "Perfect foam", price: 100 },
+          { name: "Cafe Latte", desc: "Creamy steamed milk", price: 100 },
+          { name: "Hot Chocolate", desc: "Rich dark cocoa", price: 110 },
+          { name: "Hot Cider", desc: "Warm spiced apple", price: 90 },
+          {
+            name: "Turkish Coffee Single",
+            desc: "Traditional unfiltered",
+            price: 70,
+          },
+          { name: "Turkish Coffee Double", desc: "Double strength", price: 80 },
+          { name: "French Coffee", desc: "Smooth dark roast", price: 85 },
+          {
+            name: "Sahlab with Nuts",
+            desc: "Creamy orchid drink, topped nuts",
+            price: 85,
+          },
+          { name: "Flat White", desc: "Velvety microfoam", price: 90 },
+          { name: "Ginger Infusion", desc: "Fresh zesty ginger", price: 50 },
+          {
+            name: "Arabic Coffee Pot (Dallah)",
+            desc: "Cardamom-infused, serves 3-4",
+            price: 210,
+          },
+          {
+            name: "Hot Istikanah",
+            desc: "House signature hot blend",
             price: 125,
           },
           {
-            name: "Brownies",
-            ar: { name: "براونيز", desc: "طبق شهي من أطباقنا الخاصة" },
-            desc: "",
+            name: "Spanish Latte",
+            desc: "Sweetened condensed milk latte",
+            price: 115,
+          },
+          { name: "Herbal Cocktail", desc: "Soothing herbs blend", price: 55 },
+        ],
+        "🍹 Fresh Juices": [
+          { name: "Orange Juice", desc: "Freshly squeezed", price: 80 },
+          { name: "Mango Juice", desc: "Tropical sweet", price: 80 },
+          { name: "Strawberry Juice", desc: "Bright & fresh", price: 80 },
+          { name: "Guava Juice", desc: "Exotic nectar", price: 80 },
+          { name: "Watermelon Juice", desc: "Refreshing summer", price: 80 },
+          { name: "Banana Milk", desc: "Creamy banana blend", price: 90 },
+          { name: "Kiwi Juice", desc: "Tangy vibrant", price: 90 },
+          { name: "Lemon Mint", desc: "Zesty cooler", price: 60 },
+        ],
+        "🌿 Healthy Drinks": [
+          {
+            name: "Matcha Coconut / Honey",
+            desc: "Matcha with coconut milk or honey",
             price: 130,
           },
+          {
+            name: "Power Healing",
+            desc: "Energizing superfood blend",
+            price: 100,
+          },
+          {
+            name: "Yogurt Fruits",
+            desc: "Creamy yogurt with fresh fruits",
+            price: 105,
+          },
+          {
+            name: "Yogurt Honey & Berries",
+            desc: "Greek yogurt, honey, mixed berries",
+            price: 115,
+          },
+          {
+            name: "Yogurt Avocado Honey & Nuts",
+            desc: "Rich avocado, nuts, honey",
+            price: 145,
+          },
+          {
+            name: "Avocado Honey & Nuts",
+            desc: "Creamy avocado with honey crunch",
+            price: 130,
+          },
+        ],
+        "🧊 Iced Drinks": [
+          { name: "Iced Matcha", desc: "Chilled pure matcha", price: 125 },
+          { name: "Iced Matcha Latte", desc: "Smooth iced latte", price: 130 },
+          { name: "Hibiscus Iced Tea", desc: "Tangy floral", price: 80 },
+          {
+            name: "Iced Tea with Hibiscus",
+            desc: "Refreshing blend",
+            price: 90,
+          },
+          { name: "Iced Latte", desc: "Chilled espresso & milk", price: 85 },
+          { name: "Iced Spanish Latte", desc: "Sweet iced latte", price: 120 },
+          { name: "Iced Mocha", desc: "Cold chocolate coffee", price: 125 },
+          {
+            name: "Frappe (Caramel/Chocolate)",
+            desc: "Blended frozen delight",
+            price: 125,
+          },
+          { name: "Iced Istikanah", desc: "Signature iced blend", price: 100 },
+          { name: "Iced Coffee", desc: "Classic chilled coffee", price: 115 },
+        ],
+        "🥛 Milkshakes": [
+          {
+            name: "Vanilla / Chocolate Shake",
+            desc: "Creamy classic",
+            price: 120,
+          },
+          {
+            name: "Strawberry / Mango Shake",
+            desc: "Fruity indulgence",
+            price: 120,
+          },
+          { name: "Matcha Shake", desc: "Earthy & sweet", price: 135 },
+          { name: "Oreo Shake", desc: "Cookies & cream", price: 130 },
+          { name: "Blueberry Shake", desc: "Berry bliss", price: 120 },
+        ],
+        "✨ Specialty Drinks": [
+          {
+            name: "Dates with Vanilla Ice Cream",
+            desc: "Decadent date fusion",
+            price: 125,
+          },
+          {
+            name: "Hibiscus with Banana & Berries",
+            desc: "Floral & fruity",
+            price: 105,
+          },
+          {
+            name: "Watermelon Passion",
+            desc: "Passionfruit watermelon",
+            price: 120,
+          },
+          { name: "Florida", desc: "Citrus sunrise blend", price: 110 },
+          {
+            name: "Dates Milk Rose Water",
+            desc: "Middle Eastern elegance",
+            price: 95,
+          },
+        ],
+        "🍸 Soda Cocktails": [
+          {
+            name: "Mojito (Passion/Blueberry/Strawberry)",
+            desc: "Fruit infused mojito",
+            price: 105,
+          },
+          { name: "Classic Mojito", desc: "Lime & mint soda", price: 95 },
+          { name: "Kiwi Red Bull", desc: "Energizing kiwi fusion", price: 150 },
+          { name: "Power Lemon", desc: "Zesty lemon spark", price: 140 },
+        ],
+        "🥤 Smoothies": [
+          { name: "Pina Colada", desc: "Coconut pineapple dream", price: 110 },
+          { name: "Lemon Mint Smoothie", desc: "Refreshing slush", price: 60 },
+          { name: "Istikana Smoothie", desc: "House signature", price: 75 },
+          {
+            name: "Mango / Strawberry Smoothie",
+            desc: "Tropical or berry",
+            price: 80,
+          },
+          { name: "Blueberry Smoothie", desc: "Antioxidant rich", price: 85 },
         ],
       };
 
@@ -2814,18 +1932,16 @@
 
       function getCategoryDisplay(cat) {
         const iconMap = {
-          "🥔 Sides":
+          "🍟 Sides":
             '<img src="sides.png" alt="Sides" style="width: 28px; height: 28px; vertical-align: middle;">',
           "👶 Kids Menu":
             '<img src="kids_meal.png" alt="Kids Menu" style="width: 28px; height: 28px; vertical-align: middle;">',
-          "🥤 Milkshakes":
+          "🥛 Milkshakes":
             '<img src="milk-shake.png" alt="Milkshakes" style="width: 28px; height: 28px; vertical-align: middle;">',
-          "🍯 Sauces":
+          "🧂 Sauces (Extra)":
             '<img src="sauces.png" alt="Sauces" style="width: 28px; height: 28px; vertical-align: middle;">',
           "🍟 Appetizers":
-            '<img src="app.svg" alt="Appetizers" style="width: 28px; height: 28px; vertical-align: middle;">',
-          "🥔 Crispy Chips":
-            '<img src="app.svg" alt="Crispy Chips" style="width: 28px; height: 28px; vertical-align: middle;">',
+            '<img src="app.svg" alt="Sides" style="width: 28px; height: 28px; vertical-align: middle;">',
         };
 
         if (iconMap[cat]) {
@@ -2840,18 +1956,16 @@
         let html = "";
         for (const [cat, items] of Object.entries(sohoMenu)) {
           html += `<div class="menu-category">
-            <div class="soho-cat-title">${getCategoryDisplay(cat)}</div>
-            <div class="soho-menu-grid">`;
+      <div class="soho-cat-title">${getCategoryDisplay(cat)}</div>
+      <div class="soho-menu-grid">`;
           items.forEach((item, i) => {
-            const displayItem =
-              currentLanguage === "ar" && item.ar ? item.ar : item;
-            html += `<div class="soho-menu-card" onclick="openSohoModal('${esc(displayItem.name).replace(/'/g, "\\'")}','${item.price}','${esc(displayItem.desc).replace(/'/g, "\\'")}')">
-              <div class="smcard-header">
-                <span class="smcard-name">${esc(displayItem.name)}</span>
-                <span class="smcard-price">${item.price} EGP</span>
-              </div>
-              <div class="smcard-desc">${esc(displayItem.desc)}</div>
-            </div>`;
+            html += `<div class="soho-menu-card" onclick="openSohoModal('${esc(item.name).replace(/'/g, "\\'")}','${item.price}','${esc(item.desc).replace(/'/g, "\\'")}')">
+        <div class="smcard-header">
+          <span class="smcard-name">${esc(item.name)}</span>
+          <span class="smcard-price">${item.price} EGP</span>
+        </div>
+        <div class="smcard-desc">${esc(item.desc)}</div>
+      </div>`;
           });
           html += `</div></div>`;
         }
@@ -2863,18 +1977,16 @@
         let html = "";
         for (const [cat, items] of Object.entries(istikMenu)) {
           html += `<div class="menu-category">
-            <div class="istik-cat-title">${getCategoryDisplay(cat)}</div>
-            <div class="istik-menu-grid">`;
+      <div class="istik-cat-title">${getCategoryDisplay(cat)}</div>
+      <div class="istik-menu-grid">`;
           items.forEach((item) => {
-            const displayItem =
-              currentLanguage === "ar" && item.ar ? item.ar : item;
-            html += `<div class="istik-menu-card" onclick="openIstikModal('${esc(displayItem.name).replace(/'/g, "\\'")}','${item.price}','${esc(displayItem.desc).replace(/'/g, "\\'")}')">
-              <div class="imcard-header">
-                <span class="imcard-name">${esc(displayItem.name)}</span>
-                <span class="imcard-price">${item.price} EGP</span>
-              </div>
-              <div class="imcard-desc">${esc(displayItem.desc)}</div>
-            </div>`;
+            html += `<div class="istik-menu-card" onclick="openIstikModal('${esc(item.name).replace(/'/g, "\\'")}','${item.price}','${esc(item.desc).replace(/'/g, "\\'")}')">
+        <div class="imcard-header">
+          <span class="imcard-name">${esc(item.name)}</span>
+          <span class="imcard-price">${item.price} EGP</span>
+        </div>
+        <div class="imcard-desc">${esc(item.desc)}</div>
+      </div>`;
           });
           html += `</div></div>`;
         }
@@ -2916,24 +2028,12 @@
         }, 100);
       }
 
-      // Update menus when language changes
-      function updateMenusForLanguage() {
-        renderSohoMenu();
-        renderIstikMenu();
-        switchTab(currentTab); // Re-render with correct language
-      }
-
       // ===================== MODALS =====================
       function openSohoModal(name, price, desc) {
         document.getElementById("sohoModalTitle").textContent = name;
         document.getElementById("sohoModalPrice").textContent = price + " EGP";
-        // Ensure description is shown, with fallback if description is empty
-        const fallbackDesc =
-          currentLanguage === "ar"
-            ? "طبق شهي من قائمة سوهو. مصنوع بعناية وجودة عالية."
-            : "Premium item from our SOHO menu. Carefully crafted with quality ingredients.";
-        const finalDesc = desc && desc.trim() ? desc : fallbackDesc;
-        document.getElementById("sohoModalDesc").textContent = finalDesc;
+        document.getElementById("sohoModalDesc").textContent =
+          desc || "A Soho signature creation.";
         document.getElementById("sohoModal").classList.add("active");
         document.body.style.overflow = "hidden";
       }
@@ -2941,13 +2041,8 @@
       function openIstikModal(name, price, desc) {
         document.getElementById("istikModalTitle").textContent = name;
         document.getElementById("istikModalPrice").textContent = price + " EGP";
-        // Ensure description is shown, with fallback if description is empty
-        const fallbackDesc =
-          currentLanguage === "ar"
-            ? "إبداع حرفي من إستكنانة. مصنوع بعناية وجودة عالية."
-            : "Artisanal creation from ISTIKNANAH. Made with premium care and quality.";
-        const finalDesc = desc && desc.trim() ? desc : fallbackDesc;
-        document.getElementById("istikModalDesc").textContent = finalDesc;
+        document.getElementById("istikModalDesc").textContent =
+          desc || "An Istiknanah artisanal creation.";
         document.getElementById("istikModal").classList.add("active");
         document.body.style.overflow = "hidden";
       }
@@ -2987,89 +2082,6 @@
       document
         .querySelectorAll(".reveal, .stagger")
         .forEach((el) => revealObserver.observe(el));
-    </script>
-
-    <!-- Firebase REST API Integration -->
-    <script src="firebase-rest-client.js"></script>
-    <script>
-      // ===== FIREBASE CONFIG =====
-      const firebaseConfig = {
-        apiKey: "AIzaSyCoiuHbVfclITv_Ah6UOQeV33QGPGRVeXw",
-        projectId: "menu1-ec4bc",
-      };
-
-      let firebaseAPI = null;
-
-      // Initialize Firebase
-      async function initializeApp() {
-        try {
-          firebaseAPI = new FirebaseAPI(firebaseConfig);
-          console.log("✅ Firebase initialized");
-          loadMenusFromFirebase();
-        } catch (error) {
-          console.error("Firebase error:", error);
-        }
-      }
-
-      // Load menus from Firebase Firestore
-      async function loadMenusFromFirebase() {
-        try {
-          console.log("🔄 Loading menus from Firebase...");
-          const items = await firebaseAPI.getAll("menus");
-
-          if (!items || items.length === 0) {
-            console.log("⚠️ No menus found in Firebase");
-            return;
-          }
-
-          // Build menu objects from Firebase data
-          const sohoItems = {};
-          const istikItems = {};
-
-          items.forEach((item) => {
-            const category = item.category || "Uncategorized";
-
-            const menuItem = {
-              name: item.name,
-              desc: item.desc || "",
-              price: item.price || 0,
-              ar: { name: item.nameAr, desc: item.descAr || "" },
-            };
-
-            if (item.menu === "soho") {
-              if (!sohoItems[category]) sohoItems[category] = [];
-              sohoItems[category].push(menuItem);
-            } else if (item.menu === "istik") {
-              if (!istikItems[category]) istikItems[category] = [];
-              istikItems[category].push(menuItem);
-            }
-          });
-
-          // Update global menu objects
-          window.sohoMenu = sohoItems;
-          window.istikMenu = istikItems;
-
-          // Re-render menus
-          renderSohoMenu();
-          renderIstikMenu();
-
-          console.log(
-            "✅ Menus loaded from Firebase (" + items.length + " items)",
-          );
-        } catch (error) {
-          console.error("Error loading menus:", error);
-        }
-      }
-
-      // Setup real-time sync - reload every 5 seconds
-      setInterval(loadMenusFromFirebase, 5000);
-
-      // Load on page ready
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initializeApp);
-      } else {
-        initializeApp();
-      }
     </script>
   </body>
 </html>
