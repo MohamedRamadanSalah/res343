@@ -1278,7 +1278,7 @@
   <body>
     <!-- Language Toggle Button -->
     <button class="lang-toggle" onclick="toggleLanguage()" id="langToggleBtn">
-      ENGLISH | عربي
+      ENGLISH
     </button>
 
     <!-- ======= HERO ======= -->
@@ -1534,6 +1534,9 @@
       </div>
     </div>
 
+    <!-- Load Bilingual Menu Data -->
+    <script src="bilingual_menu_data.js"></script>
+
     <script>
       // ===================== LANGUAGE SYSTEM =====================
       let currentLanguage = "en";
@@ -1620,8 +1623,7 @@
 
         // Update button text
         const langBtn = document.getElementById("langToggleBtn");
-        langBtn.textContent =
-          currentLanguage === "en" ? "ENGLISH | عربي" : "إنجليزي | عربي";
+        langBtn.textContent = currentLanguage === "en" ? "ENGLISH" : "عربي";
 
         // Update all page text
         updatePageLanguage();
@@ -1687,429 +1689,71 @@
           tabButtons[1].textContent = getTranslation("☕ ISTIKNANAH");
       }
 
-      // ===================== MENU DATA =====================
-      const sohoMenu = {
-        "🥤 Cold Beverages": [
-          { name: "Still Mineral Water", desc: "Pure & refreshing", price: 35 },
-          { name: "Sparkling Water", desc: "Crisp bubbles", price: 55 },
-          { name: "Pepsi / 7Up", desc: "Classic soda", price: 40 },
-          {
-            name: "Perrier / Schweppes / Fayrouz",
-            desc: "Premium selection",
-            price: 45,
-          },
-          { name: "Red Bull", desc: "Energy boost", price: 85 },
-          { name: "Red Bull + Sauce Shot", desc: "Extra kick", price: 105 },
-        ],
-        "🍜 Soups": [
-          {
-            name: "Creamy Chicken Soup",
-            desc: "Velvety smooth chicken",
-            price: 89,
-          },
-          { name: "Creamy Mushroom Soup", desc: "Earthy & rich", price: 85 },
-        ],
-        "🥗 Salads": [
-          {
-            name: "Caesar Salad with Chicken",
-            desc: "Grilled chicken, romaine, croutons, parmesan",
-            price: 169,
-          },
-          {
-            name: "Cobb Salad",
-            desc: "Crispy chicken, egg, bacon, cheese, corn, beans, pico",
-            price: 209,
-          },
-          {
-            name: "Taco Salad",
-            desc: "Lettuce, tortilla strips, chicken, bacon, cheese, ranch, beans",
-            price: 199,
-          },
-        ],
-        "🍟 Appetizers": [
-          {
-            name: "Chicken Strips",
-            desc: "Crispy outside, tender inside, honey mustard or buffalo",
-            price: 189,
-          },
-          {
-            name: "Chicken Wings",
-            desc: "Fried wings with buffalo/BBQ/dynamite sauce",
-            price: 169,
-          },
-          {
-            name: "Mozzarella Sticks",
-            desc: "Golden with marinara",
-            price: 99,
-          },
-          {
-            name: "Chili Cheese Fries",
-            desc: "Fries, cheese sauce, pico, jalapeños",
-            price: 129,
-          },
-          {
-            name: "Soho Chips",
-            desc: "Crispy chips + signature Soho sauce",
-            price: 110,
-          },
-          {
-            name: "Nacho Land",
-            desc: "Nachos, melted cheese, jalapeños, sour cream, pico",
-            price: 149,
-          },
-          {
-            name: "Mac & Cheese",
-            desc: "Creamy white sauce pasta, special cheese blend",
-            price: 159,
-          },
-        ],
-        "🍔 Burgers & Sandwiches": [
-          {
-            name: "Brisket Star",
-            desc: "Smoked brisket, cheese sauce, crispy onions, BBQ, pickles, mayo",
-            price: 269,
-          },
-          {
-            name: "Steak Sandwich",
-            desc: "Sliced steak, grilled veggies, Soho cheese, smoky sauce",
-            price: 299,
-          },
-          {
-            name: "Classic Soho Chicken",
-            desc: "Grilled/fried chicken, Soho sauce, cheddar, lettuce, tomato",
-            price: 279,
-          },
-          {
-            name: "Chicken Quesadilla",
-            desc: "Marinated chicken, grilled veggies, melted cheese, ranch",
-            price: 289,
-          },
-          {
-            name: "Beef Quesadilla",
-            desc: "Marinated beef strips, veggies, cheese, ranch",
-            price: 299,
-          },
-          {
-            name: "Shrimp Quesadilla",
-            desc: "Spiced shrimp, grilled veggies, melted cheese, ranch",
-            price: 289,
-          },
-          {
-            name: "Classic Burger",
-            desc: "Flame-grilled patty, lettuce, tomato, onion, mayo",
-            price: 279,
-          },
-          {
-            name: "Classic Burger Basic",
-            desc: "120g patty, lettuce, tomato, onion, special sauce",
-            price: 209,
-          },
-          {
-            name: "Soho Mushroom Burger",
-            desc: "Beef patty, cheese, grilled mushrooms, caramelized onion, smoky mayo",
-            price: 309,
-          },
-          {
-            name: "Soho Mushroom Burger Basic",
-            desc: "120g patty, mushrooms, onion, smoky mayo, cheese",
-            price: 239,
-          },
-          {
-            name: "Bacon Burger",
-            desc: "Patty, cheddar, smoked bacon, caramelized onion, jalapeños, mayo",
-            price: 269,
-          },
-          {
-            name: "Bacon Burger Basic",
-            desc: "120g patty, bacon, cheese, jalapeños, mayo",
-            price: 199,
-          },
-          {
-            name: "Texas Burger",
-            desc: "Smoked patty, crispy onion, cheddar, BBQ, smoky mayo",
-            price: 299,
-          },
-          {
-            name: "Texas Burger Basic",
-            desc: "120g smoked patty, crispy onion, cheddar, BBQ",
-            price: 229,
-          },
-        ],
-        "🍝 Pasta": [
-          {
-            name: "Fettuccine Alfredo",
-            desc: "Creamy sauce, mushrooms, grilled chicken, parmesan",
-            price: 279,
-          },
-          {
-            name: "Spaghetti Bolognese",
-            desc: "Rich Italian meat sauce, parmesan",
-            price: 289,
-          },
-          {
-            name: "Shrimp Pasta",
-            desc: "White or red sauce, shrimp, grilled veggies",
-            price: 259,
-          },
-        ],
-        "🥩 Main Courses": [
-          {
-            name: "Chicken Fajita",
-            desc: "Grilled chicken, peppers, onions, rice, tortillas + 2 sides",
-            price: 299,
-          },
-          {
-            name: "Beef Fajita",
-            desc: "Tender beef strips, peppers, onions, rice, tortillas + 2 sides",
-            price: 339,
-          },
-          {
-            name: "Mixed Fajita",
-            desc: "Chicken, beef & shrimp, peppers, onion, rice, tortillas + 2 sides",
-            price: 359,
-          },
-          {
-            name: "Escalope Schnitzel",
-            desc: "Thin breaded veal, crispy, white sauce + 2 sides",
-            price: 399,
-          },
-          {
-            name: "Crispy Chicken with Mushrooms",
-            desc: "Crispy chicken, fresh mushrooms, creamy sauce + 2 sides",
-            price: 329,
-          },
-          {
-            name: "Ribeye Steak",
-            desc: "Grilled ribeye, mushroom/pepper/BBQ sauce + 2 sides",
-            price: 449,
-          },
-        ],
-        "🍟 Sides": [
-          { name: "French Fries", desc: "Golden & crispy", price: 50 },
-          { name: "Mashed Potato", desc: "Smooth buttery mash", price: 70 },
-          { name: "Soho Rice", desc: "Seasoned aromatic rice", price: 50 },
-          { name: "Coleslaw", desc: "Creamy cabbage slaw", price: 50 },
-          { name: "Corn Cup", desc: "Sweet corn kernels", price: 50 },
-          { name: "Sautéed Vegetables", desc: "Seasonal medley", price: 70 },
-          { name: "Side Mac & Cheese", desc: "Creamy pasta side", price: 70 },
-        ],
-        "👶 Kids Menu": [
-          {
-            name: "Kids Chicken Strips",
-            desc: "Crispy strips, fries, ketchup & juice",
-            price: 189,
-          },
-          {
-            name: "Kids Chicken Burger",
-            desc: "Mini chicken burger, fries, juice",
-            price: 189,
-          },
-          {
-            name: "Kids Beef Burger",
-            desc: "Mini beef patty, cheese, fries, juice",
-            price: 189,
-          },
-        ],
-        "🍰 Desserts": [
-          { name: "Molten Cake", desc: "Warm chocolate lava cake", price: 130 },
-          { name: "Cheesecake", desc: "Creamy NY style", price: 125 },
-          { name: "Brownie", desc: "Rich fudge brownie", price: 130 },
-        ],
-        "🧂 Sauces (Extra)": [
-          { name: "Honey Mustard", desc: "Sweet & tangy", price: 30 },
-          { name: "Buffalo Sauce", desc: "Spicy classic", price: 30 },
-          { name: "Blue Cheese", desc: "Creamy bold", price: 30 },
-          { name: "Ranch", desc: "Herb buttermilk", price: 30 },
-          { name: "Cheese Sauce", desc: "Velvety cheddar", price: 30 },
-          { name: "Caesar", desc: "Classic dressing", price: 30 },
-          { name: "Dynamite Sauce", desc: "Fiery kick", price: 30 },
-          { name: "Pico de Gallo", desc: "Fresh salsa", price: 30 },
-        ],
-      };
+      // ===================== MENU DATA LOADED FROM bilingual_menu_data.js =====================
+      // sohoMenu and istikMenu objects are now loaded from external file
 
-      const istikMenu = {
-        "☕ Hot Drinks": [
-          {
-            name: "Tea / Green Tea",
-            desc: "Classic or green infusion",
-            price: 35,
+      function getItemName(item) {
+        return currentLanguage === "en" ? item.en_name : item.ar_name;
+      }
+
+      function getItemDesc(item) {
+        return currentLanguage === "en" ? item.en_desc : item.ar_desc;
+      }
+
+      function getCategoryDisplay(cat) {
+        const categoryTranslations = {
+          en: {
+            "🥤 Cold Beverages": "Cold Beverages",
+            "🍜 Soups": "Soups",
+            "🥗 Salads": "Salads",
+            "🍟 Appetizers": "Appetizers",
+            "🍔 Burgers & Sandwiches": "Burgers & Sandwiches",
+            "🍝 Pasta": "Pasta",
+            "🥩 Main Courses": "Main Courses",
+            "🍟 Sides": "Sides",
+            "👶 Kids Menu": "Kids Menu",
+            "🍰 Desserts": "Desserts",
+            "🧂 Sauces (Extra)": "Sauces (Extra)",
+            "☕ Hot Drinks": "Hot Drinks",
+            "🥛 Cold Drinks": "Cold Drinks",
+            "🧃 Fresh Juices": "Fresh Juices",
+            "🍰 Pastries & Bakes": "Pastries & Bakes",
+            "🥛 Milkshakes": "Milkshakes",
           },
-          { name: "Tea Pot (2 cups)", desc: "Serves two", price: 70 },
-          { name: "Tea Pot (4 cups)", desc: "Sharing pot", price: 120 },
-          { name: "Karak Tea Pot", desc: "Spiced strong tea", price: 140 },
-          { name: "Matcha (cup)", desc: "Ceremonial matcha", price: 100 },
-          { name: "Nescafe", desc: "Classic instant", price: 60 },
-          { name: "Americano", desc: "Smooth black coffee", price: 85 },
-          { name: "Espresso Single", desc: "Intense shot", price: 80 },
-          { name: "Espresso Double", desc: "Double shot", price: 90 },
-          {
-            name: "Macchiato Single",
-            desc: "Espresso stained with milk",
-            price: 85,
+          ar: {
+            "🥤 Cold Beverages": "المشروبات الباردة",
+            "🍜 Soups": "الشوربات",
+            "🥗 Salads": "السلطات",
+            "🍟 Appetizers": "المقبلات",
+            "🍔 Burgers & Sandwiches": "البرجرات والساندويتشات",
+            "🍝 Pasta": "المعكرونة",
+            "🥩 Main Courses": "الأطباق الرئيسية",
+            "🍟 Sides": "الأطباق الجانبية",
+            "👶 Kids Menu": "قائمة الأطفال",
+            "🍰 Desserts": "الحلويات",
+            "🧂 Sauces (Extra)": "الصلصات (إضافية)",
+            "☕ Hot Drinks": "المشروبات الساخنة",
+            "🥛 Cold Drinks": "المشروبات الباردة",
+            "🧃 Fresh Juices": "العصائر الطازجة",
+            "🍰 Pastries & Bakes": "المعجنات والخبز",
+            "🥛 Milkshakes": "الميلك شيك",
           },
-          {
-            name: "Macchiato Double",
-            desc: "Double espresso macchiato",
-            price: 95,
-          },
-          { name: "Mocha", desc: "Chocolate & espresso", price: 110 },
-          { name: "Cappuccino", desc: "Perfect foam", price: 100 },
-          { name: "Cafe Latte", desc: "Creamy steamed milk", price: 100 },
-          { name: "Hot Chocolate", desc: "Rich dark cocoa", price: 110 },
-          { name: "Hot Cider", desc: "Warm spiced apple", price: 90 },
-          {
-            name: "Turkish Coffee Single",
-            desc: "Traditional unfiltered",
-            price: 70,
-          },
-          { name: "Turkish Coffee Double", desc: "Double strength", price: 80 },
-          { name: "French Coffee", desc: "Smooth dark roast", price: 85 },
-          {
-            name: "Sahlab with Nuts",
-            desc: "Creamy orchid drink, topped nuts",
-            price: 85,
-          },
-          { name: "Flat White", desc: "Velvety microfoam", price: 90 },
-          { name: "Ginger Infusion", desc: "Fresh zesty ginger", price: 50 },
-          {
-            name: "Arabic Coffee Pot (Dallah)",
-            desc: "Cardamom-infused, serves 3-4",
-            price: 210,
-          },
-          {
-            name: "Hot Istikanah",
-            desc: "House signature hot blend",
-            price: 125,
-          },
-          {
-            name: "Spanish Latte",
-            desc: "Sweetened condensed milk latte",
-            price: 115,
-          },
-          { name: "Herbal Cocktail", desc: "Soothing herbs blend", price: 55 },
-        ],
-        "🍹 Fresh Juices": [
-          { name: "Orange Juice", desc: "Freshly squeezed", price: 80 },
-          { name: "Mango Juice", desc: "Tropical sweet", price: 80 },
-          { name: "Strawberry Juice", desc: "Bright & fresh", price: 80 },
-          { name: "Guava Juice", desc: "Exotic nectar", price: 80 },
-          { name: "Watermelon Juice", desc: "Refreshing summer", price: 80 },
-          { name: "Banana Milk", desc: "Creamy banana blend", price: 90 },
-          { name: "Kiwi Juice", desc: "Tangy vibrant", price: 90 },
-          { name: "Lemon Mint", desc: "Zesty cooler", price: 60 },
-        ],
-        "🌿 Healthy Drinks": [
-          {
-            name: "Matcha Coconut / Honey",
-            desc: "Matcha with coconut milk or honey",
-            price: 130,
-          },
-          {
-            name: "Power Healing",
-            desc: "Energizing superfood blend",
-            price: 100,
-          },
-          {
-            name: "Yogurt Fruits",
-            desc: "Creamy yogurt with fresh fruits",
-            price: 105,
-          },
-          {
-            name: "Yogurt Honey & Berries",
-            desc: "Greek yogurt, honey, mixed berries",
-            price: 115,
-          },
-          {
-            name: "Yogurt Avocado Honey & Nuts",
-            desc: "Rich avocado, nuts, honey",
-            price: 145,
-          },
-          {
-            name: "Avocado Honey & Nuts",
-            desc: "Creamy avocado with honey crunch",
-            price: 130,
-          },
-        ],
-        "🧊 Iced Drinks": [
-          { name: "Iced Matcha", desc: "Chilled pure matcha", price: 125 },
-          { name: "Iced Matcha Latte", desc: "Smooth iced latte", price: 130 },
-          { name: "Hibiscus Iced Tea", desc: "Tangy floral", price: 80 },
-          {
-            name: "Iced Tea with Hibiscus",
-            desc: "Refreshing blend",
-            price: 90,
-          },
-          { name: "Iced Latte", desc: "Chilled espresso & milk", price: 85 },
-          { name: "Iced Spanish Latte", desc: "Sweet iced latte", price: 120 },
-          { name: "Iced Mocha", desc: "Cold chocolate coffee", price: 125 },
-          {
-            name: "Frappe (Caramel/Chocolate)",
-            desc: "Blended frozen delight",
-            price: 125,
-          },
-          { name: "Iced Istikanah", desc: "Signature iced blend", price: 100 },
-          { name: "Iced Coffee", desc: "Classic chilled coffee", price: 115 },
-        ],
-        "🥛 Milkshakes": [
-          {
-            name: "Vanilla / Chocolate Shake",
-            desc: "Creamy classic",
-            price: 120,
-          },
-          {
-            name: "Strawberry / Mango Shake",
-            desc: "Fruity indulgence",
-            price: 120,
-          },
-          { name: "Matcha Shake", desc: "Earthy & sweet", price: 135 },
-          { name: "Oreo Shake", desc: "Cookies & cream", price: 130 },
-          { name: "Blueberry Shake", desc: "Berry bliss", price: 120 },
-        ],
-        "✨ Specialty Drinks": [
-          {
-            name: "Dates with Vanilla Ice Cream",
-            desc: "Decadent date fusion",
-            price: 125,
-          },
-          {
-            name: "Hibiscus with Banana & Berries",
-            desc: "Floral & fruity",
-            price: 105,
-          },
-          {
-            name: "Watermelon Passion",
-            desc: "Passionfruit watermelon",
-            price: 120,
-          },
-          { name: "Florida", desc: "Citrus sunrise blend", price: 110 },
-          {
-            name: "Dates Milk Rose Water",
-            desc: "Middle Eastern elegance",
-            price: 95,
-          },
-        ],
-        "🍸 Soda Cocktails": [
-          {
-            name: "Mojito (Passion/Blueberry/Strawberry)",
-            desc: "Fruit infused mojito",
-            price: 105,
-          },
-          { name: "Classic Mojito", desc: "Lime & mint soda", price: 95 },
-          { name: "Kiwi Red Bull", desc: "Energizing kiwi fusion", price: 150 },
-          { name: "Power Lemon", desc: "Zesty lemon spark", price: 140 },
-        ],
-        "🥤 Smoothies": [
-          { name: "Pina Colada", desc: "Coconut pineapple dream", price: 110 },
-          { name: "Lemon Mint Smoothie", desc: "Refreshing slush", price: 60 },
-          { name: "Istikana Smoothie", desc: "House signature", price: 75 },
-          {
-            name: "Mango / Strawberry Smoothie",
-            desc: "Tropical or berry",
-            price: 80,
-          },
-          { name: "Blueberry Smoothie", desc: "Antioxidant rich", price: 85 },
-        ],
-      };
+        };
+
+        const translatedCat = categoryTranslations[currentLanguage][cat];
+        if (translatedCat) {
+          return cat.substring(0, 2) + " " + esc(translatedCat);
+        }
+        return esc(cat);
+      }
+
+      function getItemName(item) {
+        return currentLanguage === "en" ? item.en_name : item.ar_name;
+      }
+
+      function getItemDesc(item) {
+        return currentLanguage === "en" ? item.en_desc : item.ar_desc;
+      }
 
       // ===================== RENDER MENUS =====================
       function esc(str) {
@@ -2187,20 +1831,115 @@
         return esc(cat);
       }
 
+      function getItemName(item) {
+        return currentLanguage === "en" ? item.en_name : item.ar_name;
+      }
+
+      function getItemDesc(item) {
+        return currentLanguage === "en" ? item.en_desc : item.ar_desc;
+      }
+
+      // ===================== RENDER MENUS =====================
+      function esc(str) {
+        if (!str) return "";
+        return str
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+
+      function getCategoryDisplay(cat) {
+        const categoryTranslations = {
+          en: {
+            "🥤 Cold Beverages": "Cold Beverages",
+            "🍜 Soups": "Soups",
+            "🥗 Salads": "Salads",
+            "🍟 Appetizers": "Appetizers",
+            "🍔 Burgers & Sandwiches": "Burgers & Sandwiches",
+            "🍝 Pasta": "Pasta",
+            "🥩 Main Courses": "Main Courses",
+            "🍟 Sides": "Sides",
+            "👶 Kids Menu": "Kids Menu",
+            "🍰 Desserts": "Desserts",
+            "🧂 Sauces (Extra)": "Sauces (Extra)",
+            "☕ Hot Drinks": "Hot Drinks",
+            "🥛 Cold Drinks": "Cold Drinks",
+            "🧃 Fresh Juices": "Fresh Juices",
+            "🍰 Pastries & Bakes": "Pastries & Bakes",
+            "🥛 Milkshakes": "Milkshakes",
+          },
+          ar: {
+            "🥤 Cold Beverages": "المشروبات الباردة",
+            "🍜 Soups": "الشوربات",
+            "🥗 Salads": "السلطات",
+            "🍟 Appetizers": "المقبلات",
+            "🍔 Burgers & Sandwiches": "البرجرات والساندويتشات",
+            "🍝 Pasta": "المعكرونة",
+            "🥩 Main Courses": "الأطباق الرئيسية",
+            "🍟 Sides": "الأطباق الجانبية",
+            "👶 Kids Menu": "قائمة الأطفال",
+            "🍰 Desserts": "الحلويات",
+            "🧂 Sauces (Extra)": "الصلصات (إضافية)",
+            "☕ Hot Drinks": "المشروبات الساخنة",
+            "🥛 Cold Drinks": "المشروبات الباردة",
+            "🧃 Fresh Juices": "العصائر الطازجة",
+            "🍰 Pastries & Bakes": "المعجنات والخبز",
+            "🥛 Milkshakes": "الميلك شيك",
+          },
+        };
+
+        const iconMap = {
+          "🍟 Sides":
+            '<img src="sides.png" alt="Sides" style="width: 28px; height: 28px; vertical-align: middle;">',
+          "👶 Kids Menu":
+            '<img src="kids_meal.png" alt="Kids Menu" style="width: 28px; height: 28px; vertical-align: middle;">',
+          "🥛 Milkshakes":
+            '<img src="milk-shake.png" alt="Milkshakes" style="width: 28px; height: 28px; vertical-align: middle;">',
+          "🧂 Sauces (Extra)":
+            '<img src="sauces.png" alt="Sauces" style="width: 28px; height: 28px; vertical-align: middle;">',
+          "🍟 Appetizers":
+            '<img src="app.svg" alt="Sides" style="width: 28px; height: 28px; vertical-align: middle;">',
+        };
+
+        if (iconMap[cat]) {
+          const catText =
+            categoryTranslations[currentLanguage][cat] ||
+            cat.substring(2).trim();
+          return iconMap[cat] + " " + esc(catText);
+        }
+
+        const translatedCat = categoryTranslations[currentLanguage][cat];
+        if (translatedCat) {
+          return cat.substring(0, 2) + " " + esc(translatedCat);
+        }
+        return esc(cat);
+      }
+
+      function getItemName(item) {
+        return currentLanguage === "en" ? item.en_name : item.ar_name;
+      }
+
+      function getItemDesc(item) {
+        return currentLanguage === "en" ? item.en_desc : item.ar_desc;
+      }
+
       function renderSohoMenu() {
         const container = document.getElementById("sohoMenuContent");
         let html = "";
-        for (const [cat, items] of Object.entries(sohoMenu)) {
+        for (const [cat, catData] of Object.entries(sohoMenu)) {
+          const catName = currentLanguage === "en" ? cat : catData.ar;
           html += `<div class="menu-category">
       <div class="soho-cat-title">${getCategoryDisplay(cat)}</div>
       <div class="soho-menu-grid">`;
-          items.forEach((item, i) => {
-            html += `<div class="soho-menu-card" onclick="openSohoModal('${esc(item.name).replace(/'/g, "\\'")}','${item.price}','${esc(item.desc).replace(/'/g, "\\'")}')">
+          catData.items.forEach((item) => {
+            const itemName = getItemName(item);
+            const itemDesc = getItemDesc(item);
+            html += `<div class="soho-menu-card" onclick="openSohoModal('${esc(itemName).replace(/'/g, "\\'")}','${item.price}','${esc(itemDesc).replace(/'/g, "\\'")}')">
         <div class="smcard-header">
-          <span class="smcard-name">${esc(item.name)}</span>
+          <span class="smcard-name">${esc(itemName)}</span>
           <span class="smcard-price">${item.price} EGP</span>
         </div>
-        <div class="smcard-desc">${esc(item.desc)}</div>
+        <div class="smcard-desc">${esc(itemDesc)}</div>
       </div>`;
           });
           html += `</div></div>`;
@@ -2211,17 +1950,19 @@
       function renderIstikMenu() {
         const container = document.getElementById("istikMenuContent");
         let html = "";
-        for (const [cat, items] of Object.entries(istikMenu)) {
+        for (const [cat, catData] of Object.entries(istikMenu)) {
           html += `<div class="menu-category">
       <div class="istik-cat-title">${getCategoryDisplay(cat)}</div>
       <div class="istik-menu-grid">`;
-          items.forEach((item) => {
-            html += `<div class="istik-menu-card" onclick="openIstikModal('${esc(item.name).replace(/'/g, "\\'")}','${item.price}','${esc(item.desc).replace(/'/g, "\\'")}')">
+          catData.items.forEach((item) => {
+            const itemName = getItemName(item);
+            const itemDesc = getItemDesc(item);
+            html += `<div class="istik-menu-card" onclick="openIstikModal('${esc(itemName).replace(/'/g, "\\'")}','${item.price}','${esc(itemDesc).replace(/'/g, "\\'")}')">
         <div class="imcard-header">
-          <span class="imcard-name">${esc(item.name)}</span>
+          <span class="imcard-name">${esc(itemName)}</span>
           <span class="imcard-price">${item.price} EGP</span>
         </div>
-        <div class="imcard-desc">${esc(item.desc)}</div>
+        <div class="imcard-desc">${esc(itemDesc)}</div>
       </div>`;
           });
           html += `</div></div>`;
