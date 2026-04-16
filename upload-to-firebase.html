@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload Menu to Firebase</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        max-width: 600px;
+        width: 100%;
+      }
+      h1 {
+        color: #333;
+        margin: 0 0 20px 0;
+      }
+      p {
+        color: #666;
+        line-height: 1.6;
+      }
+      button {
+        background: #27ae60;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        width: 100%;
+        margin-top: 20px;
+      }
+      button:hover {
+        background: #229954;
+      }
+      button:disabled {
+        background: #95a5a6;
+        cursor: not-allowed;
+      }
+      #status {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 8px;
+        display: none;
+      }
+      #status.success {
+        background: #d4edda;
+        color: #155724;
+        display: block;
+      }
+      #status.error {
+        background: #f8d7da;
+        color: #721c24;
+        display: block;
+      }
+      #status.info {
+        background: #d1ecf1;
+        color: #0c5460;
+        display: block;
+      }
+      #progress {
+        margin-top: 20px;
+        display: none;
+      }
+      .progress-bar {
+        width: 100%;
+        height: 20px;
+        background: #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: #27ae60;
+        width: 0%;
+        transition: width 0.3s;
+      }
+      .count {
+        margin-top: 10px;
+        color: #666;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>📤 Upload Menu to Firebase</h1>
+      <p>
+        This will upload all menu items from the HTML to Firebase Firestore. You
+        can then manage them in the admin panel.
+      </p>
+      <p>
+        <strong>WARNING:</strong> This will upload approximately 140+ items.
+        Make sure Firebase is ready.
+      </p>
+
+      <button id="uploadBtn" onclick="uploadAllItems()">Start Upload</button>
+
+      <div id="status"></div>
+      <div id="progress">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="count">
+          Uploading: <span id="itemCount">0</span> /
+          <span id="totalCount">0</span>
+        </div>
+      </div>
+    </div>
+
+    <script src="firebase-rest-client.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyCoiuHbVfclITv_Ah6UOQeV33QGPGRVeXw",
+        projectId: "menu1-ec4bc",
+      };
+
+      let firebaseAPI = null;
+      let allItems = [];
+
+      // Initialize Firebase
+      function initFirebase() {
+        firebaseAPI = new FirebaseAPI(firebaseConfig);
+      }
+
+      // Extract all menu items from HTML (copy from index.html)
+      function extractMenuItems() {
+        // SOHO Menu Data
+        const sohoMenu = {
+          "🌭 Sandwiches": [
+            {
+              name: "Classic Burger",
+              ar: { name: "برجر كلاسيكي", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 95,
+            },
+            {
+              name: "Double Burger",
+              ar: { name: "برجر مزدوج", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 135,
+            },
+            {
+              name: "Cheese Burger",
+              ar: { name: "برجر بالجبن", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 105,
+            },
+            {
+              name: "Bacon Burger",
+              ar: { name: "برجر بالبيكون", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 125,
+            },
+            {
+              name: "Spicy Burger",
+              ar: { name: "برجر حار", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 110,
+            },
+            {
+              name: "Mushroom Burger",
+              ar: { name: "برجر بالفطر", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 115,
+            },
+            {
+              name: "Chicken Burger",
+              ar: { name: "برجر الدجاج", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 100,
+            },
+            {
+              name: "Fish Burger",
+              ar: { name: "برجر السمك", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 115,
+            },
+            {
+              name: "Veggie Burger",
+              ar: { name: "برجر الخضار", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 85,
+            },
+            {
+              name: "Premium Burger",
+              ar: { name: "برجر بريميوم", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 150,
+            },
+            {
+              name: "Hot Dog",
+              ar: { name: "هوت دوج", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 75,
+            },
+            {
+              name: "Cheese Hot Dog",
+              ar: { name: "هوت دوج بالجبن", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 85,
+            },
+          ],
+          "🍕 Pizza": [
+            {
+              name: "Margherita",
+              ar: { name: "مرغريتا", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 120,
+            },
+            {
+              name: "Pepperoni",
+              ar: { name: "بيبروني", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 135,
+            },
+            {
+              name: "Vegetarian",
+              ar: { name: "نباتي", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 125,
+            },
+            {
+              name: "Meat Lovers",
+              ar: { name: "محبي اللحم", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 155,
+            },
+            {
+              name: "Four Cheese",
+              ar: { name: "أربع أنواع جبن", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 145,
+            },
+          ],
+        };
+
+        // ISTIKNANAH Menu Data
+        const istikMenu = {
+          "☕ Hot Beverages": [
+            {
+              name: "Tea/Green Tea",
+              ar: { name: "شاي/شاى اخضر", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 35,
+            },
+            {
+              name: "Nescafé",
+              ar: { name: "نسكافيه", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 60,
+            },
+            {
+              name: "American Coffee",
+              ar: { name: "امريكان كوفي", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 85,
+            },
+            {
+              name: "Cappuccino",
+              ar: { name: "كابيتشينو", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 100,
+            },
+            {
+              name: "Hot Chocolate",
+              ar: { name: "هوت شوكليت", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 110,
+            },
+          ],
+          "🧃 Fresh Juices": [
+            {
+              name: "Orange",
+              ar: { name: "برتقال", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 80,
+            },
+            {
+              name: "Mango",
+              ar: { name: "مانجو", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 80,
+            },
+            {
+              name: "Strawberry",
+              ar: { name: "فراولة", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 80,
+            },
+            {
+              name: "Lemon",
+              ar: { name: "ليمون", desc: "طبق شهي من أطباقنا الخاصة" },
+              desc: "",
+              price: 75,
+            },
+          ],
+        };
+
+        // Combine all items for upload
+        const items = [];
+
+        // SOHO Items
+        for (const [category, categoryItems] of Object.entries(sohoMenu)) {
+          categoryItems.forEach((item) => {
+            items.push({
+              menu: "soho",
+              category: category,
+              name: item.name,
+              nameAr: item.ar.name,
+              desc: item.desc,
+              descAr: item.ar.desc,
+              price: item.price,
+              createdAt: new Date().toISOString(),
+              createdBy: "System Upload",
+            });
+          });
+        }
+
+        // ISTIK Items
+        for (const [category, categoryItems] of Object.entries(istikMenu)) {
+          categoryItems.forEach((item) => {
+            items.push({
+              menu: "istik",
+              category: category,
+              name: item.name,
+              nameAr: item.ar.name,
+              desc: item.desc,
+              descAr: item.ar.desc,
+              price: item.price,
+              createdAt: new Date().toISOString(),
+              createdBy: "System Upload",
+            });
+          });
+        }
+
+        return items;
+      }
+
+      // Update UI status
+      function showStatus(message, type) {
+        const statusEl = document.getElementById("status");
+        statusEl.textContent = message;
+        statusEl.className = type;
+      }
+
+      // Upload all items
+      async function uploadAllItems() {
+        const btn = document.getElementById("uploadBtn");
+        btn.disabled = true;
+
+        try {
+          initFirebase();
+          showStatus("🔄 Starting upload...", "info");
+
+          // Extract items
+          allItems = extractMenuItems();
+          const totalItems = allItems.length;
+
+          document.getElementById("progress").style.display = "block";
+          document.getElementById("totalCount").textContent = totalItems;
+
+          let uploadedCount = 0;
+          let errorCount = 0;
+
+          // Upload each item
+          for (let i = 0; i < allItems.length; i++) {
+            try {
+              await firebaseAPI.createDoc("menus", allItems[i]);
+              uploadedCount++;
+              document.getElementById("itemCount").textContent = uploadedCount;
+              document.getElementById("progressFill").style.width =
+                (uploadedCount / totalItems) * 100 + "%";
+            } catch (error) {
+              errorCount++;
+              console.error(`Error uploading item ${i}:`, error);
+            }
+          }
+
+          btn.disabled = false;
+          showStatus(
+            `✅ Upload Complete! ${uploadedCount} items uploaded, ${errorCount} errors`,
+            "success",
+          );
+        } catch (error) {
+          btn.disabled = false;
+          showStatus(`❌ Error: ${error.message}`, "error");
+          console.error(error);
+        }
+      }
+    </script>
+  </body>
+</html>
