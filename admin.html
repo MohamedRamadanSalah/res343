@@ -621,15 +621,12 @@
         email: "admin@menu.com",
         password: "admin123",
       };
-
-      console.log("✅ Backend API ready (no CDN required)");
     </script>
 
     <script>
       // Initialize Admin Dashboard
       function initializeAdmin() {
-        console.log("✅ Admin Dashboard initialized with Backend");
-        setupAuthListener();
+        updateAuthUI();
       }
 
       // Initialize on load
@@ -664,11 +661,9 @@
           dashboard.classList.add("active");
           document.getElementById("userEmail").textContent = currentUser.email;
           loadItems();
-          console.log("✅ User logged in:", currentUser.email);
         } else {
           loginScreen.classList.remove("hidden");
           dashboard.classList.remove("active");
-          console.log("ℹ️ User logged out");
         }
       }
 
@@ -690,21 +685,18 @@
             currentUser = { email };
             loginForm.reset();
             errorDiv.textContent = "";
-            console.log("✅ Login successful");
             updateAuthUI();
           } else {
             throw new Error("Invalid email or password");
           }
         } catch (error) {
           errorDiv.textContent = "❌ " + error.message;
-          console.error("Login error:", error);
         }
       });
 
       logoutBtn.addEventListener("click", () => {
         currentUser = null;
         updateAuthUI();
-        console.log("ℹ️ User signed out");
       });
 
       // ===== ADD ITEM =====
@@ -766,7 +758,6 @@
           displayItems(items);
         } catch (error) {
           showNotification("Error loading items: " + error.message, "error");
-          console.error("Load error:", error);
         }
       }
 

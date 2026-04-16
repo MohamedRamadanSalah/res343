@@ -2997,7 +2997,6 @@
       // Load menus from Backend API
       async function loadMenusFromBackend() {
         try {
-          console.log("🔄 Fetching menus from backend...");
           const response = await fetch(`${BACKEND_URL}/api/menus`);
 
           if (!response.ok) {
@@ -3007,7 +3006,6 @@
           const data = await response.json();
 
           if (!data.success || !data.data || data.data.length === 0) {
-            console.log("⚠️ No menus found in backend. Using local menus.");
             return;
           }
 
@@ -3041,19 +3039,11 @@
           // Re-render menus
           renderSohoMenu();
           renderIstikMenu();
-
-          console.log(
-            "✅ Menus loaded from backend (" + data.count + " items)",
-          );
-        } catch (error) {
-          console.error("❌ Error loading menus from backend:", error);
-          console.log("ℹ️ Using local menus instead.");
-        }
+        } catch (error) {}
       }
 
       // Initialize and load menus on page load
       function initializeApp() {
-        console.log("✅ Backend API ready (no CDN required)");
         loadMenusFromBackend();
       }
 
