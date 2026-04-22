@@ -2,2063 +2,538 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Soho Bites × Istiknanah</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=Josefin+Sans:wght@300;400;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <meta name="description" content="Two worlds united — Soho Bites electric urban flavors meet Istiknanah artisanal café warmth. Explore our full menu online." />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet" />
     <style>
-      *,
-      *::before,
-      *::after {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        -webkit-tap-highlight-color: transparent;
-      }
-
-      :root {
-        /* Soho: neon-dark electric palette */
-        --soho-dark: #0a0e1a;
-        --soho-blue: #1a9ff5;
-        --soho-blue-glow: #4dbaff;
-        --soho-red: #ff3d3d;
-        --soho-yellow: #ffd000;
-        --soho-card: #111827;
-        --soho-card2: #151d2e;
-        --soho-border: rgba(26, 159, 245, 0.3);
-        --soho-text: #e8f4fd;
-        --soho-sub: #8bafc5;
-
-        /* Istiknanah: warm cream & red palette */
-        --istik-cream: #fbf6ee;
-        --istik-warm: #f5edd8;
-        --istik-red: #c13b2a;
-        --istik-red2: #e04530;
-        --istik-dark: #1a1008;
-        --istik-brown: #6b3f28;
-        --istik-gold: #b8860b;
-        --istik-card: #ffffff;
-        --istik-border: rgba(193, 59, 42, 0.2);
-        --istik-text: #2a1505;
-        --istik-sub: #8b6555;
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        font-family: "Outfit", sans-serif;
-        background: #0a0e1a;
-        color: #e8f4fd;
-        overflow-x: hidden;
-      }
-
-      /* ===== NEON GLOW UTILITIES ===== */
-      .neon-blue {
-        text-shadow:
-          0 0 10px #1a9ff5,
-          0 0 30px #1a9ff5,
-          0 0 60px #4dbaff;
-      }
-      .neon-red {
-        text-shadow:
-          0 0 10px #ff3d3d,
-          0 0 30px #ff3d3d,
-          0 0 60px #ff6b6b;
-      }
-      .neon-yellow {
-        text-shadow:
-          0 0 10px #ffd000,
-          0 0 30px #ffd000,
-          0 0 60px #ffe040;
-      }
-      .glow-box {
-        box-shadow:
-          0 0 20px rgba(26, 159, 245, 0.3),
-          0 0 60px rgba(26, 159, 245, 0.1);
-      }
-
-      /* ===== HERO SECTION ===== */
-      .hero {
-        position: relative;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: var(--soho-dark);
-        overflow: hidden;
-        padding: 4rem 1.5rem 5rem;
-      }
-
-      /* animated grid background */
-      .hero::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image:
-          linear-gradient(rgba(26, 159, 245, 0.06) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(26, 159, 245, 0.06) 1px, transparent 1px);
-        background-size: 60px 60px;
-        animation: gridMove 20s linear infinite;
-      }
-      @keyframes gridMove {
-        0% {
-          background-position: 0 0;
-        }
-        100% {
-          background-position: 60px 60px;
-        }
-      }
-
-      /* radial glow behind hero */
-      .hero::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 70vw;
-        height: 70vw;
-        max-width: 700px;
-        max-height: 700px;
-        background: radial-gradient(
-          ellipse,
-          rgba(26, 159, 245, 0.12) 0%,
-          rgba(255, 61, 61, 0.06) 40%,
-          transparent 70%
-        );
-        pointer-events: none;
-      }
-
-      .hero-content {
-        position: relative;
-        z-index: 2;
-        text-align: center;
-      }
-
-      .hero-eyebrow {
-        display: inline-block;
-        font-family: "Josefin Sans", sans-serif;
-        font-size: 0.7rem;
-        letter-spacing: 0.35em;
-        color: var(--soho-yellow);
-        text-shadow: 0 0 8px rgba(255, 208, 0, 0.6);
-        border: 1px solid rgba(255, 208, 0, 0.3);
-        padding: 0.4rem 1.5rem;
-        border-radius: 2px;
-        margin-bottom: 2rem;
-        animation: fadeSlideUp 0.8s ease both;
-      }
-
-      .hero-soho {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: clamp(4rem, 15vw, 10rem);
-        line-height: 0.85;
-        letter-spacing: 0.03em;
-        color: #ffffff;
-        text-shadow:
-          0 0 15px #1a9ff5,
-          0 0 40px #1a9ff5,
-          0 0 100px rgba(26, 159, 245, 0.5),
-          2px 2px 0 #0a5e99;
-        animation: fadeSlideUp 0.8s 0.15s ease both;
-      }
-
-      .hero-bites {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: clamp(3.5rem, 13vw, 8.5rem);
-        line-height: 0.85;
-        letter-spacing: 0.08em;
-        color: #ff3d3d;
-        text-shadow:
-          0 0 15px #ff3d3d,
-          0 0 40px #ff3d3d,
-          0 0 100px rgba(255, 61, 61, 0.5),
-          2px 2px 0 #9a0000;
-        animation: fadeSlideUp 0.8s 0.25s ease both;
-      }
-
-      .hero-divider {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin: 1.5rem auto;
-        width: fit-content;
-        animation: fadeSlideUp 0.8s 0.35s ease both;
-      }
-      .hero-divider-line {
-        width: 60px;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, var(--soho-yellow));
-      }
-      .hero-divider-line.right {
-        background: linear-gradient(270deg, transparent, var(--soho-yellow));
-      }
-      .hero-x {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 2rem;
-        color: var(--soho-yellow);
-        text-shadow: 0 0 10px rgba(255, 208, 0, 0.8);
-      }
-
-      .hero-istik {
-        font-family: "Playfair Display", serif;
-        font-size: clamp(1.8rem, 6vw, 4rem);
-        color: #f5edd8;
-        letter-spacing: 0.15em;
-        font-style: italic;
-        animation: fadeSlideUp 0.8s 0.45s ease both;
-      }
-
-      .hero-tagline {
-        font-size: clamp(0.85rem, 2.5vw, 1.05rem);
-        color: var(--soho-sub);
-        margin-top: 2rem;
-        letter-spacing: 0.05em;
-        max-width: 480px;
-        line-height: 1.5;
-        animation: fadeSlideUp 0.8s 0.55s ease both;
-      }
-
-      .hero-cta-group {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        justify-content: center;
-        margin-top: 3rem;
-        animation: fadeSlideUp 0.8s 0.65s ease both;
-      }
-
-      .cta-btn {
-        font-family: "Josefin Sans", sans-serif;
-        font-size: 0.85rem;
-        letter-spacing: 0.15em;
-        font-weight: 700;
-        padding: 1rem 2.2rem;
-        border: none;
-        cursor: pointer;
-        text-decoration: none;
-        transition: all 0.25s;
-        clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-      }
-      .cta-soho {
-        background: linear-gradient(135deg, #1a9ff5, #0070d0);
-        color: white;
-        box-shadow:
-          0 0 20px rgba(26, 159, 245, 0.4),
-          0 0 40px rgba(26, 159, 245, 0.2);
-      }
-      .cta-soho:hover {
-        box-shadow:
-          0 0 30px rgba(26, 159, 245, 0.7),
-          0 0 60px rgba(26, 159, 245, 0.3);
-        transform: translateY(-2px);
-      }
-      .cta-istik {
-        background: linear-gradient(135deg, #c13b2a, #8b2010);
-        color: #fbf6ee;
-        box-shadow:
-          0 0 20px rgba(193, 59, 42, 0.4),
-          0 0 40px rgba(193, 59, 42, 0.2);
-      }
-      .cta-istik:hover {
-        box-shadow:
-          0 0 30px rgba(193, 59, 42, 0.7),
-          0 0 60px rgba(193, 59, 42, 0.3);
-        transform: translateY(-2px);
-      }
-
-      /* ===== LANGUAGE TOGGLE ===== */
-      .lang-toggle {
-        position: fixed;
-        top: 2rem;
-        right: 2rem;
-        z-index: 1000;
-        background: linear-gradient(
-          135deg,
-          rgba(26, 159, 245, 0.1),
-          rgba(255, 61, 61, 0.1)
-        );
-        border: 1px solid var(--soho-border);
-        border-radius: 4px;
-        padding: 0.6rem 1.2rem;
-        cursor: pointer;
-        font-family: "Josefin Sans", sans-serif;
-        font-size: 0.75rem;
-        letter-spacing: 0.15em;
-        color: var(--soho-yellow);
-        font-weight: 700;
-        transition: all 0.3s ease;
-        box-shadow: 0 0 15px rgba(26, 159, 245, 0.2);
-      }
-      .lang-toggle:hover {
-        background: linear-gradient(
-          135deg,
-          rgba(26, 159, 245, 0.2),
-          rgba(255, 61, 61, 0.2)
-        );
-        box-shadow: 0 0 25px rgba(26, 159, 245, 0.4);
-        transform: scale(1.05);
-      }
-
-      /* floating neon decorations */
-      .neon-circle {
-        position: absolute;
-        border-radius: 50%;
-        animation: float 6s ease-in-out infinite;
-        pointer-events: none;
-        z-index: 1;
-      }
-      .nc1 {
-        width: 300px;
-        height: 300px;
-        border: 1px solid rgba(26, 159, 245, 0.15);
-        top: 10%;
-        left: -10%;
-        animation-delay: 0s;
-      }
-      .nc2 {
-        width: 200px;
-        height: 200px;
-        border: 1px solid rgba(255, 61, 61, 0.15);
-        bottom: 10%;
-        right: -5%;
-        animation-delay: -3s;
-      }
-      .nc3 {
-        width: 150px;
-        height: 150px;
-        border: 1px solid rgba(255, 208, 0, 0.15);
-        top: 30%;
-        right: 5%;
-        animation-delay: -1.5s;
-      }
-
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0) rotate(0deg);
-        }
-        50% {
-          transform: translateY(-20px) rotate(5deg);
-        }
-      }
-
-      /* ===== SCROLL INDICATOR ===== */
-      .scroll-indicator {
-        position: absolute;
-        bottom: 2rem;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--soho-sub);
-        font-size: 0.7rem;
-        letter-spacing: 0.2em;
-        font-family: "Josefin Sans", sans-serif;
-        animation: fadeSlideUp 0.8s 1s ease both;
-        z-index: 2;
-      }
-      .scroll-line {
-        width: 1px;
-        height: 50px;
-        background: linear-gradient(to bottom, var(--soho-blue), transparent);
-        animation: scrollPulse 2s ease infinite;
-      }
-      @keyframes scrollPulse {
-        0%,
-        100% {
-          opacity: 0.4;
-          transform: scaleY(1);
-        }
-        50% {
-          opacity: 1;
-          transform: scaleY(1.2);
-        }
-      }
-
-      /* ===== STORY SECTION ===== */
-      .story {
-        background: #080c16;
-        padding: 6rem 1.5rem;
-        position: relative;
-        overflow: hidden;
-      }
-      .story::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--soho-blue),
-          var(--soho-red),
-          var(--soho-yellow),
-          transparent
-        );
-      }
-
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-
-      .section-tag {
-        font-family: "Josefin Sans", sans-serif;
-        font-size: 0.65rem;
-        letter-spacing: 0.4em;
-        color: var(--soho-yellow);
-        margin-bottom: 1rem;
-        display: block;
-      }
-
-      .story-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 3rem;
-        align-items: start;
-        margin-top: 4rem;
-      }
-
-      /* SOHO card */
-      .story-card-soho {
-        background: var(--soho-card);
-        border: 1px solid var(--soho-border);
-        border-radius: 4px;
-        padding: 2.5rem;
-        position: relative;
-        overflow: hidden;
-      }
-      .story-card-soho::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, var(--soho-blue), var(--soho-red));
-      }
-      .story-card-soho::after {
-        content: "SOHO";
-        position: absolute;
-        right: -1rem;
-        top: 50%;
-        transform: translateY(-50%) rotate(90deg);
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 5rem;
-        color: rgba(26, 159, 245, 0.05);
-        pointer-events: none;
-      }
-
-      .scard-icon {
-        font-size: 2.5rem;
-        margin-bottom: 1.2rem;
-        filter: drop-shadow(0 0 10px rgba(26, 159, 245, 0.5));
-      }
-      .story-card-soho h3 {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 2rem;
-        letter-spacing: 0.05em;
-        color: var(--soho-blue-glow);
-        text-shadow: 0 0 10px rgba(26, 159, 245, 0.4);
-        margin-bottom: 1rem;
-      }
-      .story-card-soho p {
-        font-size: 0.9rem;
-        line-height: 1.65;
-        color: var(--soho-sub);
-      }
-
-      /* ISTIK card */
-      .story-card-istik {
-        background: #fffaf3;
-        border: 1px solid var(--istik-border);
-        border-radius: 4px;
-        padding: 2.5rem;
-        position: relative;
-        overflow: hidden;
-      }
-      .story-card-istik::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, var(--istik-red), var(--istik-gold));
-      }
-      .story-card-istik::after {
-        content: "إستكنانة";
-        position: absolute;
-        right: 0.5rem;
-        bottom: 0.5rem;
-        font-size: 2rem;
-        color: rgba(193, 59, 42, 0.06);
-        pointer-events: none;
-      }
-      .story-card-istik h3 {
-        font-family: "Playfair Display", serif;
-        font-size: 1.8rem;
-        font-style: italic;
-        color: var(--istik-red);
-        margin-bottom: 1rem;
-      }
-      .story-card-istik p {
-        font-size: 0.9rem;
-        line-height: 1.65;
-        color: var(--istik-brown);
-      }
-
-      /* ===== ATMOSPHERE / FEATURE SECTION ===== */
-      .atmosphere {
-        background: linear-gradient(
-          180deg,
-          #080c16 0%,
-          #0d0a06 50%,
-          #080c16 100%
-        );
-        padding: 6rem 1.5rem;
-        position: relative;
-      }
-
-      .atm-title {
-        text-align: center;
-        font-family: "Bebas Neue", sans-serif;
-        font-size: clamp(2.5rem, 7vw, 5rem);
-        letter-spacing: 0.08em;
-        margin-bottom: 4rem;
-      }
-      .atm-title .t-blue {
-        color: var(--soho-blue);
-        text-shadow: 0 0 20px rgba(26, 159, 245, 0.5);
-      }
-      .atm-title .t-red {
-        color: var(--istik-red);
-      }
-
-      .atm-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.5rem;
-      }
-
-      .atm-card {
-        padding: 2rem 1.5rem;
-        border-radius: 4px;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-        transition:
-          transform 0.3s ease,
-          box-shadow 0.3s ease;
-        cursor: default;
-      }
-      .atm-card:hover {
-        transform: translateY(-6px);
-      }
-
-      .atm-card-soho {
-        background: var(--soho-card);
-        border: 1px solid var(--soho-border);
-      }
-      .atm-card-soho:hover {
-        box-shadow: 0 20px 40px rgba(26, 159, 245, 0.15);
-      }
-      .atm-card-soho .atm-icon {
-        color: var(--soho-blue);
-        filter: drop-shadow(0 0 8px rgba(26, 159, 245, 0.6));
-      }
-      .atm-card-soho h4 {
-        color: var(--soho-text);
-        font-family: "Josefin Sans", sans-serif;
-        letter-spacing: 0.05em;
-      }
-      .atm-card-soho p {
-        color: var(--soho-sub);
-      }
-
-      .atm-card-istik {
-        background: #fffaf3;
-        border: 1px solid var(--istik-border);
-      }
-      .atm-card-istik:hover {
-        box-shadow: 0 20px 40px rgba(193, 59, 42, 0.15);
-      }
-      .atm-card-istik .atm-icon {
-        color: var(--istik-red);
-      }
-      .atm-card-istik h4 {
-        color: var(--istik-text);
-        font-family: "Josefin Sans", sans-serif;
-        letter-spacing: 0.05em;
-      }
-      .atm-card-istik p {
-        color: var(--istik-sub);
-      }
-
-      .atm-icon {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        display: block;
-      }
-      .atm-card h4 {
-        font-size: 1rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-      }
-      .atm-card p {
-        font-size: 0.8rem;
-        line-height: 1.5;
-      }
-
-      /* ===== STATS BAR ===== */
-      .stats-bar {
-        background: var(--soho-dark);
-        border-top: 1px solid rgba(26, 159, 245, 0.2);
-        border-bottom: 1px solid rgba(26, 159, 245, 0.2);
-        padding: 2.5rem 1.5rem;
-      }
-      .stats-inner {
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        gap: 2rem;
-        max-width: 900px;
-        margin: 0 auto;
-      }
-      .stat-item {
-        text-align: center;
-      }
-      .stat-num {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: clamp(2.5rem, 6vw, 4rem);
-        line-height: 1;
-        display: block;
-      }
-      .stat-num.blue {
-        color: var(--soho-blue);
-        text-shadow: 0 0 15px rgba(26, 159, 245, 0.5);
-      }
-      .stat-num.red {
-        color: var(--soho-red);
-        text-shadow: 0 0 15px rgba(255, 61, 61, 0.5);
-      }
-      .stat-num.yellow {
-        color: var(--soho-yellow);
-        text-shadow: 0 0 15px rgba(255, 208, 0, 0.5);
-      }
-      .stat-label {
-        font-family: "Josefin Sans", sans-serif;
-        font-size: 0.65rem;
-        letter-spacing: 0.3em;
-        color: var(--soho-sub);
-        margin-top: 0.3rem;
-        display: block;
-      }
-
-      /* ===== MENU SWITCH SECTION ===== */
-      .menu-hub {
-        background: #080c16;
-        padding: 5rem 1.5rem 0;
-        position: relative;
-      }
-
-      .menu-hub-title {
-        text-align: center;
-        margin-bottom: 3rem;
-      }
-      .menu-hub-title h2 {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: clamp(2rem, 6vw, 4rem);
-        letter-spacing: 0.08em;
-        color: #ffffff;
-      }
-
-      /* TAB SWITCHER */
-      .tab-switcher {
-        display: flex;
-        border-bottom: 2px solid rgba(255, 255, 255, 0.08);
-        max-width: 700px;
-        margin: 0 auto 0;
-        position: relative;
-        z-index: 10;
-      }
-
-      .tab-btn {
-        flex: 1;
-        padding: 1.2rem 1rem;
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-family: "Josefin Sans", sans-serif;
-        font-size: 0.85rem;
-        letter-spacing: 0.15em;
-        font-weight: 700;
-        transition: all 0.3s;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.6rem;
-      }
-      .tab-btn::after {
-        content: "";
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        right: 0;
-        height: 3px;
-        transform: scaleX(0);
-        transition: transform 0.3s ease;
-      }
-
-      .tab-soho {
-        color: rgba(77, 186, 255, 0.5);
-      }
-      .tab-soho.active {
-        color: var(--soho-blue-glow);
-      }
-      .tab-soho::after {
-        background: linear-gradient(90deg, var(--soho-blue), var(--soho-red));
-      }
-      .tab-soho.active::after {
-        transform: scaleX(1);
-      }
-
-      .tab-istik {
-        color: rgba(193, 59, 42, 0.5);
-        background: rgba(251, 246, 238, 0.03);
-      }
-      .tab-istik.active {
-        color: var(--istik-red);
-      }
-      .tab-istik::after {
-        background: linear-gradient(90deg, var(--istik-red), var(--istik-gold));
-      }
-      .tab-istik.active::after {
-        transform: scaleX(1);
-      }
-
-      /* ===== SOHO MENU ===== */
-      #sohoMenuPanel {
-        background: var(--soho-dark);
-        padding: 3rem 1.5rem 5rem;
-        display: block;
-      }
-
-      .soho-cat-title {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 1.8rem;
-        letter-spacing: 0.08em;
-        color: var(--soho-blue-glow);
-        text-shadow: 0 0 10px rgba(26, 159, 245, 0.3);
-        margin-bottom: 1.2rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid rgba(26, 159, 245, 0.2);
-        display: flex;
-        align-items: center;
-        gap: 0.8rem;
-      }
-
-      .soho-menu-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 1rem;
-        margin-bottom: 2.5rem;
-      }
-
-      .soho-menu-card {
-        background: var(--soho-card2);
-        border: 1px solid rgba(26, 159, 245, 0.12);
-        border-radius: 2px;
-        padding: 1.1rem 1.2rem;
-        cursor: pointer;
-        transition: all 0.2s;
-        position: relative;
-        overflow: hidden;
-      }
-      .soho-menu-card::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 3px;
-        background: linear-gradient(
-          to bottom,
-          var(--soho-blue),
-          var(--soho-red)
-        );
-        transform: scaleY(0);
-        transition: transform 0.2s;
-      }
-      .soho-menu-card:hover {
-        border-color: rgba(26, 159, 245, 0.4);
-        background: #1a2135;
-        transform: translateX(4px);
-      }
-      .soho-menu-card:hover::before {
-        transform: scaleY(1);
-      }
-      .soho-menu-card:active {
-        transform: scale(0.98);
-      }
-
-      .smcard-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 0.8rem;
-        margin-bottom: 0.4rem;
-      }
-      .smcard-name {
-        font-family: "Josefin Sans", sans-serif;
-        font-size: 0.92rem;
-        font-weight: 700;
-        color: var(--soho-text);
-        letter-spacing: 0.03em;
-        line-height: 1.3;
-      }
-      .smcard-price {
-        background: rgba(26, 159, 245, 0.15);
-        border: 1px solid rgba(26, 159, 245, 0.3);
-        color: var(--soho-blue-glow);
-        font-size: 0.72rem;
-        font-weight: 700;
-        padding: 0.15rem 0.7rem;
-        border-radius: 2px;
-        white-space: nowrap;
-        font-family: "Josefin Sans", sans-serif;
-        letter-spacing: 0.05em;
-      }
-      .smcard-desc {
-        font-size: 0.74rem;
-        color: var(--soho-sub);
-        line-height: 1.35;
-      }
-
-      /* ===== ISTIK MENU ===== */
-      #istikMenuPanel {
-        background: var(--istik-cream);
-        padding: 3rem 1.5rem 5rem;
-        display: none;
-      }
-
-      .istik-cat-title {
-        font-family: "Playfair Display", serif;
-        font-size: 1.6rem;
-        font-style: italic;
-        color: var(--istik-red);
-        margin-bottom: 1.2rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid rgba(193, 59, 42, 0.2);
-        display: flex;
-        align-items: center;
-        gap: 0.8rem;
-      }
-
-      .istik-menu-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 1rem;
-        margin-bottom: 2.5rem;
-      }
-
-      .istik-menu-card {
-        background: white;
-        border: 1px solid rgba(193, 59, 42, 0.12);
-        border-radius: 4px;
-        padding: 1.1rem 1.2rem;
-        cursor: pointer;
-        transition: all 0.2s;
-        position: relative;
-        overflow: hidden;
-      }
-      .istik-menu-card::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 3px;
-        background: linear-gradient(
-          to bottom,
-          var(--istik-red),
-          var(--istik-gold)
-        );
-        transform: scaleY(0);
-        transition: transform 0.2s;
-      }
-      .istik-menu-card:hover {
-        border-color: rgba(193, 59, 42, 0.35);
-        box-shadow: 0 8px 24px rgba(193, 59, 42, 0.1);
-        transform: translateX(4px);
-      }
-      .istik-menu-card:hover::before {
-        transform: scaleY(1);
-      }
-      .istik-menu-card:active {
-        transform: scale(0.98);
-      }
-
-      .imcard-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 0.8rem;
-        margin-bottom: 0.4rem;
-      }
-      .imcard-name {
-        font-family: "Outfit", sans-serif;
-        font-size: 0.92rem;
-        font-weight: 600;
-        color: var(--istik-text);
-        line-height: 1.3;
-      }
-      .imcard-price {
-        background: rgba(193, 59, 42, 0.08);
-        border: 1px solid rgba(193, 59, 42, 0.25);
-        color: var(--istik-red);
-        font-size: 0.72rem;
-        font-weight: 700;
-        padding: 0.15rem 0.7rem;
-        border-radius: 60px;
-        white-space: nowrap;
-        font-family: "Josefin Sans", sans-serif;
-      }
-      .imcard-desc {
-        font-size: 0.74rem;
-        color: var(--istik-sub);
-        line-height: 1.35;
-      }
-
-      /* ===== MODAL - SOHO ===== */
-      .modal-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.85);
-        backdrop-filter: blur(8px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        visibility: hidden;
-        opacity: 0;
-        transition:
-          visibility 0.2s,
-          opacity 0.2s;
-        padding: 1rem;
-      }
-      .modal-overlay.active {
-        visibility: visible;
-        opacity: 1;
-      }
-
-      .modal-soho {
-        background: var(--soho-card);
-        border: 1px solid var(--soho-border);
-        border-radius: 4px;
-        max-width: 480px;
-        width: 100%;
-        overflow: hidden;
-        transform: scale(0.9) translateY(20px);
-        transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.05);
-        box-shadow:
-          0 0 40px rgba(26, 159, 245, 0.2),
-          0 30px 60px rgba(0, 0, 0, 0.5);
-      }
-      .modal-overlay.active .modal-soho {
-        transform: scale(1) translateY(0);
-      }
-      .modal-soho-header {
-        padding: 1.8rem 1.8rem 1rem;
-        background: linear-gradient(135deg, #0d1525, #151d2e);
-        position: relative;
-        border-bottom: 1px solid rgba(26, 159, 245, 0.15);
-      }
-      .modal-soho-header h3 {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 1.8rem;
-        letter-spacing: 0.05em;
-        color: white;
-        padding-right: 2rem;
-      }
-      .modal-soho-body {
-        padding: 1.5rem 1.8rem 2rem;
-      }
-      .modal-soho-price {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 1.5rem;
-        color: var(--soho-yellow);
-        text-shadow: 0 0 10px rgba(255, 208, 0, 0.5);
-        letter-spacing: 0.1em;
-        margin-bottom: 1rem;
-        display: block;
-      }
-      .modal-soho-desc {
-        font-size: 0.9rem;
-        color: var(--soho-sub);
-        line-height: 1.55;
-      }
-
-      .modal-istik {
-        background: white;
-        border: 1px solid var(--istik-border);
-        border-radius: 8px;
-        max-width: 480px;
-        width: 100%;
-        overflow: hidden;
-        transform: scale(0.9) translateY(20px);
-        transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.05);
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-      }
-      .modal-overlay.active .modal-istik {
-        transform: scale(1) translateY(0);
-      }
-      .modal-istik-header {
-        padding: 1.8rem 1.8rem 1rem;
-        background: linear-gradient(135deg, #fbf6ee, #f5edd8);
-        border-bottom: 1px solid rgba(193, 59, 42, 0.15);
-        position: relative;
-      }
-      .modal-istik-header h3 {
-        font-family: "Playfair Display", serif;
-        font-size: 1.6rem;
-        font-style: italic;
-        color: var(--istik-text);
-        padding-right: 2rem;
-      }
-      .modal-istik-body {
-        padding: 1.5rem 1.8rem 2rem;
-      }
-      .modal-istik-price {
-        display: inline-block;
-        background: var(--istik-red);
-        color: white;
-        font-family: "Josefin Sans", sans-serif;
-        font-size: 1rem;
-        font-weight: 700;
-        letter-spacing: 0.1em;
-        padding: 0.4rem 1.4rem;
-        border-radius: 60px;
-        margin-bottom: 1rem;
-      }
-      .modal-istik-desc {
-        font-size: 0.9rem;
-        color: var(--istik-brown);
-        line-height: 1.55;
-      }
-
-      .modal-close {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        color: rgba(255, 255, 255, 0.7);
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        font-size: 1.2rem;
-        line-height: 1;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-      }
-      .modal-close:hover {
-        background: rgba(255, 255, 255, 0.2);
-        color: white;
-      }
-      .modal-close.dark {
-        background: rgba(0, 0, 0, 0.08);
-        border-color: rgba(0, 0, 0, 0.15);
-        color: rgba(0, 0, 0, 0.5);
-      }
-      .modal-close.dark:hover {
-        background: rgba(193, 59, 42, 0.1);
-        color: var(--istik-red);
-      }
-
-      .modal-footer-row {
-        display: flex;
-        justify-content: flex-end;
-        padding: 0 1.8rem 1.5rem;
-      }
-      .modal-done-soho {
-        font-family: "Josefin Sans", sans-serif;
-        font-size: 0.8rem;
-        letter-spacing: 0.1em;
-        font-weight: 700;
-        padding: 0.65rem 1.8rem;
-        border: none;
-        cursor: pointer;
-        clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
-        background: linear-gradient(135deg, var(--soho-blue), #0070d0);
-        color: white;
-        transition: all 0.2s;
-      }
-      .modal-done-soho:hover {
-        box-shadow: 0 0 20px rgba(26, 159, 245, 0.5);
-      }
-      .modal-done-istik {
-        font-family: "Josefin Sans", sans-serif;
-        font-size: 0.8rem;
-        letter-spacing: 0.1em;
-        font-weight: 700;
-        padding: 0.65rem 1.8rem;
-        border: none;
-        cursor: pointer;
-        border-radius: 60px;
-        background: var(--istik-red);
-        color: white;
-        transition: all 0.2s;
-      }
-      .modal-done-istik:hover {
-        background: var(--istik-red2);
-      }
-
-      /* ===== FOOTER ===== */
-      .footer {
-        background: #04060f;
-        border-top: 1px solid rgba(26, 159, 245, 0.15);
-        padding: 3rem 1.5rem;
-        text-align: center;
-      }
-      .footer-logo {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 2rem;
-        letter-spacing: 0.1em;
-        color: var(--soho-blue);
-        text-shadow: 0 0 15px rgba(26, 159, 245, 0.4);
-      }
-      .footer-logo span {
-        color: var(--istik-red);
-      }
-      .footer p {
-        font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.3);
-        margin-top: 0.8rem;
-        letter-spacing: 0.1em;
-        font-family: "Josefin Sans", sans-serif;
-      }
-      .back-top {
-        display: inline-block;
-        margin-top: 1.5rem;
-        font-family: "Josefin Sans", sans-serif;
-        font-size: 0.7rem;
-        letter-spacing: 0.2em;
-        color: var(--soho-blue);
-        text-decoration: none;
-        border: 1px solid rgba(26, 159, 245, 0.3);
-        padding: 0.5rem 1.5rem;
-        transition: all 0.2s;
-      }
-      .back-top:hover {
-        background: rgba(26, 159, 245, 0.1);
-      }
-
-      /* ===== ANIMATIONS ===== */
-      @keyframes fadeSlideUp {
-        from {
-          opacity: 0;
-          transform: translateY(24px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .reveal {
-        opacity: 0;
-        transform: translateY(30px);
-        transition:
-          opacity 0.6s ease,
-          transform 0.6s ease;
-      }
-      .reveal.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      /* stagger children */
-      .stagger > * {
-        opacity: 0;
-        transform: translateY(20px);
-        transition:
-          opacity 0.5s ease,
-          transform 0.5s ease;
-      }
-      .stagger.visible > *:nth-child(1) {
-        opacity: 1;
-        transform: none;
-        transition-delay: 0.05s;
-      }
-      .stagger.visible > *:nth-child(2) {
-        opacity: 1;
-        transform: none;
-        transition-delay: 0.12s;
-      }
-      .stagger.visible > *:nth-child(3) {
-        opacity: 1;
-        transform: none;
-        transition-delay: 0.19s;
-      }
-      .stagger.visible > *:nth-child(4) {
-        opacity: 1;
-        transform: none;
-        transition-delay: 0.26s;
-      }
-      .stagger.visible > *:nth-child(5) {
-        opacity: 1;
-        transform: none;
-        transition-delay: 0.33s;
-      }
-      .stagger.visible > *:nth-child(6) {
-        opacity: 1;
-        transform: none;
-        transition-delay: 0.4s;
-      }
-
-      /* ===== RESPONSIVE ===== */
-      @media (max-width: 768px) {
-        .story-grid {
-          grid-template-columns: 1fr;
-          gap: 1.5rem;
-        }
-        .atm-grid {
-          grid-template-columns: 1fr 1fr;
-        }
-        .soho-menu-grid,
-        .istik-menu-grid {
-          grid-template-columns: 1fr;
-        }
-        .stats-inner {
-          gap: 1.5rem;
-        }
-        .tab-btn {
-          font-size: 0.75rem;
-          padding: 1rem 0.5rem;
-          letter-spacing: 0.08em;
-        }
-      }
-      @media (max-width: 480px) {
-        .atm-grid {
-          grid-template-columns: 1fr 1fr;
-          gap: 1rem;
-        }
-        .hero-eyebrow {
-          font-size: 0.6rem;
-          letter-spacing: 0.2em;
-        }
-        .hero-cta-group {
-          flex-direction: column;
-        }
-        .cta-btn {
-          text-align: center;
-          width: 100%;
-        }
-      }
+      *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+      :root{
+        --soho-dark:#0a0e1a;--soho-blue:#1a9ff5;--soho-blue-glow:#4dbaff;
+        --soho-red:#ff3d3d;--soho-yellow:#ffd000;--soho-card:#111827;
+        --soho-card2:#151d2e;--soho-border:rgba(26,159,245,0.3);
+        --soho-text:#e8f4fd;--soho-sub:#8bafc5;
+        --istik-cream:#fbf6ee;--istik-warm:#f5edd8;--istik-red:#c13b2a;
+        --istik-red2:#e04530;--istik-dark:#1a1008;--istik-brown:#6b3f28;
+        --istik-gold:#b8860b;--istik-card:#ffffff;
+        --istik-border:rgba(193,59,42,0.2);--istik-text:#2a1505;--istik-sub:#8b6555;
+      }
+      html{scroll-behavior:smooth}
+      body{font-family:"Outfit",sans-serif;background:#0a0e1a;color:#e8f4fd;overflow-x:hidden}
+      .neon-blue{text-shadow:0 0 10px #1a9ff5,0 0 30px #1a9ff5,0 0 60px #4dbaff}
+      .neon-red{text-shadow:0 0 10px #ff3d3d,0 0 30px #ff3d3d,0 0 60px #ff6b6b}
+      .neon-yellow{text-shadow:0 0 10px #ffd000,0 0 30px #ffd000,0 0 60px #ffe040}
+      .glow-box{box-shadow:0 0 20px rgba(26,159,245,0.3),0 0 60px rgba(26,159,245,0.1)}
+      /* HERO */
+      .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--soho-dark);overflow:hidden;padding:4rem 1.5rem 5rem}
+      .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(26,159,245,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(26,159,245,0.06) 1px,transparent 1px);background-size:60px 60px;animation:gridMove 20s linear infinite}
+      @keyframes gridMove{0%{background-position:0 0}100%{background-position:60px 60px}}
+      .hero::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70vw;height:70vw;max-width:700px;max-height:700px;background:radial-gradient(ellipse,rgba(26,159,245,0.12) 0%,rgba(255,61,61,0.06) 40%,transparent 70%);pointer-events:none}
+      .hero-content{position:relative;z-index:2;text-align:center}
+      .hero-eyebrow{display:inline-block;font-family:"Josefin Sans",sans-serif;font-size:.7rem;letter-spacing:.35em;color:var(--soho-yellow);text-shadow:0 0 8px rgba(255,208,0,0.6);border:1px solid rgba(255,208,0,0.3);padding:.4rem 1.5rem;border-radius:2px;margin-bottom:2rem;animation:fadeSlideUp .8s ease both}
+      .hero-soho{font-family:"Bebas Neue",sans-serif;font-size:clamp(4rem,15vw,10rem);line-height:.85;letter-spacing:.03em;color:#fff;text-shadow:0 0 15px #1a9ff5,0 0 40px #1a9ff5,0 0 100px rgba(26,159,245,0.5),2px 2px 0 #0a5e99;animation:fadeSlideUp .8s .15s ease both}
+      .hero-bites{font-family:"Bebas Neue",sans-serif;font-size:clamp(3.5rem,13vw,8.5rem);line-height:.85;letter-spacing:.08em;color:#ff3d3d;text-shadow:0 0 15px #ff3d3d,0 0 40px #ff3d3d,0 0 100px rgba(255,61,61,0.5),2px 2px 0 #9a0000;animation:fadeSlideUp .8s .25s ease both}
+      .hero-divider{display:flex;align-items:center;gap:1rem;margin:1.5rem auto;width:fit-content;animation:fadeSlideUp .8s .35s ease both}
+      .hero-divider-line{width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--soho-yellow))}
+      .hero-divider-line.right{background:linear-gradient(270deg,transparent,var(--soho-yellow))}
+      .hero-x{font-family:"Bebas Neue",sans-serif;font-size:2rem;color:var(--soho-yellow);text-shadow:0 0 10px rgba(255,208,0,0.8)}
+      .hero-istik{font-family:"Playfair Display",serif;font-size:clamp(1.8rem,6vw,4rem);color:#f5edd8;letter-spacing:.15em;font-style:italic;animation:fadeSlideUp .8s .45s ease both}
+      .hero-tagline{font-size:clamp(.85rem,2.5vw,1.05rem);color:var(--soho-sub);margin-top:2rem;letter-spacing:.05em;max-width:480px;line-height:1.5;animation:fadeSlideUp .8s .55s ease both}
+      .hero-cta-group{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-top:3rem;animation:fadeSlideUp .8s .65s ease both}
+      .cta-btn{font-family:"Josefin Sans",sans-serif;font-size:.85rem;letter-spacing:.15em;font-weight:700;padding:1rem 2.2rem;border:none;cursor:pointer;text-decoration:none;transition:all .25s;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)}
+      .cta-soho{background:linear-gradient(135deg,#1a9ff5,#0070d0);color:white;box-shadow:0 0 20px rgba(26,159,245,0.4),0 0 40px rgba(26,159,245,0.2)}
+      .cta-soho:hover{box-shadow:0 0 30px rgba(26,159,245,0.7),0 0 60px rgba(26,159,245,0.3);transform:translateY(-2px)}
+      .cta-istik{background:linear-gradient(135deg,#c13b2a,#8b2010);color:#fbf6ee;box-shadow:0 0 20px rgba(193,59,42,0.4),0 0 40px rgba(193,59,42,0.2)}
+      .cta-istik:hover{box-shadow:0 0 30px rgba(193,59,42,0.7),0 0 60px rgba(193,59,42,0.3);transform:translateY(-2px)}
+      /* LANG TOGGLE */
+      .lang-toggle{position:fixed;top:2rem;right:2rem;z-index:1000;background:linear-gradient(135deg,rgba(26,159,245,0.1),rgba(255,61,61,0.1));border:1px solid var(--soho-border);border-radius:4px;padding:.6rem 1.2rem;cursor:pointer;font-family:"Josefin Sans",sans-serif;font-size:.75rem;letter-spacing:.15em;color:var(--soho-yellow);font-weight:700;transition:all .3s ease;box-shadow:0 0 15px rgba(26,159,245,0.2)}
+      .lang-toggle:hover{background:linear-gradient(135deg,rgba(26,159,245,0.2),rgba(255,61,61,0.2));box-shadow:0 0 25px rgba(26,159,245,0.4);transform:scale(1.05)}
+      .neon-circle{position:absolute;border-radius:50%;animation:float 6s ease-in-out infinite;pointer-events:none;z-index:1}
+      .nc1{width:300px;height:300px;border:1px solid rgba(26,159,245,0.15);top:10%;left:-10%;animation-delay:0s}
+      .nc2{width:200px;height:200px;border:1px solid rgba(255,61,61,0.15);bottom:10%;right:-5%;animation-delay:-3s}
+      .nc3{width:150px;height:150px;border:1px solid rgba(255,208,0,0.15);top:30%;right:5%;animation-delay:-1.5s}
+      @keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(5deg)}}
+      .scroll-indicator{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--soho-sub);font-size:.7rem;letter-spacing:.2em;font-family:"Josefin Sans",sans-serif;animation:fadeSlideUp .8s 1s ease both;z-index:2}
+      .scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--soho-blue),transparent);animation:scrollPulse 2s ease infinite}
+      @keyframes scrollPulse{0%,100%{opacity:.4;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.2)}}
+      /* STORY */
+      .story{background:#080c16;padding:6rem 1.5rem;position:relative;overflow:hidden}
+      .story::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--soho-blue),var(--soho-red),var(--soho-yellow),transparent)}
+      .container{max-width:1200px;margin:0 auto}
+      .section-tag{font-family:"Josefin Sans",sans-serif;font-size:.65rem;letter-spacing:.4em;color:var(--soho-yellow);margin-bottom:1rem;display:block}
+      .story-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;margin-top:4rem}
+      .story-card-soho{background:var(--soho-card);border:1px solid var(--soho-border);border-radius:4px;padding:2.5rem;position:relative;overflow:hidden}
+      .story-card-soho::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--soho-blue),var(--soho-red))}
+      .story-card-soho::after{content:"SOHO";position:absolute;right:-1rem;top:50%;transform:translateY(-50%) rotate(90deg);font-family:"Bebas Neue",sans-serif;font-size:5rem;color:rgba(26,159,245,0.05);pointer-events:none}
+      .scard-icon{font-size:2.5rem;margin-bottom:1.2rem;filter:drop-shadow(0 0 10px rgba(26,159,245,0.5))}
+      .story-card-soho h3{font-family:"Bebas Neue",sans-serif;font-size:2rem;letter-spacing:.05em;color:var(--soho-blue-glow);text-shadow:0 0 10px rgba(26,159,245,0.4);margin-bottom:1rem}
+      .story-card-soho p{font-size:.9rem;line-height:1.65;color:var(--soho-sub)}
+      .story-card-istik{background:#fffaf3;border:1px solid var(--istik-border);border-radius:4px;padding:2.5rem;position:relative;overflow:hidden}
+      .story-card-istik::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--istik-red),var(--istik-gold))}
+      .story-card-istik::after{content:"إستكنانة";position:absolute;right:.5rem;bottom:.5rem;font-size:2rem;color:rgba(193,59,42,0.06);pointer-events:none}
+      .story-card-istik h3{font-family:"Playfair Display",serif;font-size:1.8rem;font-style:italic;color:var(--istik-red);margin-bottom:1rem}
+      .story-card-istik p{font-size:.9rem;line-height:1.65;color:var(--istik-brown)}
+      /* ATMOSPHERE */
+      .atmosphere{background:linear-gradient(180deg,#080c16 0%,#0d0a06 50%,#080c16 100%);padding:6rem 1.5rem;position:relative}
+      .atm-title{text-align:center;font-family:"Bebas Neue",sans-serif;font-size:clamp(2.5rem,7vw,5rem);letter-spacing:.08em;margin-bottom:4rem}
+      .atm-title .t-blue{color:var(--soho-blue);text-shadow:0 0 20px rgba(26,159,245,0.5)}
+      .atm-title .t-red{color:var(--istik-red)}
+      .atm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem}
+      .atm-card{padding:2rem 1.5rem;border-radius:4px;text-align:center;position:relative;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease;cursor:default}
+      .atm-card:hover{transform:translateY(-6px)}
+      .atm-card-soho{background:var(--soho-card);border:1px solid var(--soho-border)}
+      .atm-card-soho:hover{box-shadow:0 20px 40px rgba(26,159,245,0.15)}
+      .atm-card-soho .atm-icon{color:var(--soho-blue);filter:drop-shadow(0 0 8px rgba(26,159,245,0.6))}
+      .atm-card-soho h4{color:var(--soho-text);font-family:"Josefin Sans",sans-serif;letter-spacing:.05em}
+      .atm-card-soho p{color:var(--soho-sub)}
+      .atm-card-istik{background:#fffaf3;border:1px solid var(--istik-border)}
+      .atm-card-istik:hover{box-shadow:0 20px 40px rgba(193,59,42,0.15)}
+      .atm-card-istik .atm-icon{color:var(--istik-red)}
+      .atm-card-istik h4{color:var(--istik-text);font-family:"Josefin Sans",sans-serif;letter-spacing:.05em}
+      .atm-card-istik p{color:var(--istik-sub)}
+      .atm-icon{font-size:2.5rem;margin-bottom:1rem;display:block}
+      .atm-card h4{font-size:1rem;font-weight:700;margin-bottom:.5rem}
+      .atm-card p{font-size:.8rem;line-height:1.5}
+      /* STATS */
+      .stats-bar{background:var(--soho-dark);border-top:1px solid rgba(26,159,245,0.2);border-bottom:1px solid rgba(26,159,245,0.2);padding:2.5rem 1.5rem}
+      .stats-inner{display:flex;justify-content:space-around;flex-wrap:wrap;gap:2rem;max-width:900px;margin:0 auto}
+      .stat-item{text-align:center}
+      .stat-num{font-family:"Bebas Neue",sans-serif;font-size:clamp(2.5rem,6vw,4rem);line-height:1;display:block}
+      .stat-num.blue{color:var(--soho-blue);text-shadow:0 0 15px rgba(26,159,245,0.5)}
+      .stat-num.red{color:var(--soho-red);text-shadow:0 0 15px rgba(255,61,61,0.5)}
+      .stat-num.yellow{color:var(--soho-yellow);text-shadow:0 0 15px rgba(255,208,0,0.5)}
+      .stat-label{font-family:"Josefin Sans",sans-serif;font-size:.65rem;letter-spacing:.3em;color:var(--soho-sub);margin-top:.3rem;display:block}
+      /* MENU HUB */
+      .menu-hub{background:#080c16;padding:5rem 1.5rem 0;position:relative}
+      .menu-hub-title{text-align:center;margin-bottom:3rem}
+      .menu-hub-title h2{font-family:"Bebas Neue",sans-serif;font-size:clamp(2rem,6vw,4rem);letter-spacing:.08em;color:#fff}
+      .tab-switcher{display:flex;border-bottom:2px solid rgba(255,255,255,0.08);max-width:700px;margin:0 auto 0;position:relative;z-index:10}
+      .tab-btn{flex:1;padding:1.2rem 1rem;background:none;border:none;cursor:pointer;font-family:"Josefin Sans",sans-serif;font-size:.85rem;letter-spacing:.15em;font-weight:700;transition:all .3s;position:relative;display:flex;align-items:center;justify-content:center;gap:.6rem}
+      .tab-btn::after{content:"";position:absolute;bottom:-2px;left:0;right:0;height:3px;transform:scaleX(0);transition:transform .3s ease}
+      .tab-soho{color:rgba(77,186,255,0.5)}
+      .tab-soho.active{color:var(--soho-blue-glow)}
+      .tab-soho::after{background:linear-gradient(90deg,var(--soho-blue),var(--soho-red))}
+      .tab-soho.active::after{transform:scaleX(1)}
+      .tab-istik{color:rgba(193,59,42,0.5);background:rgba(251,246,238,0.03)}
+      .tab-istik.active{color:var(--istik-red)}
+      .tab-istik::after{background:linear-gradient(90deg,var(--istik-red),var(--istik-gold))}
+      .tab-istik.active::after{transform:scaleX(1)}
+      /* SOHO MENU */
+      #sohoMenuPanel{background:var(--soho-dark);padding:3rem 1.5rem 5rem;display:block}
+      .soho-cat-title{font-family:"Bebas Neue",sans-serif;font-size:1.8rem;letter-spacing:.08em;color:var(--soho-blue-glow);text-shadow:0 0 10px rgba(26,159,245,0.3);margin-bottom:1.2rem;padding-bottom:.5rem;border-bottom:1px solid rgba(26,159,245,0.2);display:flex;align-items:center;gap:.8rem}
+      .soho-menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-bottom:2.5rem}
+      .soho-menu-card{background:var(--soho-card2);border:1px solid rgba(26,159,245,0.12);border-radius:2px;padding:1.1rem 1.2rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+      .soho-menu-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--soho-blue),var(--soho-red));transform:scaleY(0);transition:transform .2s}
+      .soho-menu-card:hover{border-color:rgba(26,159,245,0.4);background:#1a2135;transform:translateX(4px)}
+      .soho-menu-card:hover::before{transform:scaleY(1)}
+      .soho-menu-card:active{transform:scale(0.98)}
+      .smcard-header{display:flex;justify-content:space-between;align-items:flex-start;gap:.8rem;margin-bottom:.4rem}
+      .smcard-name{font-family:"Josefin Sans",sans-serif;font-size:.92rem;font-weight:700;color:var(--soho-text);letter-spacing:.03em;line-height:1.3}
+      .smcard-price{background:rgba(26,159,245,0.15);border:1px solid rgba(26,159,245,0.3);color:var(--soho-blue-glow);font-size:.72rem;font-weight:700;padding:.15rem .7rem;border-radius:2px;white-space:nowrap;font-family:"Josefin Sans",sans-serif;letter-spacing:.05em}
+      .smcard-desc{font-size:.74rem;color:var(--soho-sub);line-height:1.35}
+      /* ISTIK MENU */
+      #istikMenuPanel{background:var(--istik-cream);padding:3rem 1.5rem 5rem;display:none}
+      .istik-cat-title{font-family:"Playfair Display",serif;font-size:1.6rem;font-style:italic;color:var(--istik-red);margin-bottom:1.2rem;padding-bottom:.5rem;border-bottom:1px solid rgba(193,59,42,0.2);display:flex;align-items:center;gap:.8rem}
+      .istik-menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-bottom:2.5rem}
+      .istik-menu-card{background:white;border:1px solid rgba(193,59,42,0.12);border-radius:4px;padding:1.1rem 1.2rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+      .istik-menu-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--istik-red),var(--istik-gold));transform:scaleY(0);transition:transform .2s}
+      .istik-menu-card:hover{border-color:rgba(193,59,42,0.35);box-shadow:0 8px 24px rgba(193,59,42,0.1);transform:translateX(4px)}
+      .istik-menu-card:hover::before{transform:scaleY(1)}
+      .istik-menu-card:active{transform:scale(0.98)}
+      .imcard-header{display:flex;justify-content:space-between;align-items:flex-start;gap:.8rem;margin-bottom:.4rem}
+      .imcard-name{font-family:"Outfit",sans-serif;font-size:.92rem;font-weight:600;color:var(--istik-text);line-height:1.3}
+      .imcard-price{background:rgba(193,59,42,0.08);border:1px solid rgba(193,59,42,0.25);color:var(--istik-red);font-size:.72rem;font-weight:700;padding:.15rem .7rem;border-radius:60px;white-space:nowrap;font-family:"Josefin Sans",sans-serif}
+      .imcard-desc{font-size:.74rem;color:var(--istik-sub);line-height:1.35}
+      /* MODALS */
+      .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:1000;visibility:hidden;opacity:0;transition:visibility .2s,opacity .2s;padding:1rem}
+      .modal-overlay.active{visibility:visible;opacity:1}
+      .modal-soho{background:var(--soho-card);border:1px solid var(--soho-border);border-radius:4px;max-width:480px;width:100%;overflow:hidden;transform:scale(0.9) translateY(20px);transition:transform .3s cubic-bezier(.2,.9,.4,1.05);box-shadow:0 0 40px rgba(26,159,245,0.2),0 30px 60px rgba(0,0,0,0.5)}
+      .modal-overlay.active .modal-soho{transform:scale(1) translateY(0)}
+      .modal-soho-header{padding:1.8rem 1.8rem 1rem;background:linear-gradient(135deg,#0d1525,#151d2e);position:relative;border-bottom:1px solid rgba(26,159,245,0.15)}
+      .modal-soho-header h3{font-family:"Bebas Neue",sans-serif;font-size:1.8rem;letter-spacing:.05em;color:white;padding-right:2rem}
+      .modal-soho-body{padding:1.5rem 1.8rem 2rem}
+      .modal-soho-price{font-family:"Bebas Neue",sans-serif;font-size:1.5rem;color:var(--soho-yellow);text-shadow:0 0 10px rgba(255,208,0,0.5);letter-spacing:.1em;margin-bottom:1rem;display:block}
+      .modal-soho-desc{font-size:.9rem;color:var(--soho-sub);line-height:1.55}
+      .modal-istik{background:white;border:1px solid var(--istik-border);border-radius:8px;max-width:480px;width:100%;overflow:hidden;transform:scale(0.9) translateY(20px);transition:transform .3s cubic-bezier(.2,.9,.4,1.05);box-shadow:0 30px 60px rgba(0,0,0,0.3)}
+      .modal-overlay.active .modal-istik{transform:scale(1) translateY(0)}
+      .modal-istik-header{padding:1.8rem 1.8rem 1rem;background:linear-gradient(135deg,#fbf6ee,#f5edd8);border-bottom:1px solid rgba(193,59,42,0.15);position:relative}
+      .modal-istik-header h3{font-family:"Playfair Display",serif;font-size:1.6rem;font-style:italic;color:var(--istik-text);padding-right:2rem}
+      .modal-istik-body{padding:1.5rem 1.8rem 2rem}
+      .modal-istik-price{display:inline-block;background:var(--istik-red);color:white;font-family:"Josefin Sans",sans-serif;font-size:1rem;font-weight:700;letter-spacing:.1em;padding:.4rem 1.4rem;border-radius:60px;margin-bottom:1rem}
+      .modal-istik-desc{font-size:.9rem;color:var(--istik-brown);line-height:1.55}
+      .modal-close{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);width:36px;height:36px;border-radius:50%;font-size:1.2rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+      .modal-close:hover{background:rgba(255,255,255,0.2);color:white}
+      .modal-close.dark{background:rgba(0,0,0,0.08);border-color:rgba(0,0,0,0.15);color:rgba(0,0,0,0.5)}
+      .modal-close.dark:hover{background:rgba(193,59,42,0.1);color:var(--istik-red)}
+      .modal-footer-row{display:flex;justify-content:flex-end;padding:0 1.8rem 1.5rem}
+      .modal-done-soho{font-family:"Josefin Sans",sans-serif;font-size:.8rem;letter-spacing:.1em;font-weight:700;padding:.65rem 1.8rem;border:none;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);background:linear-gradient(135deg,var(--soho-blue),#0070d0);color:white;transition:all .2s}
+      .modal-done-soho:hover{box-shadow:0 0 20px rgba(26,159,245,0.5)}
+      .modal-done-istik{font-family:"Josefin Sans",sans-serif;font-size:.8rem;letter-spacing:.1em;font-weight:700;padding:.65rem 1.8rem;border:none;cursor:pointer;border-radius:60px;background:var(--istik-red);color:white;transition:all .2s}
+      .modal-done-istik:hover{background:var(--istik-red2)}
+      /* FOOTER */
+      .footer{background:#04060f;border-top:1px solid rgba(26,159,245,0.15);padding:3rem 1.5rem;text-align:center}
+      .footer-logo{font-family:"Bebas Neue",sans-serif;font-size:2rem;letter-spacing:.1em;color:var(--soho-blue);text-shadow:0 0 15px rgba(26,159,245,0.4)}
+      .footer-logo span{color:var(--istik-red)}
+      .footer p{font-size:.75rem;color:rgba(255,255,255,0.3);margin-top:.8rem;letter-spacing:.1em;font-family:"Josefin Sans",sans-serif}
+      .back-top{display:inline-block;margin-top:1.5rem;font-family:"Josefin Sans",sans-serif;font-size:.7rem;letter-spacing:.2em;color:var(--soho-blue);text-decoration:none;border:1px solid rgba(26,159,245,0.3);padding:.5rem 1.5rem;transition:all .2s}
+      .back-top:hover{background:rgba(26,159,245,0.1)}
+      /* ANIMATIONS */
+      @keyframes fadeSlideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+      .reveal{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+      .reveal.visible{opacity:1;transform:translateY(0)}
+      .stagger>*{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}
+      .stagger.visible>*:nth-child(1){opacity:1;transform:none;transition-delay:.05s}
+      .stagger.visible>*:nth-child(2){opacity:1;transform:none;transition-delay:.12s}
+      .stagger.visible>*:nth-child(3){opacity:1;transform:none;transition-delay:.19s}
+      .stagger.visible>*:nth-child(4){opacity:1;transform:none;transition-delay:.26s}
+      .stagger.visible>*:nth-child(5){opacity:1;transform:none;transition-delay:.33s}
+      .stagger.visible>*:nth-child(6){opacity:1;transform:none;transition-delay:.4s}
+      /* LOADING STATE */
+      .menu-loading{text-align:center;padding:4rem 2rem;color:var(--soho-sub);font-family:"Josefin Sans",sans-serif;letter-spacing:.15em;font-size:.85rem}
+      .menu-loading-istik{text-align:center;padding:4rem 2rem;color:var(--istik-sub);font-family:"Josefin Sans",sans-serif;letter-spacing:.15em;font-size:.85rem}
+      .spinner{width:40px;height:40px;border:3px solid rgba(26,159,245,0.2);border-top-color:var(--soho-blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
+      .spinner-istik{width:40px;height:40px;border:3px solid rgba(193,59,42,0.2);border-top-color:var(--istik-red);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
+      @keyframes spin{to{transform:rotate(360deg)}}
+      /* RESPONSIVE */
+      @media(max-width:768px){.story-grid{grid-template-columns:1fr;gap:1.5rem}.atm-grid{grid-template-columns:1fr 1fr}.soho-menu-grid,.istik-menu-grid{grid-template-columns:1fr}.stats-inner{gap:1.5rem}.tab-btn{font-size:.75rem;padding:1rem .5rem;letter-spacing:.08em}}
+      @media(max-width:480px){.atm-grid{grid-template-columns:1fr 1fr;gap:1rem}.hero-eyebrow{font-size:.6rem;letter-spacing:.2em}.hero-cta-group{flex-direction:column}.cta-btn{text-align:center;width:100%}}
     </style>
   </head>
   <body>
-    <!-- Language Toggle Button -->
-    <button class="lang-toggle" onclick="toggleLanguage()" id="langToggleBtn">
-      ENGLISH
-    </button>
+    <button class="lang-toggle" onclick="toggleLanguage()" id="langToggleBtn">ENGLISH</button>
 
-    <!-- ======= HERO ======= -->
+    <!-- HERO -->
     <section class="hero">
       <div class="neon-circle nc1"></div>
       <div class="neon-circle nc2"></div>
       <div class="neon-circle nc3"></div>
-
       <div class="hero-content">
-        <div class="hero-eyebrow">CAIRO · EAT BOLD · SIP SLOW</div>
+        <div class="hero-eyebrow" id="txt-eyebrow">CAIRO · EAT BOLD · SIP SLOW</div>
         <div class="hero-soho">SOHO</div>
         <div class="hero-bites">BITES</div>
-
         <div class="hero-divider">
           <div class="hero-divider-line"></div>
           <div class="hero-x">×</div>
           <div class="hero-divider-line right"></div>
         </div>
-
         <div class="hero-istik">Istiknanah</div>
-
-        <p class="hero-tagline">
-          Two worlds united — electric urban flavors meet artisanal café warmth.
-          Every bite tells a story. Every sip is a moment.
-        </p>
-
+        <p class="hero-tagline" id="txt-tagline">Two worlds united — electric urban flavors meet artisanal café warmth. Every bite tells a story. Every sip is a moment.</p>
         <div class="hero-cta-group">
-          <button class="cta-btn cta-soho" onclick="openMenuTab('soho')">
-            ⚡ EAT BOLD — SOHO MENU
-          </button>
-          <button class="cta-btn cta-istik" onclick="openMenuTab('istik')">
-            ☕ SIP SLOW — ISTIKNANAH
-          </button>
+          <button class="cta-btn cta-soho" onclick="openMenuTab('soho')" id="txt-cta-soho">⚡ EAT BOLD — SOHO MENU</button>
+          <button class="cta-btn cta-istik" onclick="openMenuTab('istik')" id="txt-cta-istik">☕ SIP SLOW — ISTIKNANAH</button>
         </div>
       </div>
-
-      <div class="scroll-indicator">
-        <span>SCROLL</span>
-        <div class="scroll-line"></div>
-      </div>
+      <div class="scroll-indicator"><span id="txt-scroll">SCROLL</span><div class="scroll-line"></div></div>
     </section>
 
-    <!-- ======= STORY ======= -->
+    <!-- STORY -->
     <section class="story">
       <div class="container">
-        <span class="section-tag">— OUR STORY</span>
+        <span class="section-tag" id="txt-story-tag">— OUR STORY</span>
         <div class="story-grid stagger">
           <div class="story-card-soho">
             <div class="scard-icon">🔥</div>
-            <h3>SOHO BITES</h3>
-            <p>
-              Born from the electric streets of Soho, London — where art, music,
-              and rebellion collide. Smoked briskets, loaded burgers, sizzling
-              fajitas, and bold sauces designed for those who live out loud.
-              Every plate is an event.
-            </p>
-            <p
-              style="
-                margin-top: 1rem;
-                font-size: 0.8rem;
-                color: rgba(77, 186, 255, 0.6);
-                font-family: &quot;Josefin Sans&quot;, sans-serif;
-                letter-spacing: 0.1em;
-              "
-            >
-              EAT BOLD · LIVE SOHO
-            </p>
+            <h3 id="txt-soho-title">SOHO BITES</h3>
+            <p id="txt-soho-desc">Born from the electric streets of Soho, London — where art, music, and rebellion collide. Smoked briskets, loaded burgers, sizzling fajitas, and bold sauces designed for those who live out loud. Every plate is an event.</p>
+            <p style="margin-top:1rem;font-size:.8rem;color:rgba(77,186,255,0.6);font-family:'Josefin Sans',sans-serif;letter-spacing:.1em">EAT BOLD · LIVE SOHO</p>
           </div>
           <div class="story-card-istik">
-            <div style="font-size: 2.5rem; margin-bottom: 1.2rem">☕</div>
-            <h3>Istiknanah</h3>
-            <p>
-              Named from the Arabic word for contentment — إستكنانة — this is a
-              sanctuary of warmth. Spanish lattes, ceremonial matcha, fresh
-              juices, and signature elixirs. Each sip is an invitation to pause,
-              breathe, and stay a little longer.
-            </p>
-            <p
-              style="
-                margin-top: 1rem;
-                font-size: 0.8rem;
-                color: rgba(193, 59, 42, 0.6);
-                font-family: &quot;Josefin Sans&quot;, sans-serif;
-                letter-spacing: 0.1em;
-              "
-            >
-              SIP SLOW · FIND YOUR MOMENT
-            </p>
+            <div style="font-size:2.5rem;margin-bottom:1.2rem">☕</div>
+            <h3 id="txt-istik-title">Istiknanah</h3>
+            <p id="txt-istik-desc">Named from the Arabic word for contentment — إستكنانة — this is a sanctuary of warmth. Spanish lattes, ceremonial matcha, fresh juices, and signature elixirs. Each sip is an invitation to pause, breathe, and stay a little longer.</p>
+            <p style="margin-top:1rem;font-size:.8rem;color:rgba(193,59,42,0.6);font-family:'Josefin Sans',sans-serif;letter-spacing:.1em">SIP SLOW · FIND YOUR MOMENT</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ======= ATMOSPHERE ======= -->
+    <!-- ATMOSPHERE -->
     <section class="atmosphere">
       <div class="container">
-        <h2 class="atm-title reveal">
-          <span class="t-blue">MOMENTS</span> &amp;
-          <span class="t-red">ATMOSPHERE</span>
-        </h2>
+        <h2 class="atm-title reveal"><span class="t-blue">MOMENTS</span> &amp; <span class="t-red">ATMOSPHERE</span></h2>
         <div class="atm-grid stagger">
-          <div class="atm-card atm-card-soho">
-            <span class="atm-icon">🍔</span>
-            <h4>BOLD BITES</h4>
-            <p>
-              Smashed patties, smoked brisket & loaded nachos crafted for the
-              fearless
-            </p>
-          </div>
-          <div class="atm-card atm-card-istik">
-            <span class="atm-icon">☕</span>
-            <h4>Artisanal Elixirs</h4>
-            <p>Spanish lattes, matcha ceremonials & signature house blends</p>
-          </div>
-          <div class="atm-card atm-card-soho">
-            <span class="atm-icon">🥩</span>
-            <h4>SHARED FEASTS</h4>
-            <p>
-              Fajitas, wings, and family-style mains — food is meant to be
-              shared
-            </p>
-          </div>
-          <div class="atm-card atm-card-istik">
-            <span class="atm-icon">🌿</span>
-            <h4>Healthy Sips</h4>
-            <p>Yogurt blends, avocado honey & fresh juices full of vitality</p>
-          </div>
-          <div class="atm-card atm-card-soho">
-            <span class="atm-icon">🌮</span>
-            <h4>SOHO CLASSICS</h4>
-            <p>Crispy strips, quesadillas, and burgers born to satisfy</p>
-          </div>
-          <div class="atm-card atm-card-istik">
-            <span class="atm-icon">🍹</span>
-            <h4>Specialty Cocktails</h4>
-            <p>
-              Soda mojitos, hibiscus fusions & creative non-alcoholic wonders
-            </p>
-          </div>
+          <div class="atm-card atm-card-soho"><span class="atm-icon">🍔</span><h4>BOLD BITES</h4><p>Smashed patties, smoked brisket &amp; loaded nachos crafted for the fearless</p></div>
+          <div class="atm-card atm-card-istik"><span class="atm-icon">☕</span><h4>Artisanal Elixirs</h4><p>Spanish lattes, matcha ceremonials &amp; signature house blends</p></div>
+          <div class="atm-card atm-card-soho"><span class="atm-icon">🥩</span><h4>SHARED FEASTS</h4><p>Fajitas, wings, and family-style mains — food is meant to be shared</p></div>
+          <div class="atm-card atm-card-istik"><span class="atm-icon">🌿</span><h4>Healthy Sips</h4><p>Yogurt blends, avocado honey &amp; fresh juices full of vitality</p></div>
+          <div class="atm-card atm-card-soho"><span class="atm-icon">🌮</span><h4>SOHO CLASSICS</h4><p>Crispy strips, quesadillas, and burgers born to satisfy</p></div>
+          <div class="atm-card atm-card-istik"><span class="atm-icon">🍹</span><h4>Specialty Cocktails</h4><p>Soda mojitos, hibiscus fusions &amp; creative non-alcoholic wonders</p></div>
         </div>
       </div>
     </section>
 
-    <!-- ======= STATS ======= -->
+    <!-- STATS -->
     <div class="stats-bar">
       <div class="stats-inner stagger">
-        <div class="stat-item">
-          <span class="stat-num blue">80+</span>
-          <span class="stat-label">SOHO DISHES</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-num red">60+</span>
-          <span class="stat-label">ISTIKNANAH DRINKS</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-num yellow">2</span>
-          <span class="stat-label">ICONIC BRANDS</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-num blue">1</span>
-          <span class="stat-label">UNFORGETTABLE PLACE</span>
-        </div>
+        <div class="stat-item"><span class="stat-num blue" id="stat-soho">—</span><span class="stat-label">SOHO DISHES</span></div>
+        <div class="stat-item"><span class="stat-num red" id="stat-istik">—</span><span class="stat-label">ISTIKNANAH DRINKS</span></div>
+        <div class="stat-item"><span class="stat-num yellow">2</span><span class="stat-label">ICONIC BRANDS</span></div>
+        <div class="stat-item"><span class="stat-num blue">1</span><span class="stat-label">UNFORGETTABLE PLACE</span></div>
       </div>
     </div>
 
-    <!-- ======= MENU HUB ======= -->
+    <!-- MENU HUB -->
     <div class="menu-hub" id="menuHub">
-      <div class="menu-hub-title reveal">
-        <h2>EXPLORE THE MENUS</h2>
-      </div>
+      <div class="menu-hub-title reveal"><h2 id="txt-explore">EXPLORE THE MENUS</h2></div>
       <div class="container">
         <div class="tab-switcher">
-          <button
-            class="tab-btn tab-soho active"
-            id="tabSoho"
-            onclick="switchTab('soho')"
-          >
-            ⚡ SOHO BITES
-          </button>
-          <button
-            class="tab-btn tab-istik"
-            id="tabIstik"
-            onclick="switchTab('istik')"
-          >
-            ☕ ISTIKNANAH
-          </button>
+          <button class="tab-btn tab-soho active" id="tabSoho" onclick="switchTab('soho')">⚡ SOHO BITES</button>
+          <button class="tab-btn tab-istik" id="tabIstik" onclick="switchTab('istik')">☕ ISTIKNANAH</button>
         </div>
       </div>
     </div>
 
-    <!-- SOHO MENU PANEL -->
-    <div id="sohoMenuPanel">
-      <div class="container" id="sohoMenuContent"></div>
-    </div>
+    <div id="sohoMenuPanel"><div class="container" id="sohoMenuContent"><div class="menu-loading"><div class="spinner"></div>LOADING MENU…</div></div></div>
+    <div id="istikMenuPanel"><div class="container" id="istikMenuContent"><div class="menu-loading-istik"><div class="spinner-istik"></div>Loading…</div></div></div>
 
-    <!-- ISTIK MENU PANEL -->
-    <div id="istikMenuPanel">
-      <div class="container" id="istikMenuContent"></div>
-    </div>
-
-    <!-- ======= FOOTER ======= -->
+    <!-- FOOTER -->
     <footer class="footer">
       <div class="footer-logo">SOHO <span>×</span> ISTIKNANAH</div>
-      <p>
-        FROM SOHO LONDON TO YOUR TABLE — ONE SPACE · ONE FEELING · ONE
-        CONTINUOUS EXPERIENCE
-      </p>
-      <br />
-      <a
-        href="#"
-        class="back-top"
-        onclick="
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-          return false;
-        "
-        >↑ BACK TO TOP</a
-      >
+      <p>FROM SOHO LONDON TO YOUR TABLE — ONE SPACE · ONE FEELING · ONE CONTINUOUS EXPERIENCE</p>
+      <br/>
+      <a href="#" class="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ BACK TO TOP</a>
     </footer>
 
     <!-- SOHO MODAL -->
     <div class="modal-overlay" id="sohoModal">
       <div class="modal-soho">
-        <div class="modal-soho-header">
-          <h3 id="sohoModalTitle"></h3>
-          <button class="modal-close" onclick="closeModals()">×</button>
-        </div>
-        <div class="modal-soho-body">
-          <span class="modal-soho-price" id="sohoModalPrice"></span>
-          <p class="modal-soho-desc" id="sohoModalDesc"></p>
-        </div>
-        <div class="modal-footer-row">
-          <button class="modal-done-soho" onclick="closeModals()">CLOSE</button>
-        </div>
+        <div class="modal-soho-header"><h3 id="sohoModalTitle"></h3><button class="modal-close" onclick="closeModals()">×</button></div>
+        <div class="modal-soho-body"><span class="modal-soho-price" id="sohoModalPrice"></span><p class="modal-soho-desc" id="sohoModalDesc"></p></div>
+        <div class="modal-footer-row"><button class="modal-done-soho" onclick="closeModals()">CLOSE</button></div>
       </div>
     </div>
 
     <!-- ISTIK MODAL -->
     <div class="modal-overlay" id="istikModal">
       <div class="modal-istik">
-        <div class="modal-istik-header">
-          <h3 id="istikModalTitle"></h3>
-          <button class="modal-close dark" onclick="closeModals()">×</button>
-        </div>
-        <div class="modal-istik-body">
-          <span class="modal-istik-price" id="istikModalPrice"></span>
-          <p class="modal-istik-desc" id="istikModalDesc"></p>
-        </div>
-        <div class="modal-footer-row">
-          <button class="modal-done-istik" onclick="closeModals()">
-            Close
-          </button>
-        </div>
+        <div class="modal-istik-header"><h3 id="istikModalTitle"></h3><button class="modal-close dark" onclick="closeModals()">×</button></div>
+        <div class="modal-istik-body"><span class="modal-istik-price" id="istikModalPrice"></span><p class="modal-istik-desc" id="istikModalDesc"></p></div>
+        <div class="modal-footer-row"><button class="modal-done-istik" onclick="closeModals()">Close</button></div>
       </div>
     </div>
 
-    <!-- Load Bilingual Menu Data -->
-    <script src="bilingual_menu_data.js"></script>
-
+    <script src="js/firebase-client.js"></script>
     <script>
-      // ===================== LANGUAGE SYSTEM =====================
-      let currentLanguage = "en";
+      // ── Firebase Config ──────────────────────────────────────────
+      const FB_CONFIG = {
+        apiKey: "AIzaSyCoiuHbVfclITv_Ah6UOQeV33QGPGRVeXw",
+        projectId: "menu1-ec4bc",
+        authDomain: "menu1-ec4bc.firebaseapp.com"
+      };
+      const db = new FirebaseClient(FB_CONFIG);
 
-      const translations = {
+      // ── Language ─────────────────────────────────────────────────
+      let currentLanguage = 'ar';
+      const T = {
         en: {
-          "CAIRO · EAT BOLD · SIP SLOW": "CAIRO · EAT BOLD · SIP SLOW",
-          "Two worlds united — electric urban flavors meet artisanal café warmth. Every bite tells a story. Every sip is a moment.":
-            "Two worlds united — electric urban flavors meet artisanal café warmth. Every bite tells a story. Every sip is a moment.",
-          "⚡ EAT BOLD — SOHO MENU": "⚡ EAT BOLD — SOHO MENU",
-          "☕ SIP SLOW — ISTIKNANAH": "☕ SIP SLOW — ISTIKNANAH",
-          SCROLL: "SCROLL",
-          "— OUR STORY": "— OUR STORY",
-          "SOHO BITES": "SOHO BITES",
-          "Born from the electric streets of Soho, London — where art, music, and rebellion collide. Smoked briskets, loaded burgers, sizzling fajitas, and bold sauces designed for those who live out loud. Every plate is an event.":
-            "Born from the electric streets of Soho, London — where art, music, and rebellion collide. Smoked briskets, loaded burgers, sizzling fajitas, and bold sauces designed for those who live out loud. Every plate is an event.",
-          Istiknanah: "Istiknanah",
-          "Named from the Arabic word for contentment — إستكنانة — this is a celebration of slowing down. Handpicked coffees, artisanal pastries, and every detail crafted with intention. A refuge from the rush.":
-            "Named from the Arabic word for contentment — إستكنانة — this is a celebration of slowing down. Handpicked coffees, artisanal pastries, and every detail crafted with intention. A refuge from the rush.",
-          "— ATMOSPHERE": "— ATMOSPHERE",
-          SOHO: "SOHO",
-          ISTIKNANAH: "ISTIKNANAH",
-          "Neon Dreams": "Neon Dreams",
-          "Urban beats, electric energy": "Urban beats, electric energy",
-          "Bold Flavors": "Bold Flavors",
-          "Every plate tells a story": "Every plate tells a story",
-          "24/7 Vibe": "24/7 Vibe",
-          "Never stops, always alive": "Never stops, always alive",
-          "Warm Moments": "Warm Moments",
-          "Coffee culture refined": "Coffee culture refined",
-          "Artisanal Craft": "Artisanal Craft",
-          "Handpicked & thoughtful": "Handpicked & thoughtful",
-          "Slow Living": "Slow Living",
-          "Time to breathe": "Time to breathe",
-          "EXPLORE THE MENUS": "EXPLORE THE MENUS",
-          "⚡ SOHO BITES": "⚡ SOHO BITES",
-          "☕ ISTIKNANAH": "☕ ISTIKNANAH",
-          CLOSE: "CLOSE",
+          eyebrow:'CAIRO · EAT BOLD · SIP SLOW', tagline:'Two worlds united — electric urban flavors meet artisanal café warmth. Every bite tells a story. Every sip is a moment.',
+          ctaSoho:'⚡ EAT BOLD — SOHO MENU', ctaIstik:'☕ SIP SLOW — ISTIKNANAH', scroll:'SCROLL',
+          storyTag:'— OUR STORY', sohoTitle:'SOHO BITES',
+          sohoDesc:'Born from the electric streets of Soho, London — where art, music, and rebellion collide. Smoked briskets, loaded burgers, sizzling fajitas, and bold sauces designed for those who live out loud. Every plate is an event.',
+          istikTitle:'Istiknanah',
+          istikDesc:'Named from the Arabic word for contentment — إستكنانة — this is a sanctuary of warmth. Spanish lattes, ceremonial matcha, fresh juices, and signature elixirs. Each sip is an invitation to pause, breathe, and stay a little longer.',
+          explore:'EXPLORE THE MENUS', toggle:'ARABIC'
         },
         ar: {
-          "CAIRO · EAT BOLD · SIP SLOW": "القاهرة · كل بجرأة · تذوق ببطء",
-          "Two worlds united — electric urban flavors meet artisanal café warmth. Every bite tells a story. Every sip is a moment.":
-            "عالمان متحدان — نكهات حضرية كهربائية تلتقي بدفء مقهى حرفي. كل لقمة تحكي قصة. كل رشفة هي لحظة.",
-          "⚡ EAT BOLD — SOHO MENU": "⚡ كل بجرأة — قائمة سوهو",
-          "☕ SIP SLOW — ISTIKNANAH": "☕ تذوق ببطء — إستكنانة",
-          SCROLL: "مرر",
-          "— OUR STORY": "— قصتنا",
-          "SOHO BITES": "لقمات سوهو",
-          "Born from the electric streets of Soho, London — where art, music, and rebellion collide. Smoked briskets, loaded burgers, sizzling fajitas, and bold sauces designed for those who live out loud. Every plate is an event.":
-            "وُلدت من شوارع سوهو الكهربائية في لندن — حيث يتصادم الفن والموسيقى والتمرد. لحم مدخن وبرجر محمل وفاهيتا حارة وصلصات جريئة مصممة لمن يعيشون بصوت عالٍ. كل طبق حدث.",
-          Istiknanah: "إستكنانة",
-          "Named from the Arabic word for contentment — إستكنانة — this is a celebration of slowing down. Handpicked coffees, artisanal pastries, and every detail crafted with intention. A refuge from the rush.":
-            "مستوحاة من الكلمة العربية للرضا — إستكنانة — هذا احتفال بالتباطؤ. قهوة مختارة بعناية ومعجنات حرفية وكل تفصيلة مصنوعة بقصد. ملاذ من العجلة.",
-          "— ATMOSPHERE": "— الأجواء",
-          SOHO: "سوهو",
-          ISTIKNANAH: "إستكنانة",
-          "Neon Dreams": "أحلام نيون",
-          "Urban beats, electric energy": "نبضات حضرية، طاقة كهربائية",
-          "Bold Flavors": "نكهات جريئة",
-          "Every plate tells a story": "كل طبق يحكي قصة",
-          "24/7 Vibe": "حياة ٢٤/٧",
-          "Never stops, always alive": "لا تتوقف أبداً، حية دائماً",
-          "Warm Moments": "لحظات دافئة",
-          "Coffee culture refined": "ثقافة القهوة المكررة",
-          "Artisanal Craft": "الحرفة الفنية",
-          "Handpicked & thoughtful": "مختارة بعناية وتفكير",
-          "Slow Living": "الحياة البطيئة",
-          "Time to breathe": "وقت للتنفس",
-          "EXPLORE THE MENUS": "استكشف القوائم",
-          "⚡ SOHO BITES": "⚡ لقمات سوهو",
-          "☕ ISTIKNANAH": "☕ إستكنانة",
-          CLOSE: "إغلاق",
-        },
+          eyebrow:'القاهرة · كل بجرأة · تذوق ببطء', tagline:'عالمان متحدان — نكهات حضرية كهربائية تلتقي بدفء مقهى حرفي. كل لقمة تحكي قصة. كل رشفة هي لحظة.',
+          ctaSoho:'⚡ كل بجرأة — قائمة سوهو', ctaIstik:'☕ تذوق ببطء — إستكنانة', scroll:'مرر',
+          storyTag:'— قصتنا', sohoTitle:'لقمات سوهو',
+          sohoDesc:'وُلدت من شوارع سوهو الكهربائية في لندن — حيث يتصادم الفن والموسيقى. لحم مدخن وبرجر محمل وفاهيتا حارة وصلصات جريئة. كل طبق حدث.',
+          istikTitle:'إستكنانة',
+          istikDesc:'مستوحاة من الكلمة العربية للرضا — إستكنانة — هذا احتفال بالتباطؤ. قهوة مختارة بعناية وعصائر طازجة ومشروبات مميزة. ملاذ من العجلة.',
+          explore:'استكشف القوائم', toggle:'ENGLISH'
+        }
       };
 
-      function getTranslation(text) {
-        return translations[currentLanguage][text] || text;
-      }
-
-      function toggleLanguage() {
-        currentLanguage = currentLanguage === "en" ? "ar" : "en";
-        document.documentElement.lang = currentLanguage;
-        document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
-
-        // Update button text
-        const langBtn = document.getElementById("langToggleBtn");
-        langBtn.textContent = currentLanguage === "en" ? "ENGLISH" : "عربي";
-
-        // Update all page text
-        updatePageLanguage();
-
-        // Re-render menus
+      function applyLang() {
+        const t = T[currentLanguage];
+        document.getElementById('txt-eyebrow').textContent   = t.eyebrow;
+        document.getElementById('txt-tagline').textContent   = t.tagline;
+        document.getElementById('txt-cta-soho').textContent  = t.ctaSoho;
+        document.getElementById('txt-cta-istik').textContent = t.ctaIstik;
+        document.getElementById('txt-scroll').textContent    = t.scroll;
+        document.getElementById('txt-story-tag').textContent = t.storyTag;
+        document.getElementById('txt-soho-title').textContent= t.sohoTitle;
+        document.getElementById('txt-soho-desc').textContent = t.sohoDesc;
+        document.getElementById('txt-istik-title').textContent=t.istikTitle;
+        document.getElementById('txt-istik-desc').textContent= t.istikDesc;
+        document.getElementById('txt-explore').textContent   = t.explore;
+        document.getElementById('langToggleBtn').textContent = t.toggle;
+        document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
         renderSohoMenu();
         renderIstikMenu();
       }
 
-      function updatePageLanguage() {
-        // Hero section
-        const eyebrow = document.querySelector(".hero-eyebrow");
-        if (eyebrow)
-          eyebrow.textContent = getTranslation("CAIRO · EAT BOLD · SIP SLOW");
-
-        const tagline = document.querySelector(".hero-tagline");
-        if (tagline)
-          tagline.textContent = getTranslation(
-            "Two worlds united — electric urban flavors meet artisanal café warmth. Every bite tells a story. Every sip is a moment.",
-          );
-
-        const ctaButtons = document.querySelectorAll(".hero-cta-group button");
-        if (ctaButtons[0])
-          ctaButtons[0].textContent = getTranslation("⚡ EAT BOLD — SOHO MENU");
-        if (ctaButtons[1])
-          ctaButtons[1].textContent = getTranslation(
-            "☕ SIP SLOW — ISTIKNANAH",
-          );
-
-        const scrollText = document.querySelector(".scroll-indicator span");
-        if (scrollText) scrollText.textContent = getTranslation("SCROLL");
-
-        // Story section
-        const sectionTag = document.querySelector(".section-tag");
-        if (sectionTag) sectionTag.textContent = getTranslation("— OUR STORY");
-
-        const storyHeaders = document.querySelectorAll(
-          ".story-card-soho h3, .story-card-istik h3",
-        );
-        const storyTexts = document.querySelectorAll(
-          ".story-card-soho p, .story-card-istik p",
-        );
-        if (storyHeaders[0])
-          storyHeaders[0].textContent = getTranslation("SOHO BITES");
-        if (storyHeaders[1])
-          storyHeaders[1].textContent = getTranslation("Istiknanah");
-
-        // Atmosphere section
-        const atmTag =
-          document.querySelector(".atm-grid")?.previousElementSibling
-            ?.previousElementSibling;
-        if (atmTag) atmTag.textContent = getTranslation("— ATMOSPHERE");
-
-        // Menu Hub
-        const menuTitle = document.querySelector(".menu-hub h2");
-        if (menuTitle)
-          menuTitle.textContent = getTranslation("EXPLORE THE MENUS");
-
-        const tabButtons = document.querySelectorAll(".tab-btn");
-        if (tabButtons[0])
-          tabButtons[0].textContent = getTranslation("⚡ SOHO BITES");
-        if (tabButtons[1])
-          tabButtons[1].textContent = getTranslation("☕ ISTIKNANAH");
+      function toggleLanguage() {
+        currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+        applyLang();
       }
 
-      // ===================== MENU DATA LOADED FROM bilingual_menu_data.js =====================
-      // sohoMenu and istikMenu objects are now loaded from external file
+      // ── Data ─────────────────────────────────────────────────────
+      let sohoData = {}, istikData = {};
 
-      function getItemName(item) {
-        return currentLanguage === "en" ? item.en_name : item.ar_name;
+      // Category display config
+      const SOHO_CATS = {
+        '🥤 Cold Beverages':   {ar:'المشروبات الباردة', icon:null},
+        '🍜 Soups':            {ar:'الشوربة', icon:null},
+        '🥗 Salads':           {ar:'السلطات', icon:null},
+        '🍟 Appetizers':       {ar:'المقبلات', icon:'assets/app.svg'},
+        '🍔 Burgers & Sandwiches':{ar:'الساندوتشات والبرجر', icon:null},
+        '🍝 Pasta':            {ar:'ركن الباستا', icon:null},
+        '🥩 Main Courses':     {ar:'الاطباق الرئيسية', icon:null},
+        '🍟 Sides':            {ar:'اكسترا (السايد)', icon:'assets/sides.png'},
+        '👶 Kids Menu':        {ar:'وجبات الاطفال', icon:'assets/kids_meal.png'},
+        '🧂 Sauces (Extra)':   {ar:'الصوصات', icon:'assets/sauces.png'},
+        '🍰 Desserts':         {ar:'الحلويات', icon:null},
+      };
+      const ISTIK_CATS = {
+        '☕ Hot Drinks':       {ar:'المشروبات الساخنه', icon:null},
+        '🧃 Fresh Juices':     {ar:'عصائر فريش', icon:null},
+        '🌿 Healthy Drinks':   {ar:'مشروبات صحيه', icon:null},
+        '🧊 Iced Drinks':      {ar:'ايس درينك', icon:null},
+        '🥛 Milkshakes':       {ar:'ميلك شيك', icon:'assets/milk-shake.png'},
+        '🌟 Signature Drinks': {ar:'مشروبات مميزة', icon:null},
+        '🫧 Soda Cocktails':   {ar:'صودا كوكتيل', icon:null},
+        '🥤 Smoothies':        {ar:'سموزى', icon:null},
+      };
+
+      function getCatDisplay(key, catMap) {
+        const cfg = catMap[key];
+        const label = currentLanguage === 'ar' ? (cfg?.ar || key) : key.replace(/^[^\s]+\s/, '');
+        if (cfg?.icon) return `<img src="${cfg.icon}" alt="" style="width:28px;height:28px;vertical-align:middle"> ${esc(label)}`;
+        return esc(label);
       }
 
-      function getItemDesc(item) {
-        return currentLanguage === "en" ? item.en_desc : item.ar_desc;
+      function esc(s) {
+        if (!s) return '';
+        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
       }
 
-      function getCategoryDisplay(cat) {
-        const categoryTranslations = {
-          en: {
-            "🥤 Cold Beverages": "Cold Beverages",
-            "🍜 Soups": "Soups",
-            "🥗 Salads": "Salads",
-            "🍟 Appetizers": "Appetizers",
-            "🍔 Burgers & Sandwiches": "Burgers & Sandwiches",
-            "🍝 Pasta": "Pasta",
-            "🥩 Main Courses": "Main Courses",
-            "🍟 Sides": "Sides",
-            "👶 Kids Menu": "Kids Menu",
-            "🍰 Desserts": "Desserts",
-            "🧂 Sauces (Extra)": "Sauces (Extra)",
-            "☕ Hot Drinks": "Hot Drinks",
-            "🥛 Cold Drinks": "Cold Drinks",
-            "🧃 Fresh Juices": "Fresh Juices",
-            "🍰 Pastries & Bakes": "Pastries & Bakes",
-            "🥛 Milkshakes": "Milkshakes",
-          },
-          ar: {
-            "🥤 Cold Beverages": "المشروبات الباردة",
-            "🍜 Soups": "الشوربات",
-            "🥗 Salads": "السلطات",
-            "🍟 Appetizers": "المقبلات",
-            "🍔 Burgers & Sandwiches": "البرجرات والساندويتشات",
-            "🍝 Pasta": "المعكرونة",
-            "🥩 Main Courses": "الأطباق الرئيسية",
-            "🍟 Sides": "الأطباق الجانبية",
-            "👶 Kids Menu": "قائمة الأطفال",
-            "🍰 Desserts": "الحلويات",
-            "🧂 Sauces (Extra)": "الصلصات (إضافية)",
-            "☕ Hot Drinks": "المشروبات الساخنة",
-            "🥛 Cold Drinks": "المشروبات الباردة",
-            "🧃 Fresh Juices": "العصائر الطازجة",
-            "🍰 Pastries & Bakes": "المعجنات والخبز",
-            "🥛 Milkshakes": "الميلك شيك",
-          },
-        };
+      // ── Fetch from Firebase ───────────────────────────────────────
+      async function loadMenuData() {
+        try {
+          const items = await db.getAll('menus');
+          sohoData = {};
+          istikData = {};
 
-        const translatedCat = categoryTranslations[currentLanguage][cat];
-        if (translatedCat) {
-          return cat.substring(0, 2) + " " + esc(translatedCat);
+          // Sort items by order field
+          items.sort((a,b) => (a.order||999) - (b.order||999));
+
+          items.forEach(item => {
+            const target = item.menu === 'soho' ? sohoData : istikData;
+            const cat = item.category || 'Other';
+            if (!target[cat]) target[cat] = [];
+            target[cat].push(item);
+          });
+
+          // Update stats
+          const sohoTotal = Object.values(sohoData).reduce((s,a) => s+a.length, 0);
+          const istikTotal = Object.values(istikData).reduce((s,a) => s+a.length, 0);
+          document.getElementById('stat-soho').textContent = sohoTotal + '+';
+          document.getElementById('stat-istik').textContent = istikTotal + '+';
+
+          renderSohoMenu();
+          renderIstikMenu();
+        } catch(e) {
+          console.error('Failed to load menu:', e);
+          document.getElementById('sohoMenuContent').innerHTML = '<div class="menu-loading">⚠ Could not load menu. Please try again.</div>';
+          document.getElementById('istikMenuContent').innerHTML = '<div class="menu-loading-istik">⚠ Could not load menu. Please try again.</div>';
         }
-        return esc(cat);
       }
 
-      function getItemName(item) {
-        return currentLanguage === "en" ? item.en_name : item.ar_name;
-      }
-
-      function getItemDesc(item) {
-        return currentLanguage === "en" ? item.en_desc : item.ar_desc;
-      }
-
-      // ===================== RENDER MENUS =====================
-      function esc(str) {
-        if (!str) return "";
-        return str
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;");
-      }
-
-      function getCategoryDisplay(cat) {
-        const categoryTranslations = {
-          en: {
-            "🥤 Cold Beverages": "Cold Beverages",
-            "🍜 Soups": "Soups",
-            "🥗 Salads": "Salads",
-            "🍟 Appetizers": "Appetizers",
-            "🍔 Burgers & Sandwiches": "Burgers & Sandwiches",
-            "🍝 Pasta": "Pasta",
-            "🥩 Main Courses": "Main Courses",
-            "🍟 Sides": "Sides",
-            "👶 Kids Menu": "Kids Menu",
-            "🍰 Desserts": "Desserts",
-            "🧂 Sauces (Extra)": "Sauces (Extra)",
-            "☕ Hot Drinks": "Hot Drinks",
-            "🥛 Cold Drinks": "Cold Drinks",
-            "🧃 Fresh Juices": "Fresh Juices",
-            "🍰 Pastries & Bakes": "Pastries & Bakes",
-            "🥛 Milkshakes": "Milkshakes",
-          },
-          ar: {
-            "🥤 Cold Beverages": "المشروبات الباردة",
-            "🍜 Soups": "الشوربات",
-            "🥗 Salads": "السلطات",
-            "🍟 Appetizers": "المقبلات",
-            "🍔 Burgers & Sandwiches": "البرجرات والساندويتشات",
-            "🍝 Pasta": "المعكرونة",
-            "🥩 Main Courses": "الأطباق الرئيسية",
-            "🍟 Sides": "الأطباق الجانبية",
-            "👶 Kids Menu": "قائمة الأطفال",
-            "🍰 Desserts": "الحلويات",
-            "🧂 Sauces (Extra)": "الصلصات (إضافية)",
-            "☕ Hot Drinks": "المشروبات الساخنة",
-            "🥛 Cold Drinks": "المشروبات الباردة",
-            "🧃 Fresh Juices": "العصائر الطازجة",
-            "🍰 Pastries & Bakes": "المعجنات والخبز",
-            "🥛 Milkshakes": "الميلك شيك",
-          },
-        };
-
-        const iconMap = {
-          "🍟 Sides":
-            '<img src="sides.png" alt="Sides" style="width: 28px; height: 28px; vertical-align: middle;">',
-          "👶 Kids Menu":
-            '<img src="kids_meal.png" alt="Kids Menu" style="width: 28px; height: 28px; vertical-align: middle;">',
-          "🥛 Milkshakes":
-            '<img src="milk-shake.png" alt="Milkshakes" style="width: 28px; height: 28px; vertical-align: middle;">',
-          "🧂 Sauces (Extra)":
-            '<img src="sauces.png" alt="Sauces" style="width: 28px; height: 28px; vertical-align: middle;">',
-          "🍟 Appetizers":
-            '<img src="app.svg" alt="Sides" style="width: 28px; height: 28px; vertical-align: middle;">',
-        };
-
-        if (iconMap[cat]) {
-          const catText =
-            categoryTranslations[currentLanguage][cat] ||
-            cat.substring(2).trim();
-          return iconMap[cat] + " " + esc(catText);
-        }
-
-        const translatedCat = categoryTranslations[currentLanguage][cat];
-        if (translatedCat) {
-          return cat.substring(0, 2) + " " + esc(translatedCat);
-        }
-        return esc(cat);
-      }
-
-      function getItemName(item) {
-        return currentLanguage === "en" ? item.en_name : item.ar_name;
-      }
-
-      function getItemDesc(item) {
-        return currentLanguage === "en" ? item.en_desc : item.ar_desc;
-      }
-
-      // ===================== RENDER MENUS =====================
-      function esc(str) {
-        if (!str) return "";
-        return str
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;");
-      }
-
-      function getCategoryDisplay(cat) {
-        const categoryTranslations = {
-          en: {
-            "🥤 Cold Beverages": "Cold Beverages",
-            "🍜 Soups": "Soups",
-            "🥗 Salads": "Salads",
-            "🍟 Appetizers": "Appetizers",
-            "🍔 Burgers & Sandwiches": "Burgers & Sandwiches",
-            "🍝 Pasta": "Pasta",
-            "🥩 Main Courses": "Main Courses",
-            "🍟 Sides": "Sides",
-            "👶 Kids Menu": "Kids Menu",
-            "🍰 Desserts": "Desserts",
-            "🧂 Sauces (Extra)": "Sauces (Extra)",
-            "☕ Hot Drinks": "Hot Drinks",
-            "🥛 Cold Drinks": "Cold Drinks",
-            "🧃 Fresh Juices": "Fresh Juices",
-            "🍰 Pastries & Bakes": "Pastries & Bakes",
-            "🥛 Milkshakes": "Milkshakes",
-          },
-          ar: {
-            "🥤 Cold Beverages": "المشروبات الباردة",
-            "🍜 Soups": "الشوربات",
-            "🥗 Salads": "السلطات",
-            "🍟 Appetizers": "المقبلات",
-            "🍔 Burgers & Sandwiches": "البرجرات والساندويتشات",
-            "🍝 Pasta": "المعكرونة",
-            "🥩 Main Courses": "الأطباق الرئيسية",
-            "🍟 Sides": "الأطباق الجانبية",
-            "👶 Kids Menu": "قائمة الأطفال",
-            "🍰 Desserts": "الحلويات",
-            "🧂 Sauces (Extra)": "الصلصات (إضافية)",
-            "☕ Hot Drinks": "المشروبات الساخنة",
-            "🥛 Cold Drinks": "المشروبات الباردة",
-            "🧃 Fresh Juices": "العصائر الطازجة",
-            "🍰 Pastries & Bakes": "المعجنات والخبز",
-            "🥛 Milkshakes": "الميلك شيك",
-          },
-        };
-
-        const iconMap = {
-          "🍟 Sides":
-            '<img src="sides.png" alt="Sides" style="width: 28px; height: 28px; vertical-align: middle;">',
-          "👶 Kids Menu":
-            '<img src="kids_meal.png" alt="Kids Menu" style="width: 28px; height: 28px; vertical-align: middle;">',
-          "🥛 Milkshakes":
-            '<img src="milk-shake.png" alt="Milkshakes" style="width: 28px; height: 28px; vertical-align: middle;">',
-          "🧂 Sauces (Extra)":
-            '<img src="sauces.png" alt="Sauces" style="width: 28px; height: 28px; vertical-align: middle;">',
-          "🍟 Appetizers":
-            '<img src="app.svg" alt="Sides" style="width: 28px; height: 28px; vertical-align: middle;">',
-        };
-
-        if (iconMap[cat]) {
-          const catText =
-            categoryTranslations[currentLanguage][cat] ||
-            cat.substring(2).trim();
-          return iconMap[cat] + " " + esc(catText);
-        }
-
-        const translatedCat = categoryTranslations[currentLanguage][cat];
-        if (translatedCat) {
-          return cat.substring(0, 2) + " " + esc(translatedCat);
-        }
-        return esc(cat);
-      }
-
-      function getItemName(item) {
-        return currentLanguage === "en" ? item.en_name : item.ar_name;
-      }
-
-      function getItemDesc(item) {
-        return currentLanguage === "en" ? item.en_desc : item.ar_desc;
-      }
-
+      // ── Render ────────────────────────────────────────────────────
       function renderSohoMenu() {
-        const container = document.getElementById("sohoMenuContent");
-        let html = "";
-        for (const [cat, catData] of Object.entries(sohoMenu)) {
-          const catName = currentLanguage === "en" ? cat : catData.ar;
-          html += `<div class="menu-category">
-      <div class="soho-cat-title">${getCategoryDisplay(cat)}</div>
-      <div class="soho-menu-grid">`;
-          catData.items.forEach((item) => {
-            const itemName = getItemName(item);
-            const itemDesc = getItemDesc(item);
-            html += `<div class="soho-menu-card" onclick="openSohoModal('${esc(itemName).replace(/'/g, "\\'")}','${item.price}','${esc(itemDesc).replace(/'/g, "\\'")}')">
-        <div class="smcard-header">
-          <span class="smcard-name">${esc(itemName)}</span>
-          <span class="smcard-price">${item.price} EGP</span>
-        </div>
-        <div class="smcard-desc">${esc(itemDesc)}</div>
-      </div>`;
+        const el = document.getElementById('sohoMenuContent');
+        if (!Object.keys(sohoData).length) return;
+        let html = '';
+        // render in defined category order
+        const orderedCats = Object.keys(SOHO_CATS).filter(k => sohoData[k]);
+        const extraCats = Object.keys(sohoData).filter(k => !SOHO_CATS[k]);
+        [...orderedCats, ...extraCats].forEach(cat => {
+          const items = sohoData[cat];
+          if (!items || !items.length) return;
+          html += `<div class="menu-category"><div class="soho-cat-title">${getCatDisplay(cat, SOHO_CATS)}</div><div class="soho-menu-grid">`;
+          items.forEach(item => {
+            const name = currentLanguage === 'ar' ? (item.nameAr || item.name) : (item.name || item.nameAr);
+            const desc = currentLanguage === 'ar' ? (item.descAr || item.desc || '') : (item.desc || item.descAr || '');
+            html += `<div class="soho-menu-card" onclick="openSohoModal('${esc(name).replace(/'/g,"\\'")}','${item.price}','${esc(desc).replace(/'/g,"\\'")}')">
+              <div class="smcard-header"><span class="smcard-name">${esc(name)}</span><span class="smcard-price">${item.price} EGP</span></div>
+              <div class="smcard-desc">${esc(desc)}</div></div>`;
           });
           html += `</div></div>`;
-        }
-        container.innerHTML = html;
+        });
+        el.innerHTML = html;
       }
 
       function renderIstikMenu() {
-        const container = document.getElementById("istikMenuContent");
-        let html = "";
-        for (const [cat, catData] of Object.entries(istikMenu)) {
-          html += `<div class="menu-category">
-      <div class="istik-cat-title">${getCategoryDisplay(cat)}</div>
-      <div class="istik-menu-grid">`;
-          catData.items.forEach((item) => {
-            const itemName = getItemName(item);
-            const itemDesc = getItemDesc(item);
-            html += `<div class="istik-menu-card" onclick="openIstikModal('${esc(itemName).replace(/'/g, "\\'")}','${item.price}','${esc(itemDesc).replace(/'/g, "\\'")}')">
-        <div class="imcard-header">
-          <span class="imcard-name">${esc(itemName)}</span>
-          <span class="imcard-price">${item.price} EGP</span>
-        </div>
-        <div class="imcard-desc">${esc(itemDesc)}</div>
-      </div>`;
+        const el = document.getElementById('istikMenuContent');
+        if (!Object.keys(istikData).length) return;
+        let html = '';
+        const orderedCats = Object.keys(ISTIK_CATS).filter(k => istikData[k]);
+        const extraCats = Object.keys(istikData).filter(k => !ISTIK_CATS[k]);
+        [...orderedCats, ...extraCats].forEach(cat => {
+          const items = istikData[cat];
+          if (!items || !items.length) return;
+          html += `<div class="menu-category"><div class="istik-cat-title">${getCatDisplay(cat, ISTIK_CATS)}</div><div class="istik-menu-grid">`;
+          items.forEach(item => {
+            const name = currentLanguage === 'ar' ? (item.nameAr || item.name) : (item.name || item.nameAr);
+            const desc = currentLanguage === 'ar' ? (item.descAr || item.desc || '') : (item.desc || item.descAr || '');
+            html += `<div class="istik-menu-card" onclick="openIstikModal('${esc(name).replace(/'/g,"\\'")}','${item.price}','${esc(desc).replace(/'/g,"\\'")}')">
+              <div class="imcard-header"><span class="imcard-name">${esc(name)}</span><span class="imcard-price">${item.price} EGP</span></div>
+              <div class="imcard-desc">${esc(desc)}</div></div>`;
           });
           html += `</div></div>`;
-        }
-        container.innerHTML = html;
+        });
+        el.innerHTML = html;
       }
 
-      renderSohoMenu();
-      renderIstikMenu();
-
-      // ===================== TAB LOGIC =====================
-      let currentTab = "soho";
-
+      // ── Tabs ──────────────────────────────────────────────────────
+      let currentTab = 'soho';
       function switchTab(tab) {
         currentTab = tab;
-        const sohoPanel = document.getElementById("sohoMenuPanel");
-        const istikPanel = document.getElementById("istikMenuPanel");
-        const tSoho = document.getElementById("tabSoho");
-        const tIstik = document.getElementById("tabIstik");
-
-        if (tab === "soho") {
-          sohoPanel.style.display = "block";
-          istikPanel.style.display = "none";
-          tSoho.classList.add("active");
-          tIstik.classList.remove("active");
-        } else {
-          istikPanel.style.display = "block";
-          sohoPanel.style.display = "none";
-          tIstik.classList.add("active");
-          tSoho.classList.remove("active");
-        }
+        document.getElementById('sohoMenuPanel').style.display = tab === 'soho' ? 'block' : 'none';
+        document.getElementById('istikMenuPanel').style.display = tab === 'istik' ? 'block' : 'none';
+        document.getElementById('tabSoho').classList.toggle('active', tab === 'soho');
+        document.getElementById('tabIstik').classList.toggle('active', tab === 'istik');
       }
-
       function openMenuTab(tab) {
         switchTab(tab);
-        setTimeout(() => {
-          document
-            .getElementById("menuHub")
-            .scrollIntoView({ behavior: "smooth" });
-        }, 100);
+        setTimeout(() => document.getElementById('menuHub').scrollIntoView({behavior:'smooth'}), 100);
       }
 
-      // ===================== MODALS =====================
+      // ── Modals ────────────────────────────────────────────────────
       function openSohoModal(name, price, desc) {
-        document.getElementById("sohoModalTitle").textContent = name;
-        document.getElementById("sohoModalPrice").textContent = price + " EGP";
-        document.getElementById("sohoModalDesc").textContent =
-          desc || "A Soho signature creation.";
-        document.getElementById("sohoModal").classList.add("active");
-        document.body.style.overflow = "hidden";
+        document.getElementById('sohoModalTitle').textContent = name;
+        document.getElementById('sohoModalPrice').textContent = price + ' EGP';
+        document.getElementById('sohoModalDesc').textContent = desc || 'A Soho signature creation.';
+        document.getElementById('sohoModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
       }
-
       function openIstikModal(name, price, desc) {
-        document.getElementById("istikModalTitle").textContent = name;
-        document.getElementById("istikModalPrice").textContent = price + " EGP";
-        document.getElementById("istikModalDesc").textContent =
-          desc || "An Istiknanah artisanal creation.";
-        document.getElementById("istikModal").classList.add("active");
-        document.body.style.overflow = "hidden";
+        document.getElementById('istikModalTitle').textContent = name;
+        document.getElementById('istikModalPrice').textContent = price + ' EGP';
+        document.getElementById('istikModalDesc').textContent = desc || 'An Istiknanah artisanal creation.';
+        document.getElementById('istikModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
       }
-
       function closeModals() {
-        document.getElementById("sohoModal").classList.remove("active");
-        document.getElementById("istikModal").classList.remove("active");
-        document.body.style.overflow = "";
+        document.getElementById('sohoModal').classList.remove('active');
+        document.getElementById('istikModal').classList.remove('active');
+        document.body.style.overflow = '';
       }
+      document.getElementById('sohoModal').addEventListener('click', function(e){if(e.target===this)closeModals()});
+      document.getElementById('istikModal').addEventListener('click', function(e){if(e.target===this)closeModals()});
+      document.addEventListener('keydown', e => { if(e.key==='Escape') closeModals(); });
 
-      document
-        .getElementById("sohoModal")
-        .addEventListener("click", function (e) {
-          if (e.target === this) closeModals();
-        });
-      document
-        .getElementById("istikModal")
-        .addEventListener("click", function (e) {
-          if (e.target === this) closeModals();
-        });
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeModals();
-      });
+      // ── Scroll reveal ─────────────────────────────────────────────
+      const revealObs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+      }, {threshold:0.1, rootMargin:'0px 0px -50px 0px'});
+      document.querySelectorAll('.reveal,.stagger').forEach(el => revealObs.observe(el));
 
-      // ===================== SCROLL REVEAL =====================
-      const revealObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("visible");
-            }
-          });
-        },
-        { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
-      );
-
-      document
-        .querySelectorAll(".reveal, .stagger")
-        .forEach((el) => revealObserver.observe(el));
+      // ── Init ──────────────────────────────────────────────────────
+      applyLang();
+      loadMenuData();
     </script>
   </body>
 </html>
