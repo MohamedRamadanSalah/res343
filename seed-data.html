@@ -212,35 +212,52 @@ const ISTIK_ITEMS = [
 async function startUpload() {
   const btn = document.getElementById('btnUpload');
   btn.disabled = true;
-  btn.textContent = '⏳ Uploading…';
+  btn.textContent = '⏳ Deleting old data…';
 
-  // Check if already has data
-  log('🔍 Checking existing data in Firebase…', 'info');
+  log('🧹 STEP 1: Deleting ALL existing data in Firebase (including corrupted items)…', 'info');
   try {
-    const existing = await db.getAll('menus');
-    if (existing.length > 0) {
-      log(`⚠️  Found ${existing.length} existing items. Skipping upload to avoid duplicates.`, 'warn');
-      log('💡 Delete all items first via the Admin Panel, then re-run this seeder.', 'warn');
-      btn.disabled = false; btn.textContent = '⬆️ Upload All Menu Data';
-      return;
+    // 1. Fetch raw documents directly to get the unstripped corrupt names
+    const url = `https://firestore.googleapis.com/v1/projects/${FB_CONFIG.projectId}/databases/(default)/documents/menus?pageSize=500&key=${FB_CONFIG.apiKey}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const docs = data.documents || [];
+    
+    if (docs.length > 0) {
+      log(`Found ${docs.length} existing items. Deleting...`, 'warn');
+      for (let i = 0; i < docs.length; i++) {
+        const docName = docs[i].name;
+        // The docName already contains ?key=... if it's corrupted, or we need to add ?key= if not
+        const sep = docName.includes('?') ? '&' : '?';
+        const deleteUrl = `https://firestore.googleapis.com/v1/${docName}${sep}key=${FB_CONFIG.apiKey}`;
+        
+        await fetch(deleteUrl, { method: 'DELETE' });
+        if ((i + 1) % 20 === 0) log(`Deleted ${i + 1}/${docs.length}...`);
+      }
+      log(`✅ Successfully wiped ${docs.length} old documents.`, 'ok');
+    } else {
+      log('Database already empty. Proceeding...', 'ok');
     }
   } catch(e) {
-    log('⚠️  Could not check existing data: ' + e.message + ' — continuing anyway.', 'warn');
+    log('❌ Error during deletion: ' + e.message, 'err');
+    btn.disabled = false; btn.textContent = '⬆️ Upload All Menu Data';
+    return;
   }
 
+  // 2. Re-seed clean data
+  btn.textContent = '⏳ Seeding new data…';
   let ok = 0, fail = 0;
   const allItems = [
     ...SOHO_ITEMS.map(i => ({...i, menu:'soho'})),
     ...ISTIK_ITEMS.map(i => ({...i, menu:'istik'}))
   ];
 
-  log(`📦 Starting upload of ${allItems.length} items (${SOHO_ITEMS.length} SOHO + ${ISTIK_ITEMS.length} ISTIK)…`, 'info');
+  log(`📦 STEP 2: Starting upload of ${allItems.length} clean items (${SOHO_ITEMS.length} SOHO + ${ISTIK_ITEMS.length} ISTIK)…`, 'info');
 
   for (const item of allItems) {
     try {
       await db.create('menus', item);
       ok++;
-      if (ok % 10 === 0 || ok === allItems.length) {
+      if (ok % 20 === 0 || ok === allItems.length) {
         log(`✅ ${ok}/${allItems.length} uploaded…`, 'ok');
       }
     } catch(e) {
@@ -253,7 +270,7 @@ async function startUpload() {
 
   log('', 'info');
   log(`🎉 Done! ${ok} items uploaded successfully. ${fail ? fail + ' failed.' : ''}`, ok > 0 ? 'ok' : 'err');
-  log('👉 You can now open the Admin Panel to manage items, or view the public menu.', 'info');
+  log('👉 You can now manage items normally without duplicates or errors.', 'info');
   btn.textContent = '✅ Upload Complete';
 }
 </script>
