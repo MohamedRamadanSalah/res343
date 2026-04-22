@@ -49,10 +49,16 @@ class FirebaseClient {
   async create(collection, obj, id = null) {
     const docId = id || `doc_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
     const body = { fields: this._toFields(obj) };
-    const data = await this._request(`/${collection}?documentId=${docId}`, {
-      method: 'POST', body: JSON.stringify(body)
-    });
-    return this._toObj(data);
+    // Use separate URL so documentId is never mixed with key param
+    const url = `${this.baseUrl}/${collection}?documentId=${encodeURIComponent(docId)}&key=${this.apiKey}`;
+    const headers = { 'Content-Type': 'application/json' };
+    const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body) });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error?.message || `HTTP ${res.status}`);
+    }
+    const text = await res.text();
+    return this._toObj(text ? JSON.parse(text) : null);
   }
 
   async update(collection, id, obj) {
@@ -69,12 +75,15 @@ class FirebaseClient {
     return true;
   }
 
-  // ── Firestore type conversions ────────────────────────────────
+  // ── Firestore type conversions ──────────────────────────────────
   _toObj(doc) {
     if (!doc || !doc.fields) return null;
     const obj = {};
     for (const [k, v] of Object.entries(doc.fields)) obj[k] = this._fromField(v);
-    if (doc.name) obj.id = doc.name.split('/').pop();
+    if (doc.name) {
+      // Strip any query string that may have been accidentally embedded in old doc IDs
+      obj.id = doc.name.split('/').pop().split('?')[0];
+    }
     return obj;
   }
 
