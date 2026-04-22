@@ -19,21 +19,26 @@ class FirebaseClient {
   async _request(endpoint, options = {}) {
     const sep = endpoint.includes('?') ? '&' : '?';
     const url = `${this.baseUrl}${endpoint}${sep}key=${this.apiKey}`;
+    // Note: we do NOT send the auth token to Firestore REST.
+    // The database is in open mode (allow read, write: if true).
+    // Sending a Bearer token would cause Firestore to evaluate
+    // auth-based rules which may reject the request.
     const headers = { 'Content-Type': 'application/json' };
-    if (this.authToken) headers['Authorization'] = `Bearer ${this.authToken}`;
     const res = await fetch(url, { headers, ...options });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.error?.message || `HTTP ${res.status}`);
     }
-    if (res.status === 204) return null;
-    return res.json();
+    // Firestore DELETE returns 200 with empty body — handle safely
+    const text = await res.text();
+    if (!text || text.trim() === '') return null;
+    return JSON.parse(text);
   }
 
   // ── CRUD ─────────────────────────────────────────────────────
   async getAll(collection) {
     const data = await this._request(`/${collection}?pageSize=500`);
-    return (data.documents || []).map(d => this._toObj(d));
+    return (data && data.documents ? data.documents : []).map(d => this._toObj(d));
   }
 
   async getDoc(collection, id) {
@@ -51,10 +56,9 @@ class FirebaseClient {
   }
 
   async update(collection, id, obj) {
-    // Build updateMask so we only touch specified fields
-    const fieldPaths = Object.keys(obj).map(k => `updateMask.fieldPaths=${encodeURIComponent(k)}`).join('&');
+    // PATCH without updateMask = replace entire document (safe since we send all fields)
     const body = { fields: this._toFields(obj) };
-    const data = await this._request(`/${collection}/${id}?${fieldPaths}`, {
+    const data = await this._request(`/${collection}/${id}`, {
       method: 'PATCH', body: JSON.stringify(body)
     });
     return this._toObj(data);
