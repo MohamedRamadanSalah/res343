@@ -1,279 +1,1487 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <!-- STEP 1: Delete All, STEP 2: Re-seed clean data -->
-  <title>Seed Menu Data → Firebase</title>
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:monospace;background:#0d0f1a;color:#e2e8f0;padding:2rem;min-height:100vh}
-    h1{font-family:sans-serif;color:#7c5cbf;margin-bottom:.5rem}
-    p{color:#7b8ab8;font-size:.85rem;margin-bottom:1.5rem}
-    #log{background:#111827;border:1px solid #2a2f4a;border-radius:8px;padding:1.2rem;height:420px;overflow-y:auto;font-size:.78rem;line-height:1.7}
-    .ok{color:#22c55e}.err{color:#ef4444}.info{color:#60a5fa}.warn{color:#fbbf24}
-    .controls{display:flex;gap:1rem;margin-bottom:1.2rem;flex-wrap:wrap}
-    button{padding:.6rem 1.4rem;border:none;border-radius:6px;font-family:sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s}
-    #btnUpload{background:#7c5cbf;color:#fff}
-    #btnUpload:hover{background:#9b7fe0}
-    #btnUpload:disabled{background:#3a3560;color:#6b7280;cursor:not-allowed}
-    #btnClear{background:#1e2235;border:1px solid #2a2f4a;color:#7b8ab8}
-    #btnClear:hover{background:#2a2f4a;color:#e2e8f0}
-    .badge{display:inline-block;background:#1e3a5f;color:#60a5fa;border:1px solid rgba(96,165,250,0.3);border-radius:4px;padding:.15rem .6rem;font-size:.72rem;margin-left:.5rem}
-  </style>
-</head>
-<body>
-  <h1>🌱 Seed Menu Data → Firebase</h1>
-  <p>This uploads all SOHO and Istiknanah menu items to your Firestore database.<br>
-     Run this only ONCE. After seeding, use the <strong>Admin Panel</strong> for further changes.</p>
-  <div class="controls">
-    <button id="btnUpload" onclick="startUpload()">⬆️ Upload All Menu Data</button>
-    <button id="btnClear" onclick="document.getElementById('log').innerHTML=''">Clear Log</button>
-  </div>
-  <div id="log"><span class="info">Ready. Click "Upload All Menu Data" to begin.</span></div>
-
-<script src="js/firebase-client.js"></script>
-<script>
-const FB_CONFIG = {
-  apiKey: "AIzaSyCoiuHbVfclITv_Ah6UOQeV33QGPGRVeXw",
-  projectId: "menu1-ec4bc",
-  authDomain: "menu1-ec4bc.firebaseapp.com"
-};
-const db = new FirebaseClient(FB_CONFIG);
-const logEl = document.getElementById('log');
-
-function log(msg, cls='info') {
-  const line = document.createElement('div');
-  line.className = cls;
-  line.textContent = msg;
-  logEl.appendChild(line);
-  logEl.scrollTop = logEl.scrollHeight;
-}
-
-// ── FULL MENU DATA ─────────────────────────────────────────────
-// Soho items from soho_items.json (the correct source)
-const SOHO_ITEMS = [
-  // Cold Beverages
-  {category:'🥤 Cold Beverages', nameAr:'مياه معدنيه ',    name:'Still Water',        desc:'',   descAr:'', price:35,  order:1},
-  {category:'🥤 Cold Beverages', nameAr:'مياه فواره',          name:'Sparkling Water',          desc:'',   descAr:'', price:55,  order:2},
-  {category:'🥤 Cold Beverages', nameAr:'بيبسي / سفن اب',     name:'Pepsi / 7Up',              desc:'',   descAr:'', price:40,  order:3},
-  {category:'🥤 Cold Beverages', nameAr:'بيريل / شويبس / فيروز', name:'Barrel / Schweppes / Fayrouz', desc:'', descAr:'', price:45, order:4},
-  {category:'🥤 Cold Beverages', nameAr:'ريد بول',             name:'Red Bull',                 desc:'',   descAr:'', price:85,  order:5},
-  {category:'🥤 Cold Beverages', nameAr:'ريد بول اضافة صوص',  name:'Red Bull + Sauce',         desc:'',   descAr:'', price:105, order:6},
-  // Soups
-  {category:'🍜 Soups', nameAr:'شوربة كريمة الدجاج',   name:'Chicken Cream Soup',    desc:'', descAr:'', price:89, order:1},
-  {category:'🍜 Soups', nameAr:'شوربة كريمة المشروم',  name:'Mushroom Cream Soup',   desc:'', descAr:'', price:85, order:2},
-  // Salads
-  {category:'🥗 Salads', nameAr:'سيزر سلاد بالدجاج',   name:'Caesar Salad',          descAr:'سلطة سيزر بالدجاج المشوى مع الخس وقطع الكرتون وصوص السيزر والجبنة بارميزان', desc:'Grilled chicken caesar salad with croutons, caesar sauce & parmesan', price:169, order:1},
-  {category:'🥗 Salads', nameAr:'سلطة كوب',             name:'Cobb Salad',            descAr:'خس مقرمش مع الدجاج المقلى والبيض والبيكون والجبن المشكلة مع الذرة الحلوة والفاصولياء الحمراء', desc:'Crispy lettuce, fried chicken, egg, bacon, mixed cheese, sweet corn & red beans', price:209, order:2},
-  {category:'🥗 Salads', nameAr:'تاكو سلاد',            name:'Taco Salad',            descAr:'سلطة الخس وشرائح التورتيلا مع الدجاج المشوى وقطع البيكون والجبنة المكس مغطاة برانش صوص', desc:'Lettuce, tortilla strips, grilled chicken, bacon, mixed cheese, ranch sauce', price:199, order:3},
-  // Appetizers
-  {category:'🍟 Appetizers', nameAr:'تشيكن استربس',     name:'Chicken Strips',        descAr:'قطع دجاج طرية من الداخل ومقرمشة من الخارج مع اختيارك من الصوصات (هانى مسطردة او بافلو صوص)', desc:'Tender & crispy chicken strips, served with honey mustard or buffalo sauce', price:189, order:1},
-  {category:'🍟 Appetizers', nameAr:'بريسكت ناتشوز',     name:'Breskit natshoes',        descAr:'اضافه جديده مكوناتها.. ناتشوز+لحمة بريسكت+تشيز+هلابينو+كورن+فاصوليا حمراء+صور كريم', desc:'New addition: Nachos + Brisket + Cheese + Jalapenos + Corn + Kidney Beans + Cream Cheese', price:190, order:1},
-  {category:'🍟 Appetizers', nameAr:'تشيكن وينجز',      name:'Chicken Wings',         descAr:'اجنحة دجاج مقلية وتقدر تختار صوصك المفضل من البافلو او الباربيكيو او صوص الدينميت', desc:'Fried chicken wings with your choice of buffalo, BBQ, or dynamite sauce', price:169, order:2},
-  {category:'🍟 Appetizers', nameAr:'اصابع الموزاريلا', name:'Mozzarella Sticks',     descAr:'اصابع ذهبية مقرمشة تخفى بداخلها جبنة موزاريلا سايحة ولذيذة، تقدم ساخنة مع صوص المارينارا', desc:'Golden crispy sticks filled with melted mozzarella, served hot with marinara', price:99, order:3},
-  {category:'🍟 Appetizers', nameAr:'شيبس تشيز',        name:'Cheesy Fries',          descAr:'شيبس مع صوص الجبنة مع سلطة البيكو والهالبينو (يوجد اضافة شيلى)', desc:'Fries with cheese sauce, pico de gallo & jalapeño (chili add-on available)', price:129, order:4},
-  {category:'🍟 Appetizers', nameAr:'سوهو شيبس',        name:'Soho Fries',            descAr:'شيبس كريسبي مع صلصة سوهو الخاصه', desc:'Crispy fries with Soho special sauce', price:110, order:5},
-  {category:'🍟 Appetizers', nameAr:'ناتشو لاند',       name:'Nacho Land',            descAr:'رقائق ناتشوز مقرمشة مغطاة يجبنة سايحة مع الهالبينو والسور كريم وسلطة البيكوديجالو', desc:'Crispy nachos topped with melted cheese, jalapeño, sour cream & pico de gallo', price:149, order:6},
-  {category:'🍟 Appetizers', nameAr:'ماك تشيز',         name:'Mac & Cheese',          descAr:'مكرونة بالصوص الابيض مع خليط خاص من الجبن', desc:'Pasta in white sauce with a special cheese blend', price:159, order:7},
-  // Burgers & Sandwiches
-  {category:'🍔 Burgers & Sandwiches', nameAr:'بريسكت ستار',         name:'Brisket Star',          descAr:'شرائح لحم البريسكت المشوى مع صوص الجبنة وشرائح البصل المقرمشة وصوص الباربكيو والخيار المخلل وصوص المايونيز', desc:'Smoked brisket slices with cheese sauce, crispy onions, BBQ sauce, pickles & mayo', price:269, order:1},
-  {category:'🍔 Burgers & Sandwiches', nameAr:'ستيك ساندوتش',        name:'Steak Sandwich',        descAr:'شرائح ستيك مع خضار مشوى وجبنة سوهو وصوص الاسموك، يقدم مع الخبز الفرنسى', desc:'Steak slices with grilled veggies, Soho cheese & smoky sauce in French bread', price:299, order:2},
-  {category:'🍔 Burgers & Sandwiches', nameAr:'كلاسيك سوهو تشيكن',  name:'Classic Soho Chicken',  descAr:'اختيارك من الدجاج مشوى او مقلى يقدم مع صوص سوهو وقطع الجبنة الشيدر والخيار المخلل والخس والطماطم والبصل الفريش', desc:'Grilled or fried chicken with Soho sauce, cheddar, pickles, lettuce, tomato & onion', price:279, order:3},
-  {category:'🍔 Burgers & Sandwiches', nameAr:'تشيكن كاساديا',       name:'Chicken Quesadilla',    descAr:'شرائح دجاج متبلة مع خضار مشوى تقدم فى تورتيلا مقرمشة ومحشية بخليط من الجبن الذائبة ', desc:'Seasoned chicken with grilled veggies in crispy tortilla, melted cheese & ranch', price:289, order:4},
-  {category:'🍔 Burgers & Sandwiches', nameAr:'بيف كاساديا',         name:'Beef Quesadilla',       descAr:'شرائح بيف متبلة مع خضار مشوى تقدم فى تورتيلا مقرمشة ومحشية بخليط من الجبن الذائبة ', desc:'Seasoned beef with grilled veggies in crispy tortilla, melted cheese & ranch', price:299, order:5},
-  {category:'🍔 Burgers & Sandwiches', nameAr:'شرمب كاساديا',        name:'Shrimp Quesadilla',     descAr:'قطع جمبرى متبلة مع خضار مشوى تقدم فى تورتيلا مقرمشة ومحشية بخليط من الجبن الذائبة ', desc:'Seasoned shrimp with grilled veggies in crispy tortilla, melted cheese & ranch', price:289, order:6},
-  {category:'🍔 Burgers & Sandwiches', nameAr:'كلاسيك برجر',         name:'Classic Burger',        descAr:'قطعة برجر مشوية مع الطماطم والخس والبصل وصوص المايونيز', desc:'Grilled burger patty with tomato, lettuce, onion & mayo', price:279, order:7},
-  {category:'🍔 Burgers & Sandwiches', nameAr:'كلاسيك برجر بيزك',    name:'Classic Burger (Basic)', descAr:'قطعة برجر بوزن 120 جرام، مع الخس، الطماطم، البصل، وصوصنا الخاص', desc:'120g burger patty with lettuce, tomato, onion & house sauce', price:209, order:8},
-  {category:'🍔 Burgers & Sandwiches', nameAr:'سوهو مشروم برجر',     name:'Soho Mushroom Burger',  descAr:'قطع برجر مغطاة بالجبنة والمشروم المشوى والبصل المكرمل وصوص السموك مايونيز', desc:'Burger covered with cheese, grilled mushroom, caramelized onion & smoky mayo', price:309, order:9},
-  {category:'🍔 Burgers & Sandwiches', nameAr:'سوهو مشروم برجر بيزك', name:'Mushroom Burger (Basic)',descAr:'قطع برجر 120جرام مغطاة بالجبنة والمشروم المشوى والبصل المكرمل وصوص السموك مايونيز', desc:'120g mushroom burger with cheese, caramelized onion & smoky mayo', price:239, order:10},
-  {category:'🍔 Burgers & Sandwiches', nameAr:'بيكون برجر',           name:'Bacon Burger',          descAr:'برجر مشوى مغطاة بالجبنة والبيكون المدخن والبصل المكرمل وقطع الهالبينو الحار مع صوص المايونيز', desc:'Grilled burger with cheese, smoked bacon, caramelized onion, jalapeño & mayo', price:269, order:11},
-  {category:'🍔 Burgers & Sandwiches', nameAr:'بيكون برجر بيزك',      name:'Bacon Burger (Basic)',  descAr:'برجر مشوى 120 جرام مغطاة بالجبنة والبيكون المدخن والبصل المكرمل وقطع الهالبينو الحار مع صوص المايونيز', desc:'120g bacon burger with cheese, caramelized onion, jalapeño & mayo', price:199, order:12},
-  {category:'🍔 Burgers & Sandwiches', nameAr:'تكساس برجر',           name:'Texas Burger',          descAr:'برجر مدخن مع بصل مقرمش وشرائح الجبنة الشيدر، وصوص الباربيكيو الكلاسيكى مع صوص السموك مايونيز', desc:'Smoked burger with crispy onions, cheddar, classic BBQ & smoky mayo', price:299, order:13},
-  {category:'🍔 Burgers & Sandwiches', nameAr:'تكساس برجر بيزك',      name:'Texas Burger (Basic)',  descAr:'برجر مدخن 120 جرام مع بصل مقرمش وشرائح الجبنة الشيدر، وصوص الباربيكيو الكلاسيكى مع صوص السموك مايونيز', desc:'120g smoked burger with crispy onions, cheddar, BBQ & smoky mayo', price:229, order:14},
-  // Pasta
-  {category:'🍝 Pasta', nameAr:'باستا الفريدو',    name:'Alfredo Pasta',   descAr:'باستا الفريدو غنية بصوص كريمي ومشروم طازج مع قطع الدجاج المشوى والجبن البارميزان', desc:'Creamy alfredo pasta with fresh mushroom, grilled chicken & parmesan', price:279, order:1},
-  {category:'🍝 Pasta', nameAr:'اسباجيتي بلونيز', name:'Spaghetti Bolognese', descAr:'سباجيتي بصلصة اللحم الغنية على الطريقة الإيطالية مع زيت الزيتون والبارميزان', desc:'Spaghetti in rich Italian meat sauce with olive oil & parmesan', price:289, order:2},
-  {category:'🍝 Pasta', nameAr:'باستا جمبرى',      name:'Shrimp Pasta',    descAr:'باستا الجمبرى اختيارك من الصوص الابيض او الاحمر مع قطع جمبرى والخضار المشوى', desc:'Shrimp pasta with your choice of white or red sauce & grilled vegetables', price:259, order:3},
-  // Main Courses
-  {category:'🥩 Main Courses', nameAr:'تشيكن فاهيتا',        name:'Chicken Fajita',       descAr:'قطع دجاج مشوى مع البصل والفلفل تقدم مع ارز وخبز التورتيلا  ', desc:'Grilled chicken with onion & peppers, served with rice, ', price:299, order:1},
-  {category:'🥩 Main Courses', nameAr:'بيف فاهيتا',          name:'Beef Fajita',          descAr:'قطع اللحم مشوى مع البصل والفلفل تقدم مع ارز وخبز التورتيلا', desc:'Grilled beef with onion & peppers, served with rice, tortilla ', price:339, order:2},
-  {category:'🥩 Main Courses', nameAr:'فاهيتا مكس',          name:'Mix Fajita',           descAr:'قطع دجاج وبيف وجمبرى مع الفلفل والبصل تقدم مع ارز وخبز التورتيلا ', desc:'Chicken, beef & shrimp mix with peppers and onion, rice, ', price:359, order:3},
-  {category:'🥩 Main Courses', nameAr:'اسكالوب بانيه',       name:'Veal Scaloppine',      descAr:'لحم بوفتيك رفيع ومتبل ومغلف بطبقة مقرمشة من الخارج وطرية من الداخل ويقدم مع الصوص الابيض  ', desc:'Thin, marinated, crispy veal escalope served with white sauce ', price:399, order:4},
-  {category:'🥩 Main Courses', nameAr:'كنترى فرايد تشيكن',  name:'Country Fried Chicken', descAr:'قطع دجاج مقلى كرسبى مع المشروم الطازج وصوص الابيض ', desc:'Crispy fried chicken with fresh mushroom & white sauce, served ', price:329, order:5},
-  {category:'🥩 Main Courses', nameAr:'ريب آى ستيك',         name:'Rib Eye Steak',        descAr:'قطعة استيك مشوية تقدم مع صوص المشروم او البيبر او الباربكيو', desc:'Grilled rib eye steak with mushroom, pepper, or BBQ sauce & 2 sides of your choice', price:449, order:6},
-  // Sides
-  {category:' Sides', nameAr:'بطاطس مقلية',    name:'French Fries',          desc:'', descAr:'', price:50, order:1},
-  {category:' Sides', nameAr:'ماش بوتيتو',      name:'Mashed Potatoes',       desc:'', descAr:'', price:70, order:2},
-  {category:' Sides', nameAr:'ارز سوهو',        name:'Soho Rice',             desc:'', descAr:'', price:50, order:3},
-  {category:' Sides', nameAr:'سلطة كولسلو',    name:'Coleslaw',              desc:'', descAr:'', price:50, order:4},
-  {category:' Sides', nameAr:'كوب الذرة',       name:'Corn Cup',              desc:'', descAr:'', price:50, order:5},
-  {category:' Sides', nameAr:'خضروات سوتيه',   name:'Sautéed Vegetables',    desc:'', descAr:'', price:70, order:6},
-  {category:' Sides', nameAr:'سايد ماك تشيز',  name:'Mac & Cheese Side',     desc:'', descAr:'', price:70, order:7},
-  // Kids
-  {category:' Kids Menu', nameAr:'كيدز استربس', name:'Kids Strips',   descAr:'قطع دجاج مقرمشة تقدم مع بطاطس مقلية والكاتشب مع عصير كيدز', desc:'Crispy chicken strips with fries, ketchup & kids juice', price:189, order:1},
-  {category:' Kids Menu', nameAr:'كيدز تشيكن', name:'Kids Chicken',  descAr:'قطع دجاج تقدم مع الخس والطماطم والكاتشب فى لقمة كيزر مع البطاطس المقلية مع عصير كيدز', desc:'Chicken bites with lettuce, tomato & ketchup in a bun, with fries & kids juice', price:189, order:2},
-  {category:' Kids Menu', nameAr:'كيدز برجر',  name:'Kids Burger',   descAr:'قطعة برجر تقدم مع الخس والطماطم وشريحة الجبن فى لقمة كيزر مع البطاطس المقلية مع عصير كيدز', desc:'Burger patty with lettuce, tomato & cheese in a bun, with fries & kids juice', price:189, order:3},
-  // Sauces
-  {category:'Sauces (Extra)', nameAr:'صوص مستردة بالعسل', name:'Honey Mustard', desc:'', descAr:'', price:30, order:1},
-  {category:'Sauces (Extra)', nameAr:'صوص بافالو',         name:'Buffalo Sauce', desc:'', descAr:'', price:30, order:2},
-  {category:'Sauces (Extra)', nameAr:'صوص البلو تشيز',     name:'Blue Cheese',   desc:'', descAr:'', price:30, order:3},
-  {category:'Sauces (Extra)', nameAr:'صوص الرانش',         name:'Ranch',         desc:'', descAr:'', price:30, order:4},
-  {category:'Sauces (Extra)', nameAr:'صوص الجبنة',         name:'Cheese Sauce',  desc:'', descAr:'', price:30, order:5},
-  {category:'Sauces (Extra)', nameAr:'صوص السيزر',         name:'Caesar Sauce',  desc:'', descAr:'', price:30, order:6},
-  {category:'Sauces (Extra)', nameAr:'صوص الدينميت',       name:'Dynamite Sauce',desc:'', descAr:'', price:30, order:7},
-  {category:'Sauces (Extra)', nameAr:'بيكوديجالو',         name:'Pico de Gallo', desc:'', descAr:'', price:30, order:8},
-  // Desserts
-  {category:'🍰 Desserts', nameAr:'مولتن كيك', name:'Molten Cake',    desc:'', descAr:'', price:130, order:1},
-  {category:'🍰 Desserts', nameAr:'تشيز كيك',  name:'Cheesecake',     desc:'', descAr:'', price:125, order:2},
-  {category:'🍰 Desserts', nameAr:'براونيز',   name:'Brownies',       desc:'', descAr:'', price:130, order:3},
-];
-
-// Istiknanah items from istik_items.json (the correct source)
-const ISTIK_ITEMS = [
-  // Hot Drinks
-  {category:'☕ Hot Drinks', nameAr:'شاي / شاى اخضر',        name:'Tea / Green Tea',         desc:'', descAr:'', price:35,  order:1},
-  {category:'☕ Hot Drinks', nameAr:'ابريق شاي (4 استكانة)', name:'Tea Pot (4 cups)',         desc:'', descAr:'', price:120, order:2},
-  {category:'☕ Hot Drinks', nameAr:'ابريق شاى (2 استكانة)', name:'Tea Pot (2 cups)',         desc:'', descAr:'', price:70,  order:3},
-  {category:'☕ Hot Drinks', nameAr:'ابريق شاى كرك',         name:'Karak Tea Pot',            desc:'', descAr:'', price:140, order:4},
-  {category:'☕ Hot Drinks', nameAr:'استكنانة ماتشا',        name:'Matcha Cup',               desc:'', descAr:'', price:100, order:5},
-  {category:'☕ Hot Drinks', nameAr:'نسكافيه',               name:'Nescafé',                  desc:'', descAr:'', price:60,  order:6},
-  {category:'☕ Hot Drinks', nameAr:'امريكان كوفي',          name:'Americano',                desc:'', descAr:'', price:85,  order:7},
-  {category:'☕ Hot Drinks', nameAr:'اسبرسو سينجل',          name:'Espresso Single',          desc:'', descAr:'', price:80,  order:8},
-  {category:'☕ Hot Drinks', nameAr:'اسبرسو دبل',            name:'Espresso Double',          desc:'', descAr:'', price:90,  order:9},
-  {category:'☕ Hot Drinks', nameAr:'ميكاتو سينجل',          name:'Macchiato Single',         desc:'', descAr:'', price:85,  order:10},
-  {category:'☕ Hot Drinks', nameAr:'ميكاتو دبل',            name:'Macchiato Double',         desc:'', descAr:'', price:95,  order:11},
-  {category:'☕ Hot Drinks', nameAr:'كوكتيل اعشاب',          name:'Herbal Cocktail',          desc:'', descAr:'', price:55,  order:12},
-  {category:'☕ Hot Drinks', nameAr:'موكا',                  name:'Mocha',                    desc:'', descAr:'', price:110, order:13},
-  {category:'☕ Hot Drinks', nameAr:'كابيتشينو',             name:'Cappuccino',               desc:'', descAr:'', price:100, order:14},
-  {category:'☕ Hot Drinks', nameAr:'كافيه لاتيه',           name:'Café Latte',               desc:'', descAr:'', price:100, order:15},
-  {category:'☕ Hot Drinks', nameAr:'هوت شوكليت',            name:'Hot Chocolate',            desc:'', descAr:'', price:110, order:16},
-  {category:'☕ Hot Drinks', nameAr:'هوت سيدر',              name:'Hot Cider',                desc:'', descAr:'', price:90,  order:17},
-  {category:'☕ Hot Drinks', nameAr:'قهوه تركى سينجل',       name:'Turkish Coffee Single',    desc:'', descAr:'', price:70,  order:18},
-  {category:'☕ Hot Drinks', nameAr:'قهوه تركى دبل',         name:'Turkish Coffee Double',    desc:'', descAr:'', price:80,  order:19},
-  {category:'☕ Hot Drinks', nameAr:'فرينش كوفي',            name:'French Coffee',            desc:'', descAr:'', price:85,  order:20},
-  {category:'☕ Hot Drinks', nameAr:'سحلب بالمكسرات',        name:'Sahlab with Nuts',         desc:'', descAr:'', price:85,  order:21},
-  {category:'☕ Hot Drinks', nameAr:'فلات وايت',             name:'Flat White',               desc:'', descAr:'', price:90,  order:22},
-  {category:'☕ Hot Drinks', nameAr:'جنزبيل',                name:'Ginger Tea',               desc:'', descAr:'', price:50,  order:23},
-  {category:'☕ Hot Drinks', nameAr:'دلة قهوة عربى',         name:'Arabic Coffee Pot',        desc:'', descAr:'', price:210, order:24},
-  {category:'☕ Hot Drinks', nameAr:'هوت استكنانة',          name:'Hot Istiknanah Cup',       desc:'', descAr:'', price:125, order:25},
-  {category:'☕ Hot Drinks', nameAr:'سبانيش لاتيه',          name:'Spanish Latte',            desc:'', descAr:'', price:115, order:26},
-  // Fresh Juices
-  {category:'🧃 Fresh Juices', nameAr:'برتقال',       name:'Orange Juice',      desc:'', descAr:'', price:80, order:1},
-  {category:'🧃 Fresh Juices', nameAr:'مانجو',        name:'Mango Juice',       desc:'', descAr:'', price:80, order:2},
-  {category:'🧃 Fresh Juices', nameAr:'فراولة',       name:'Strawberry Juice',  desc:'', descAr:'', price:80, order:3},
-  {category:'🧃 Fresh Juices', nameAr:'جوافة',        name:'Guava Juice',       desc:'', descAr:'', price:80, order:4},
-  {category:'🧃 Fresh Juices', nameAr:'بطيخ',         name:'Watermelon Juice',  desc:'', descAr:'', price:80, order:5},
-  {category:'🧃 Fresh Juices', nameAr:'موز بالحليب',  name:'Banana Milk',       desc:'', descAr:'', price:90, order:6},
-  {category:'🧃 Fresh Juices', nameAr:'كيوى',         name:'Kiwi Juice',        desc:'', descAr:'', price:90, order:7},
-  {category:'🧃 Fresh Juices', nameAr:'ليمون نعناع',  name:'Lemon Mint',        desc:'', descAr:'', price:60, order:8},
-  // Healthy Drinks
-  {category:'🌿 Healthy Drinks', nameAr:'ماتشا بجوز الهند او العسل',       name:'Matcha Coconut or Honey',            desc:'', descAr:'', price:130, order:1},
-  {category:'🌿 Healthy Drinks', nameAr:'باور هيلن',                        name:'Power Helen',                        desc:'', descAr:'', price:100, order:2},
-  {category:'🌿 Healthy Drinks', nameAr:'زبادى فواكه',                      name:'Yogurt Fruits',                      desc:'', descAr:'', price:105, order:3},
-  {category:'🌿 Healthy Drinks', nameAr:'زبادى عسل وتوت',                   name:'Yogurt Honey & Berries',             desc:'', descAr:'', price:115, order:4},
-  {category:'🌿 Healthy Drinks', nameAr:'زبادى افوكادو وعسل ومكسرات',      name:'Yogurt Avocado Honey & Nuts',        desc:'', descAr:'', price:145, order:5},
-  {category:'🌿 Healthy Drinks', nameAr:'افوكادو عسل ومكسرات',             name:'Avocado Honey & Nuts',               desc:'', descAr:'', price:130, order:6},
-  // Iced Drinks
-  {category:'🧊 Iced Drinks', nameAr:'ماتشا مثلج',                  name:'Iced Matcha',               desc:'', descAr:'', price:125, order:1},
-  {category:'🧊 Iced Drinks', nameAr:'ماتشا لاتيه مثلج',            name:'Iced Matcha Latte',         desc:'', descAr:'', price:130, order:2},
-  {category:'🧊 Iced Drinks', nameAr:'كركديه',                      name:'Hibiscus',                  desc:'', descAr:'', price:80,  order:3},
-  {category:'🧊 Iced Drinks', nameAr:'ايس تى مع الكركديه والثلج',  name:'Iced Hibiscus Tea',         desc:'', descAr:'', price:90,  order:4},
-  {category:'🧊 Iced Drinks', nameAr:'ايس لاتيه',                  name:'Iced Latte',                desc:'', descAr:'', price:85,  order:5},
-  {category:'🧊 Iced Drinks', nameAr:'ايس سبانيش لاتيه',           name:'Iced Spanish Latte',        desc:'', descAr:'', price:120, order:6},
-  {category:'🧊 Iced Drinks', nameAr:'ايس موكا',                   name:'Iced Mocha',                desc:'', descAr:'', price:125, order:7},
-  {category:'🧊 Iced Drinks', nameAr:'فرابيه (كراميل/شوكليت)',     name:'Frappé (Caramel/Chocolate)',desc:'', descAr:'', price:125, order:8},
-  {category:'🧊 Iced Drinks', nameAr:'ايس استكنانة',               name:'Iced Istiknanah Cup',       desc:'', descAr:'', price:100, order:9},
-  {category:'🧊 Iced Drinks', nameAr:'ايس كوفى',                   name:'Iced Coffee',               desc:'', descAr:'', price:115, order:10},
-  // Milkshakes
-  {category:'Milkshakes', nameAr:'ميلك شيك فانيليا / شوكليت', name:'Milkshake Vanilla / Chocolate', desc:'', descAr:'', price:120, order:1},
-  {category:'Milkshakes', nameAr:'ميلك شيك فراوله / مانجا',   name:'Milkshake Strawberry / Mango', desc:'', descAr:'', price:120, order:2},
-  {category:'Milkshakes', nameAr:'ميلك شيك ماتشا',            name:'Matcha Milkshake',              desc:'', descAr:'', price:135, order:3},
-  {category:'Milkshakes', nameAr:'ميلك شيك اوريو',            name:'Oreo Milkshake',                desc:'', descAr:'', price:130, order:4},
-  {category:'Milkshakes', nameAr:'ميلك شيك بلوبيرى',          name:'Blueberry Milkshake',           desc:'', descAr:'', price:120, order:5},
-  // Signature Drinks
-  {category:'🌟 Signature Drinks', nameAr:'تمر مع ايس كريم فانيليا',   name:'Dates & Vanilla Ice Cream', desc:'', descAr:'', price:125, order:1},
-  {category:'🌟 Signature Drinks', nameAr:'كركديه بالموز والتوت',       name:'Hibiscus Banana & Berry',   desc:'', descAr:'', price:105, order:2},
-  {category:'🌟 Signature Drinks', nameAr:'بطيخ باشون',                 name:'Watermelon Passion',        desc:'', descAr:'', price:120, order:3},
-  {category:'🌟 Signature Drinks', nameAr:'فلوريدا',                    name:'Florida',                   desc:'', descAr:'', price:110, order:4},
-  {category:'🌟 Signature Drinks', nameAr:'تمر بالحليب وروز ووتر',     name:'Dates Milk & Rose Water',   desc:'', descAr:'', price:95,  order:5},
-  // Soda Cocktails
-  {category:'🫧 Soda Cocktails', nameAr:'موهيتو (باشون / بلوبيرى / فراوله)', name:'Mojito (Passion / Blueberry / Strawberry)', desc:'', descAr:'', price:105, order:1},
-  {category:'🫧 Soda Cocktails', nameAr:'موهيتو',       name:'Mojito',          desc:'', descAr:'', price:95,  order:2},
-  {category:'🫧 Soda Cocktails', nameAr:'كيوى ريدبول',  name:'Kiwi Red Bull',   desc:'', descAr:'', price:150, order:3},
-  {category:'🫧 Soda Cocktails', nameAr:'باور ليمون',   name:'Power Lemon',     desc:'', descAr:'', price:140, order:4},
-  // Smoothies
-  {category:'🥤 Smoothies', nameAr:'بينا كولادا',       name:'Piña Colada',      desc:'', descAr:'', price:110, order:1},
-  {category:'🥤 Smoothies', nameAr:'ليمون نعناع',       name:'Lemon Mint',       desc:'', descAr:'', price:60,  order:2},
-  {category:'🥤 Smoothies', nameAr:'استكنانه سموزيز',   name:'Istiknanah Smoothie', desc:'', descAr:'', price:75, order:3},
-  {category:'🥤 Smoothies', nameAr:'مانجو / فراوله',    name:'Mango / Strawberry', desc:'', descAr:'', price:80, order:4},
-  {category:'🥤 Smoothies', nameAr:'بلوبيرى',           name:'Blueberry',        desc:'', descAr:'', price:85,  order:5},
-];
-
-async function startUpload() {
-  const btn = document.getElementById('btnUpload');
-  btn.disabled = true;
-  btn.textContent = '⏳ Deleting old data…';
-
-  log('🧹 STEP 1: Deleting ALL existing data in Firebase (including corrupted items)…', 'info');
-  try {
-    // 1. Fetch raw documents directly to get the unstripped corrupt names
-    const url = `https://firestore.googleapis.com/v1/projects/${FB_CONFIG.projectId}/databases/(default)/documents/menus?pageSize=500&key=${FB_CONFIG.apiKey}`;
-    const res = await fetch(url);
-    const data = await res.json();
-    const docs = data.documents || [];
-    
-    if (docs.length > 0) {
-      log(`Found ${docs.length} existing items. Deleting...`, 'warn');
-      for (let i = 0; i < docs.length; i++) {
-        const docName = docs[i].name;
-        // The docName already contains ?key=... if it's corrupted, or we need to add ?key= if not
-        const sep = docName.includes('?') ? '&' : '?';
-        const deleteUrl = `https://firestore.googleapis.com/v1/${docName}${sep}key=${FB_CONFIG.apiKey}`;
-        
-        await fetch(deleteUrl, { method: 'DELETE' });
-        if ((i + 1) % 20 === 0) log(`Deleted ${i + 1}/${docs.length}...`);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!-- STEP 1: Delete All, STEP 2: Re-seed clean data -->
+    <title>Seed Menu Data → Firebase</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
-      log(`✅ Successfully wiped ${docs.length} old documents.`, 'ok');
-    } else {
-      log('Database already empty. Proceeding...', 'ok');
-    }
-  } catch(e) {
-    log('❌ Error during deletion: ' + e.message, 'err');
-    btn.disabled = false; btn.textContent = '⬆️ Upload All Menu Data';
-    return;
-  }
-
-  // 2. Re-seed clean data
-  btn.textContent = '⏳ Seeding new data…';
-  let ok = 0, fail = 0;
-  const allItems = [
-    ...SOHO_ITEMS.map(i => ({...i, menu:'soho'})),
-    ...ISTIK_ITEMS.map(i => ({...i, menu:'istik'}))
-  ];
-
-  log(`📦 STEP 2: Starting upload of ${allItems.length} clean items (${SOHO_ITEMS.length} SOHO + ${ISTIK_ITEMS.length} ISTIK)…`, 'info');
-
-  for (const item of allItems) {
-    try {
-      await db.create('menus', item);
-      ok++;
-      if (ok % 20 === 0 || ok === allItems.length) {
-        log(`✅ ${ok}/${allItems.length} uploaded…`, 'ok');
+      body {
+        font-family: monospace;
+        background: #0d0f1a;
+        color: #e2e8f0;
+        padding: 2rem;
+        min-height: 100vh;
       }
-    } catch(e) {
-      fail++;
-      log(`❌ Failed: ${item.nameAr} — ${e.message}`, 'err');
-    }
-    // Small delay to avoid rate limiting
-    await new Promise(r => setTimeout(r, 80));
-  }
+      h1 {
+        font-family: sans-serif;
+        color: #7c5cbf;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        color: #7b8ab8;
+        font-size: 0.85rem;
+        margin-bottom: 1.5rem;
+      }
+      #log {
+        background: #111827;
+        border: 1px solid #2a2f4a;
+        border-radius: 8px;
+        padding: 1.2rem;
+        height: 420px;
+        overflow-y: auto;
+        font-size: 0.78rem;
+        line-height: 1.7;
+      }
+      .ok {
+        color: #22c55e;
+      }
+      .err {
+        color: #ef4444;
+      }
+      .info {
+        color: #60a5fa;
+      }
+      .warn {
+        color: #fbbf24;
+      }
+      .controls {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.2rem;
+        flex-wrap: wrap;
+      }
+      button {
+        padding: 0.6rem 1.4rem;
+        border: none;
+        border-radius: 6px;
+        font-family: sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      #btnUpload {
+        background: #7c5cbf;
+        color: #fff;
+      }
+      #btnUpload:hover {
+        background: #9b7fe0;
+      }
+      #btnUpload:disabled {
+        background: #3a3560;
+        color: #6b7280;
+        cursor: not-allowed;
+      }
+      #btnClear {
+        background: #1e2235;
+        border: 1px solid #2a2f4a;
+        color: #7b8ab8;
+      }
+      #btnClear:hover {
+        background: #2a2f4a;
+        color: #e2e8f0;
+      }
+      .badge {
+        display: inline-block;
+        background: #1e3a5f;
+        color: #60a5fa;
+        border: 1px solid rgba(96, 165, 250, 0.3);
+        border-radius: 4px;
+        padding: 0.15rem 0.6rem;
+        font-size: 0.72rem;
+        margin-left: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🌱 Seed Menu Data → Firebase</h1>
+    <p>
+      This uploads all SOHO and Istiknanah menu items to your Firestore
+      database.<br />
+      Run this only ONCE. After seeding, use the
+      <strong>Admin Panel</strong> for further changes.
+    </p>
+    <div class="controls">
+      <button id="btnUpload" onclick="startUpload()">
+        ⬆️ Upload All Menu Data
+      </button>
+      <button
+        id="btnClear"
+        onclick="document.getElementById('log').innerHTML = ''"
+      >
+        Clear Log
+      </button>
+    </div>
+    <div id="log">
+      <span class="info">Ready. Click "Upload All Menu Data" to begin.</span>
+    </div>
 
-  log('', 'info');
-  log(`🎉 Done! ${ok} items uploaded successfully. ${fail ? fail + ' failed.' : ''}`, ok > 0 ? 'ok' : 'err');
-  log('👉 You can now manage items normally without duplicates or errors.', 'info');
-  btn.textContent = '✅ Upload Complete';
-}
-</script>
-</body>
+    <script src="js/firebase-client.js"></script>
+    <script>
+      const FB_CONFIG = {
+        apiKey: "AIzaSyCoiuHbVfclITv_Ah6UOQeV33QGPGRVeXw",
+        projectId: "menu1-ec4bc",
+        authDomain: "menu1-ec4bc.firebaseapp.com",
+      };
+      const db = new FirebaseClient(FB_CONFIG);
+      const logEl = document.getElementById("log");
+
+      function log(msg, cls = "info") {
+        const line = document.createElement("div");
+        line.className = cls;
+        line.textContent = msg;
+        logEl.appendChild(line);
+        logEl.scrollTop = logEl.scrollHeight;
+      }
+
+      // ── FULL MENU DATA ─────────────────────────────────────────────
+      // Soho items from soho_items.json (the correct source)
+      const SOHO_ITEMS = [
+        // Cold Beverages
+        {
+          category: "🥤 Cold Beverages",
+          nameAr: "مياه معدنيه ",
+          name: "Still Water",
+          desc: "",
+          descAr: "",
+          price: 35,
+          order: 1,
+        },
+        {
+          category: "🥤 Cold Beverages",
+          nameAr: "مياه فواره",
+          name: "Sparkling Water",
+          desc: "",
+          descAr: "",
+          price: 55,
+          order: 2,
+        },
+        {
+          category: "🥤 Cold Beverages",
+          nameAr: "بيبسي / سفن اب",
+          name: "Pepsi / 7Up",
+          desc: "",
+          descAr: "",
+          price: 40,
+          order: 3,
+        },
+        {
+          category: "🥤 Cold Beverages",
+          nameAr: "بيريل / شويبس / فيروز",
+          name: "Barrel / Schweppes / Fayrouz",
+          desc: "",
+          descAr: "",
+          price: 45,
+          order: 4,
+        },
+        {
+          category: "🥤 Cold Beverages",
+          nameAr: "ريد بول",
+          name: "Red Bull",
+          desc: "",
+          descAr: "",
+          price: 85,
+          order: 5,
+        },
+        {
+          category: "🥤 Cold Beverages",
+          nameAr: "ريد بول اضافة صوص",
+          name: "Red Bull + Sauce",
+          desc: "",
+          descAr: "",
+          price: 105,
+          order: 6,
+        },
+        // Soups
+        {
+          category: "🍜 Soups",
+          nameAr: "شوربة كريمة الدجاج",
+          name: "Chicken Cream Soup",
+          desc: "",
+          descAr: "",
+          price: 89,
+          order: 1,
+        },
+        {
+          category: "🍜 Soups",
+          nameAr: "شوربة كريمة المشروم",
+          name: "Mushroom Cream Soup",
+          desc: "",
+          descAr: "",
+          price: 85,
+          order: 2,
+        },
+        // Salads
+        {
+          category: "🥗 Salads",
+          nameAr: "سيزر سلاد بالدجاج",
+          name: "Caesar Salad",
+          descAr:
+            "سلطة سيزر بالدجاج المشوى مع الخس وقطع الكرتون وصوص السيزر والجبنة بارميزان",
+          desc: "Grilled chicken caesar salad with croutons, caesar sauce & parmesan",
+          price: 169,
+          order: 1,
+        },
+        {
+          category: "🥗 Salads",
+          nameAr: "سلطة كوب",
+          name: "Cobb Salad",
+          descAr:
+            "خس مقرمش مع الدجاج المقلى والبيض والبيكون والجبن المشكلة مع الذرة الحلوة والفاصولياء الحمراء",
+          desc: "Crispy lettuce, fried chicken, egg, bacon, mixed cheese, sweet corn & red beans",
+          price: 209,
+          order: 2,
+        },
+        {
+          category: "🥗 Salads",
+          nameAr: "تاكو سلاد",
+          name: "Taco Salad",
+          descAr:
+            "سلطة الخس وشرائح التورتيلا مع الدجاج المشوى وقطع البيكون والجبنة المكس مغطاة برانش صوص",
+          desc: "Lettuce, tortilla strips, grilled chicken, bacon, mixed cheese, ranch sauce",
+          price: 199,
+          order: 3,
+        },
+        // Appetizers
+        {
+          category: "🍟 Appetizers",
+          nameAr: "تشيكن استربس",
+          name: "Chicken Strips",
+          descAr:
+            "قطع دجاج طرية من الداخل ومقرمشة من الخارج مع اختيارك من الصوصات (هانى مسطردة او بافلو صوص)",
+          desc: "Tender & crispy chicken strips, served with honey mustard or buffalo sauce",
+          price: 189,
+          order: 1,
+        },
+        {
+          category: "🍟 Appetizers",
+          nameAr: "بريسكت ناتشوز",
+          name: "Breskit natshoes",
+          descAr:
+            "اضافه جديده مكوناتها.. ناتشوز+لحمة بريسكت+تشيز+هلابينو+كورن+فاصوليا حمراء+صور كريم",
+          desc: "New addition: Nachos + Brisket + Cheese + Jalapenos + Corn + Kidney Beans + Cream Cheese",
+          price: 190,
+          order: 1,
+        },
+        {
+          category: "🍟 Appetizers",
+          nameAr: "تشيكن وينجز",
+          name: "Chicken Wings",
+          descAr:
+            "اجنحة دجاج مقلية وتقدر تختار صوصك المفضل من البافلو او الباربيكيو او صوص الدينميت",
+          desc: "Fried chicken wings with your choice of buffalo, BBQ, or dynamite sauce",
+          price: 169,
+          order: 2,
+        },
+        {
+          category: "🍟 Appetizers",
+          nameAr: "اصابع الموزاريلا",
+          name: "Mozzarella Sticks",
+          descAr:
+            "اصابع ذهبية مقرمشة تخفى بداخلها جبنة موزاريلا سايحة ولذيذة، تقدم ساخنة مع صوص المارينارا",
+          desc: "Golden crispy sticks filled with melted mozzarella, served hot with marinara",
+          price: 99,
+          order: 3,
+        },
+        {
+          category: "🍟 Appetizers",
+          nameAr: "شيبس تشيز",
+          name: "Cheesy Fries",
+          descAr:
+            "شيبس مع صوص الجبنة مع سلطة البيكو والهالبينو (يوجد اضافة شيلى)",
+          desc: "Fries with cheese sauce, pico de gallo & jalapeño (chili add-on available)",
+          price: 129,
+          order: 4,
+        },
+        {
+          category: "🍟 Appetizers",
+          nameAr: "سوهو شيبس",
+          name: "Soho Fries",
+          descAr: "شيبس كريسبي مع صلصة سوهو الخاصه",
+          desc: "Crispy fries with Soho special sauce",
+          price: 110,
+          order: 5,
+        },
+        {
+          category: "🍟 Appetizers",
+          nameAr: "ناتشو لاند",
+          name: "Nacho Land",
+          descAr:
+            "رقائق ناتشوز مقرمشة مغطاة يجبنة سايحة مع الهالبينو والسور كريم وسلطة البيكوديجالو",
+          desc: "Crispy nachos topped with melted cheese, jalapeño, sour cream & pico de gallo",
+          price: 149,
+          order: 6,
+        },
+        {
+          category: "🍟 Appetizers",
+          nameAr: "ماك تشيز",
+          name: "Mac & Cheese",
+          descAr: "مكرونة بالصوص الابيض مع خليط خاص من الجبن",
+          desc: "Pasta in white sauce with a special cheese blend",
+          price: 129,
+          order: 7,
+        },
+        {
+          category: "🍟 Appetizers",
+          nameAr: "تشيز ناتشوز",
+          name: "Cheese Nachos",
+          descAr: "اضافه جديده مكوناتها ناتشوز+تشيز+هلابينو+بيكو+صور كريم",
+          desc: "New addition: Nachos + Cheese + Jalapenos + Picco + Cream Cheese ",
+          price: 129,
+          order: 7,
+        },
+        {
+          category: "🍟 Appetizers",
+          nameAr: "بيف ناتشوز",
+          name: "Beef Nachos",
+          descAr:
+            "اضافه جديده مكوناتها ناتشوز+لحمة+تشيز+هلابينو+بيكو+صور كريم+ بيف",
+          desc: "New addition: Nachos + Beef + Cheese + Jalapenos + Picco + Cream Cheese + Beef",
+          price: 160,
+          order: 7,
+        },
+        // Burgers & Sandwiches
+        {
+          category: "🍔 Burgers & Sandwiches",
+          nameAr: "بريسكت ستار",
+          name: "Brisket Star",
+          descAr:
+            "شرائح لحم البريسكت المشوى مع صوص الجبنة وشرائح البصل المقرمشة وصوص الباربكيو والخيار المخلل وصوص المايونيز",
+          desc: "Smoked brisket slices with cheese sauce, crispy onions, BBQ sauce, pickles & mayo",
+          price: 269,
+          order: 1,
+        },
+        {
+          category: "🍔 Burgers & Sandwiches",
+          nameAr: "ستيك ساندوتش",
+          name: "Steak Sandwich",
+          descAr:
+            "شرائح ستيك مع خضار مشوى وجبنة سوهو وصوص الاسموك، يقدم مع الخبز الفرنسى",
+          desc: "Steak slices with grilled veggies, Soho cheese & smoky sauce in French bread",
+          price: 299,
+          order: 2,
+        },
+        {
+          category: "🍔 Burgers & Sandwiches",
+          nameAr: "كلاسيك سوهو تشيكن",
+          name: "Classic Soho Chicken",
+          descAr:
+            "اختيارك من الدجاج مشوى او مقلى يقدم مع صوص سوهو وقطع الجبنة الشيدر والخيار المخلل والخس والطماطم والبصل الفريش",
+          desc: "Grilled or fried chicken with Soho sauce, cheddar, pickles, lettuce, tomato & onion",
+          price: 279,
+          order: 3,
+        },
+        {
+          category: "🍔 Burgers & Sandwiches",
+          nameAr: "تشيكن كاساديا",
+          name: "Chicken Quesadilla",
+          descAr:
+            "شرائح دجاج متبلة مع خضار مشوى تقدم فى تورتيلا مقرمشة ومحشية بخليط من الجبن الذائبة ",
+          desc: "Seasoned chicken with grilled veggies in crispy tortilla, melted cheese & ranch",
+          price: 289,
+          order: 4,
+        },
+        {
+          category: "🍔 Burgers & Sandwiches",
+          nameAr: "بيف كاساديا",
+          name: "Beef Quesadilla",
+          descAr:
+            "شرائح بيف متبلة مع خضار مشوى تقدم فى تورتيلا مقرمشة ومحشية بخليط من الجبن الذائبة ",
+          desc: "Seasoned beef with grilled veggies in crispy tortilla, melted cheese & ranch",
+          price: 299,
+          order: 5,
+        },
+        {
+          category: "🍔 Burgers & Sandwiches",
+          nameAr: "شرمب كاساديا",
+          name: "Shrimp Quesadilla",
+          descAr:
+            "قطع جمبرى متبلة مع خضار مشوى تقدم فى تورتيلا مقرمشة ومحشية بخليط من الجبن الذائبة ",
+          desc: "Seasoned shrimp with grilled veggies in crispy tortilla, melted cheese & ranch",
+          price: 289,
+          order: 6,
+        },
+        {
+          category: "🍔 Burgers & Sandwiches",
+          nameAr: "كلاسيك برجر",
+          name: "Classic Burger",
+          descAr: "قطعة برجر مشوية مع الطماطم والخس والبصل وصوص المايونيز",
+          desc: "Grilled burger patty with tomato, lettuce, onion & mayo",
+          price: 279,
+          order: 7,
+        },
+        {
+          category: "🍔 Burgers & Sandwiches",
+          nameAr: "كلاسيك برجر بيزك",
+          name: "Classic Burger (Basic)",
+          descAr:
+            "قطعة برجر بوزن 120 جرام، مع الخس، الطماطم، البصل، وصوصنا الخاص",
+          desc: "120g burger patty with lettuce, tomato, onion & house sauce",
+          price: 209,
+          order: 8,
+        },
+        {
+          category: "🍔 Burgers & Sandwiches",
+          nameAr: "سوهو مشروم برجر",
+          name: "Soho Mushroom Burger",
+          descAr:
+            "قطع برجر مغطاة بالجبنة والمشروم المشوى والبصل المكرمل وصوص السموك مايونيز",
+          desc: "Burger covered with cheese, grilled mushroom, caramelized onion & smoky mayo",
+          price: 309,
+          order: 9,
+        },
+        {
+          category: "🍔 Burgers & Sandwiches",
+          nameAr: "سوهو مشروم برجر بيزك",
+          name: "Mushroom Burger (Basic)",
+          descAr:
+            "قطع برجر 120جرام مغطاة بالجبنة والمشروم المشوى والبصل المكرمل وصوص السموك مايونيز",
+          desc: "120g mushroom burger with cheese, caramelized onion & smoky mayo",
+          price: 239,
+          order: 10,
+        },
+        {
+          category: "🍔 Burgers & Sandwiches",
+          nameAr: "بيكون برجر",
+          name: "Bacon Burger",
+          descAr:
+            "برجر مشوى مغطاة بالجبنة والبيكون المدخن والبصل المكرمل وقطع الهالبينو الحار مع صوص المايونيز",
+          desc: "Grilled burger with cheese, smoked bacon, caramelized onion, jalapeño & mayo",
+          price: 269,
+          order: 11,
+        },
+        {
+          category: "🍔 Burgers & Sandwiches",
+          nameAr: "بيكون برجر بيزك",
+          name: "Bacon Burger (Basic)",
+          descAr:
+            "برجر مشوى 120 جرام مغطاة بالجبنة والبيكون المدخن والبصل المكرمل وقطع الهالبينو الحار مع صوص المايونيز",
+          desc: "120g bacon burger with cheese, caramelized onion, jalapeño & mayo",
+          price: 199,
+          order: 12,
+        },
+        {
+          category: "🍔 Burgers & Sandwiches",
+          nameAr: "تكساس برجر",
+          name: "Texas Burger",
+          descAr:
+            "برجر مدخن مع بصل مقرمش وشرائح الجبنة الشيدر، وصوص الباربيكيو الكلاسيكى مع صوص السموك مايونيز",
+          desc: "Smoked burger with crispy onions, cheddar, classic BBQ & smoky mayo",
+          price: 299,
+          order: 13,
+        },
+        {
+          category: "🍔 Burgers & Sandwiches",
+          nameAr: "تكساس برجر بيزك",
+          name: "Texas Burger (Basic)",
+          descAr:
+            "برجر مدخن 120 جرام مع بصل مقرمش وشرائح الجبنة الشيدر، وصوص الباربيكيو الكلاسيكى مع صوص السموك مايونيز",
+          desc: "120g smoked burger with crispy onions, cheddar, BBQ & smoky mayo",
+          price: 229,
+          order: 14,
+        },
+        // Pasta
+        {
+          category: "🍝 Pasta",
+          nameAr: "باستا الفريدو",
+          name: "Alfredo Pasta",
+          descAr:
+            "باستا الفريدو غنية بصوص كريمي ومشروم طازج مع قطع الدجاج المشوى والجبن البارميزان",
+          desc: "Creamy alfredo pasta with fresh mushroom, grilled chicken & parmesan",
+          price: 279,
+          order: 1,
+        },
+        {
+          category: "🍝 Pasta",
+          nameAr: "اسباجيتي بلونيز",
+          name: "Spaghetti Bolognese",
+          descAr:
+            "سباجيتي بصلصة اللحم الغنية على الطريقة الإيطالية مع زيت الزيتون والبارميزان",
+          desc: "Spaghetti in rich Italian meat sauce with olive oil & parmesan",
+          price: 289,
+          order: 2,
+        },
+        {
+          category: "🍝 Pasta",
+          nameAr: "باستا جمبرى",
+          name: "Shrimp Pasta",
+          descAr:
+            "باستا الجمبرى اختيارك من الصوص الابيض او الاحمر مع قطع جمبرى والخضار المشوى",
+          desc: "Shrimp pasta with your choice of white or red sauce & grilled vegetables",
+          price: 259,
+          order: 3,
+        },
+        // Main Courses
+        {
+          category: "🥩 Main Courses",
+          nameAr: "تشيكن فاهيتا",
+          name: "Chicken Fajita",
+          descAr: "قطع دجاج مشوى مع البصل والفلفل تقدم مع ارز وخبز التورتيلا  ",
+          desc: "Grilled chicken with onion & peppers, served with rice, ",
+          price: 299,
+          order: 1,
+        },
+        {
+          category: "🥩 Main Courses",
+          nameAr: "بيف فاهيتا",
+          name: "Beef Fajita",
+          descAr: "قطع اللحم مشوى مع البصل والفلفل تقدم مع ارز وخبز التورتيلا",
+          desc: "Grilled beef with onion & peppers, served with rice, tortilla ",
+          price: 339,
+          order: 2,
+        },
+        {
+          category: "🥩 Main Courses",
+          nameAr: "فاهيتا مكس",
+          name: "Mix Fajita",
+          descAr:
+            "قطع دجاج وبيف وجمبرى مع الفلفل والبصل تقدم مع ارز وخبز التورتيلا ",
+          desc: "Chicken, beef & shrimp mix with peppers and onion, rice, ",
+          price: 359,
+          order: 3,
+        },
+        {
+          category: "🥩 Main Courses",
+          nameAr: "اسكالوب بانيه",
+          name: "Veal Scaloppine",
+          descAr:
+            "لحم بوفتيك رفيع ومتبل ومغلف بطبقة مقرمشة من الخارج وطرية من الداخل ويقدم مع الصوص الابيض  ",
+          desc: "Thin, marinated, crispy veal escalope served with white sauce ",
+          price: 399,
+          order: 4,
+        },
+        {
+          category: "🥩 Main Courses",
+          nameAr: "كنترى فرايد تشيكن",
+          name: "Country Fried Chicken",
+          descAr: "قطع دجاج مقلى كرسبى مع المشروم الطازج وصوص الابيض ",
+          desc: "Crispy fried chicken with fresh mushroom & white sauce, served ",
+          price: 329,
+          order: 5,
+        },
+        {
+          category: "🥩 Main Courses",
+          nameAr: "ريب آى ستيك",
+          name: "Rib Eye Steak",
+          descAr: "قطعة استيك مشوية تقدم مع صوص المشروم او البيبر او الباربكيو",
+          desc: "Grilled rib eye steak with mushroom, pepper, or BBQ sauce & 2 sides of your choice",
+          price: 449,
+          order: 6,
+        },
+        // Sides
+        {
+          category: " Sides",
+          nameAr: "بطاطس مقلية",
+          name: "French Fries",
+          desc: "",
+          descAr: "",
+          price: 50,
+          order: 1,
+        },
+        {
+          category: " Sides",
+          nameAr: "ماش بوتيتو",
+          name: "Mashed Potatoes",
+          desc: "",
+          descAr: "",
+          price: 70,
+          order: 2,
+        },
+        {
+          category: " Sides",
+          nameAr: "ارز سوهو",
+          name: "Soho Rice",
+          desc: "",
+          descAr: "",
+          price: 50,
+          order: 3,
+        },
+        {
+          category: " Sides",
+          nameAr: "سلطة كولسلو",
+          name: "Coleslaw",
+          desc: "",
+          descAr: "",
+          price: 50,
+          order: 4,
+        },
+        {
+          category: " Sides",
+          nameAr: "كوب الذرة",
+          name: "Corn Cup",
+          desc: "",
+          descAr: "",
+          price: 50,
+          order: 5,
+        },
+        {
+          category: " Sides",
+          nameAr: "خضروات سوتيه",
+          name: "Sautéed Vegetables",
+          desc: "",
+          descAr: "",
+          price: 70,
+          order: 6,
+        },
+        {
+          category: " Sides",
+          nameAr: "سايد ماك تشيز",
+          name: "Mac & Cheese Side",
+          desc: "",
+          descAr: "",
+          price: 70,
+          order: 7,
+        },
+        // Kids
+        {
+          category: " Kids Menu",
+          nameAr: "كيدز استربس",
+          name: "Kids Strips",
+          descAr: "قطع دجاج مقرمشة تقدم مع بطاطس مقلية والكاتشب مع عصير كيدز",
+          desc: "Crispy chicken strips with fries, ketchup & kids juice",
+          price: 189,
+          order: 1,
+        },
+        {
+          category: " Kids Menu",
+          nameAr: "كيدز تشيكن",
+          name: "Kids Chicken",
+          descAr:
+            "قطع دجاج تقدم مع الخس والطماطم والكاتشب فى لقمة كيزر مع البطاطس المقلية مع عصير كيدز",
+          desc: "Chicken bites with lettuce, tomato & ketchup in a bun, with fries & kids juice",
+          price: 189,
+          order: 2,
+        },
+        {
+          category: " Kids Menu",
+          nameAr: "كيدز برجر",
+          name: "Kids Burger",
+          descAr:
+            "قطعة برجر تقدم مع الخس والطماطم وشريحة الجبن فى لقمة كيزر مع البطاطس المقلية مع عصير كيدز",
+          desc: "Burger patty with lettuce, tomato & cheese in a bun, with fries & kids juice",
+          price: 189,
+          order: 3,
+        },
+        // Sauces
+        {
+          category: "Sauces (Extra)",
+          nameAr: "صوص مستردة بالعسل",
+          name: "Honey Mustard",
+          desc: "",
+          descAr: "",
+          price: 30,
+          order: 1,
+        },
+        {
+          category: "Sauces (Extra)",
+          nameAr: "صوص بافالو",
+          name: "Buffalo Sauce",
+          desc: "",
+          descAr: "",
+          price: 30,
+          order: 2,
+        },
+        {
+          category: "Sauces (Extra)",
+          nameAr: "صوص البلو تشيز",
+          name: "Blue Cheese",
+          desc: "",
+          descAr: "",
+          price: 30,
+          order: 3,
+        },
+        {
+          category: "Sauces (Extra)",
+          nameAr: "صوص الرانش",
+          name: "Ranch",
+          desc: "",
+          descAr: "",
+          price: 30,
+          order: 4,
+        },
+        {
+          category: "Sauces (Extra)",
+          nameAr: "صوص الجبنة",
+          name: "Cheese Sauce",
+          desc: "",
+          descAr: "",
+          price: 30,
+          order: 5,
+        },
+        {
+          category: "Sauces (Extra)",
+          nameAr: "صوص السيزر",
+          name: "Caesar Sauce",
+          desc: "",
+          descAr: "",
+          price: 30,
+          order: 6,
+        },
+        {
+          category: "Sauces (Extra)",
+          nameAr: "صوص الدينميت",
+          name: "Dynamite Sauce",
+          desc: "",
+          descAr: "",
+          price: 30,
+          order: 7,
+        },
+        {
+          category: "Sauces (Extra)",
+          nameAr: "بيكوديجالو",
+          name: "Pico de Gallo",
+          desc: "",
+          descAr: "",
+          price: 30,
+          order: 8,
+        },
+        // Desserts
+        {
+          category: "🍰 Desserts",
+          nameAr: "مولتن كيك",
+          name: "Molten Cake",
+          desc: "",
+          descAr: "",
+          price: 130,
+          order: 1,
+        },
+        {
+          category: "🍰 Desserts",
+          nameAr: "تشيز كيك",
+          name: "Cheesecake",
+          desc: "",
+          descAr: "",
+          price: 125,
+          order: 2,
+        },
+        {
+          category: "🍰 Desserts",
+          nameAr: "براونيز",
+          name: "Brownies",
+          desc: "",
+          descAr: "",
+          price: 130,
+          order: 3,
+        },
+      ];
+
+      // Istiknanah items from istik_items.json (the correct source)
+      const ISTIK_ITEMS = [
+        // Hot Drinks
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "شاي / شاى اخضر",
+          name: "Tea / Green Tea",
+          desc: "",
+          descAr: "",
+          price: 35,
+          order: 1,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "ابريق شاي (4 استكانة)",
+          name: "Tea Pot (4 cups)",
+          desc: "",
+          descAr: "",
+          price: 120,
+          order: 2,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "ابريق شاى (2 استكانة)",
+          name: "Tea Pot (2 cups)",
+          desc: "",
+          descAr: "",
+          price: 70,
+          order: 3,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "ابريق شاى كرك",
+          name: "Karak Tea Pot",
+          desc: "",
+          descAr: "",
+          price: 140,
+          order: 4,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "استكنانة ماتشا",
+          name: "Matcha Cup",
+          desc: "",
+          descAr: "",
+          price: 100,
+          order: 5,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "نسكافيه",
+          name: "Nescafé",
+          desc: "",
+          descAr: "",
+          price: 60,
+          order: 6,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "امريكان كوفي",
+          name: "Americano",
+          desc: "",
+          descAr: "",
+          price: 85,
+          order: 7,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "اسبرسو سينجل",
+          name: "Espresso Single",
+          desc: "",
+          descAr: "",
+          price: 80,
+          order: 8,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "اسبرسو دبل",
+          name: "Espresso Double",
+          desc: "",
+          descAr: "",
+          price: 90,
+          order: 9,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "ميكاتو سينجل",
+          name: "Macchiato Single",
+          desc: "",
+          descAr: "",
+          price: 85,
+          order: 10,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "ميكاتو دبل",
+          name: "Macchiato Double",
+          desc: "",
+          descAr: "",
+          price: 95,
+          order: 11,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "كوكتيل اعشاب",
+          name: "Herbal Cocktail",
+          desc: "",
+          descAr: "",
+          price: 55,
+          order: 12,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "موكا",
+          name: "Mocha",
+          desc: "",
+          descAr: "",
+          price: 110,
+          order: 13,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "كابيتشينو",
+          name: "Cappuccino",
+          desc: "",
+          descAr: "",
+          price: 100,
+          order: 14,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "كافيه لاتيه",
+          name: "Café Latte",
+          desc: "",
+          descAr: "",
+          price: 100,
+          order: 15,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "هوت شوكليت",
+          name: "Hot Chocolate",
+          desc: "",
+          descAr: "",
+          price: 110,
+          order: 16,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "هوت سيدر",
+          name: "Hot Cider",
+          desc: "",
+          descAr: "",
+          price: 90,
+          order: 17,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "قهوه تركى سينجل",
+          name: "Turkish Coffee Single",
+          desc: "",
+          descAr: "",
+          price: 70,
+          order: 18,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "قهوه تركى دبل",
+          name: "Turkish Coffee Double",
+          desc: "",
+          descAr: "",
+          price: 80,
+          order: 19,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "فرينش كوفي",
+          name: "French Coffee",
+          desc: "",
+          descAr: "",
+          price: 85,
+          order: 20,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "سحلب بالمكسرات",
+          name: "Sahlab with Nuts",
+          desc: "",
+          descAr: "",
+          price: 85,
+          order: 21,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "فلات وايت",
+          name: "Flat White",
+          desc: "",
+          descAr: "",
+          price: 90,
+          order: 22,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "جنزبيل",
+          name: "Ginger Tea",
+          desc: "",
+          descAr: "",
+          price: 50,
+          order: 23,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "دلة قهوة عربى",
+          name: "Arabic Coffee Pot",
+          desc: "",
+          descAr: "",
+          price: 210,
+          order: 24,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "هوت استكنانة",
+          name: "Hot Istiknanah Cup",
+          desc: "",
+          descAr: "",
+          price: 125,
+          order: 25,
+        },
+        {
+          category: "☕ Hot Drinks",
+          nameAr: "سبانيش لاتيه",
+          name: "Spanish Latte",
+          desc: "",
+          descAr: "",
+          price: 115,
+          order: 26,
+        },
+        // Fresh Juices
+        {
+          category: "🧃 Fresh Juices",
+          nameAr: "برتقال",
+          name: "Orange Juice",
+          desc: "",
+          descAr: "",
+          price: 80,
+          order: 1,
+        },
+        {
+          category: "🧃 Fresh Juices",
+          nameAr: "مانجو",
+          name: "Mango Juice",
+          desc: "",
+          descAr: "",
+          price: 80,
+          order: 2,
+        },
+        {
+          category: "🧃 Fresh Juices",
+          nameAr: "فراولة",
+          name: "Strawberry Juice",
+          desc: "",
+          descAr: "",
+          price: 80,
+          order: 3,
+        },
+        {
+          category: "🧃 Fresh Juices",
+          nameAr: "جوافة",
+          name: "Guava Juice",
+          desc: "",
+          descAr: "",
+          price: 80,
+          order: 4,
+        },
+        {
+          category: "🧃 Fresh Juices",
+          nameAr: "بطيخ",
+          name: "Watermelon Juice",
+          desc: "",
+          descAr: "",
+          price: 80,
+          order: 5,
+        },
+        {
+          category: "🧃 Fresh Juices",
+          nameAr: "موز بالحليب",
+          name: "Banana Milk",
+          desc: "",
+          descAr: "",
+          price: 90,
+          order: 6,
+        },
+        {
+          category: "🧃 Fresh Juices",
+          nameAr: "كيوى",
+          name: "Kiwi Juice",
+          desc: "",
+          descAr: "",
+          price: 90,
+          order: 7,
+        },
+        {
+          category: "🧃 Fresh Juices",
+          nameAr: "ليمون نعناع",
+          name: "Lemon Mint",
+          desc: "",
+          descAr: "",
+          price: 60,
+          order: 8,
+        },
+        // Healthy Drinks
+        {
+          category: "🌿 Healthy Drinks",
+          nameAr: "ماتشا بجوز الهند او العسل",
+          name: "Matcha Coconut or Honey",
+          desc: "",
+          descAr: "",
+          price: 130,
+          order: 1,
+        },
+        {
+          category: "🌿 Healthy Drinks",
+          nameAr: "باور هيلن",
+          name: "Power Helen",
+          desc: "",
+          descAr: "",
+          price: 100,
+          order: 2,
+        },
+        {
+          category: "🌿 Healthy Drinks",
+          nameAr: "زبادى فواكه",
+          name: "Yogurt Fruits",
+          desc: "",
+          descAr: "",
+          price: 105,
+          order: 3,
+        },
+        {
+          category: "🌿 Healthy Drinks",
+          nameAr: "زبادى عسل وتوت",
+          name: "Yogurt Honey & Berries",
+          desc: "",
+          descAr: "",
+          price: 115,
+          order: 4,
+        },
+        {
+          category: "🌿 Healthy Drinks",
+          nameAr: "زبادى افوكادو وعسل ومكسرات",
+          name: "Yogurt Avocado Honey & Nuts",
+          desc: "",
+          descAr: "",
+          price: 145,
+          order: 5,
+        },
+        {
+          category: "🌿 Healthy Drinks",
+          nameAr: "افوكادو عسل ومكسرات",
+          name: "Avocado Honey & Nuts",
+          desc: "",
+          descAr: "",
+          price: 130,
+          order: 6,
+        },
+        // Iced Drinks
+        {
+          category: "🧊 Iced Drinks",
+          nameAr: "ماتشا مثلج",
+          name: "Iced Matcha",
+          desc: "",
+          descAr: "",
+          price: 125,
+          order: 1,
+        },
+        {
+          category: "🧊 Iced Drinks",
+          nameAr: "ماتشا لاتيه مثلج",
+          name: "Iced Matcha Latte",
+          desc: "",
+          descAr: "",
+          price: 130,
+          order: 2,
+        },
+        {
+          category: "🧊 Iced Drinks",
+          nameAr: "كركديه",
+          name: "Hibiscus",
+          desc: "",
+          descAr: "",
+          price: 80,
+          order: 3,
+        },
+        {
+          category: "🧊 Iced Drinks",
+          nameAr: "ايس تى مع الكركديه والثلج",
+          name: "Iced Hibiscus Tea",
+          desc: "",
+          descAr: "",
+          price: 90,
+          order: 4,
+        },
+        {
+          category: "🧊 Iced Drinks",
+          nameAr: "ايس لاتيه",
+          name: "Iced Latte",
+          desc: "",
+          descAr: "",
+          price: 85,
+          order: 5,
+        },
+        {
+          category: "🧊 Iced Drinks",
+          nameAr: "ايس سبانيش لاتيه",
+          name: "Iced Spanish Latte",
+          desc: "",
+          descAr: "",
+          price: 120,
+          order: 6,
+        },
+        {
+          category: "🧊 Iced Drinks",
+          nameAr: "ايس موكا",
+          name: "Iced Mocha",
+          desc: "",
+          descAr: "",
+          price: 125,
+          order: 7,
+        },
+        {
+          category: "🧊 Iced Drinks",
+          nameAr: "فرابيه (كراميل/شوكليت)",
+          name: "Frappé (Caramel/Chocolate)",
+          desc: "",
+          descAr: "",
+          price: 125,
+          order: 8,
+        },
+        {
+          category: "🧊 Iced Drinks",
+          nameAr: "ايس استكنانة",
+          name: "Iced Istiknanah Cup",
+          desc: "",
+          descAr: "",
+          price: 100,
+          order: 9,
+        },
+        {
+          category: "🧊 Iced Drinks",
+          nameAr: "ايس كوفى",
+          name: "Iced Coffee",
+          desc: "",
+          descAr: "",
+          price: 115,
+          order: 10,
+        },
+        // Milkshakes
+        {
+          category: "Milkshakes",
+          nameAr: "ميلك شيك فانيليا / شوكليت",
+          name: "Milkshake Vanilla / Chocolate",
+          desc: "",
+          descAr: "",
+          price: 120,
+          order: 1,
+        },
+        {
+          category: "Milkshakes",
+          nameAr: "ميلك شيك فراوله / مانجا",
+          name: "Milkshake Strawberry / Mango",
+          desc: "",
+          descAr: "",
+          price: 120,
+          order: 2,
+        },
+        {
+          category: "Milkshakes",
+          nameAr: "ميلك شيك ماتشا",
+          name: "Matcha Milkshake",
+          desc: "",
+          descAr: "",
+          price: 135,
+          order: 3,
+        },
+        {
+          category: "Milkshakes",
+          nameAr: "ميلك شيك اوريو",
+          name: "Oreo Milkshake",
+          desc: "",
+          descAr: "",
+          price: 130,
+          order: 4,
+        },
+        {
+          category: "Milkshakes",
+          nameAr: "ميلك شيك بلوبيرى",
+          name: "Blueberry Milkshake",
+          desc: "",
+          descAr: "",
+          price: 120,
+          order: 5,
+        },
+        // Signature Drinks
+        {
+          category: "🌟 Signature Drinks",
+          nameAr: "تمر مع ايس كريم فانيليا",
+          name: "Dates & Vanilla Ice Cream",
+          desc: "",
+          descAr: "",
+          price: 125,
+          order: 1,
+        },
+        {
+          category: "🌟 Signature Drinks",
+          nameAr: "كركديه بالموز والتوت",
+          name: "Hibiscus Banana & Berry",
+          desc: "",
+          descAr: "",
+          price: 105,
+          order: 2,
+        },
+        {
+          category: "🌟 Signature Drinks",
+          nameAr: "بطيخ باشون",
+          name: "Watermelon Passion",
+          desc: "",
+          descAr: "",
+          price: 120,
+          order: 3,
+        },
+        {
+          category: "🌟 Signature Drinks",
+          nameAr: "فلوريدا",
+          name: "Florida",
+          desc: "",
+          descAr: "",
+          price: 110,
+          order: 4,
+        },
+        {
+          category: "🌟 Signature Drinks",
+          nameAr: "تمر بالحليب وروز ووتر",
+          name: "Dates Milk & Rose Water",
+          desc: "",
+          descAr: "",
+          price: 95,
+          order: 5,
+        },
+        // Soda Cocktails
+        {
+          category: "🫧 Soda Cocktails",
+          nameAr: "موهيتو (باشون / بلوبيرى / فراوله)",
+          name: "Mojito (Passion / Blueberry / Strawberry)",
+          desc: "",
+          descAr: "",
+          price: 105,
+          order: 1,
+        },
+        {
+          category: "🫧 Soda Cocktails",
+          nameAr: "موهيتو",
+          name: "Mojito",
+          desc: "",
+          descAr: "",
+          price: 95,
+          order: 2,
+        },
+        {
+          category: "🫧 Soda Cocktails",
+          nameAr: "كيوى ريدبول",
+          name: "Kiwi Red Bull",
+          desc: "",
+          descAr: "",
+          price: 150,
+          order: 3,
+        },
+        {
+          category: "🫧 Soda Cocktails",
+          nameAr: "باور ليمون",
+          name: "Power Lemon",
+          desc: "",
+          descAr: "",
+          price: 140,
+          order: 4,
+        },
+        // Smoothies
+        {
+          category: "🥤 Smoothies",
+          nameAr: "بينا كولادا",
+          name: "Piña Colada",
+          desc: "",
+          descAr: "",
+          price: 110,
+          order: 1,
+        },
+        {
+          category: "🥤 Smoothies",
+          nameAr: "ليمون نعناع",
+          name: "Lemon Mint",
+          desc: "",
+          descAr: "",
+          price: 60,
+          order: 2,
+        },
+        {
+          category: "🥤 Smoothies",
+          nameAr: "استكنانه سموزيز",
+          name: "Istiknanah Smoothie",
+          desc: "",
+          descAr: "",
+          price: 75,
+          order: 3,
+        },
+        {
+          category: "🥤 Smoothies",
+          nameAr: "مانجو / فراوله",
+          name: "Mango / Strawberry",
+          desc: "",
+          descAr: "",
+          price: 80,
+          order: 4,
+        },
+        {
+          category: "🥤 Smoothies",
+          nameAr: "بلوبيرى",
+          name: "Blueberry",
+          desc: "",
+          descAr: "",
+          price: 85,
+          order: 5,
+        },
+      ];
+
+      async function startUpload() {
+        const btn = document.getElementById("btnUpload");
+        btn.disabled = true;
+        btn.textContent = "⏳ Deleting old data…";
+
+        log(
+          "🧹 STEP 1: Deleting ALL existing data in Firebase (including corrupted items)…",
+          "info",
+        );
+        try {
+          // 1. Fetch raw documents directly to get the unstripped corrupt names
+          const url = `https://firestore.googleapis.com/v1/projects/${FB_CONFIG.projectId}/databases/(default)/documents/menus?pageSize=500&key=${FB_CONFIG.apiKey}`;
+          const res = await fetch(url);
+          const data = await res.json();
+          const docs = data.documents || [];
+
+          if (docs.length > 0) {
+            log(`Found ${docs.length} existing items. Deleting...`, "warn");
+            for (let i = 0; i < docs.length; i++) {
+              const docName = docs[i].name;
+              // The docName already contains ?key=... if it's corrupted, or we need to add ?key= if not
+              const sep = docName.includes("?") ? "&" : "?";
+              const deleteUrl = `https://firestore.googleapis.com/v1/${docName}${sep}key=${FB_CONFIG.apiKey}`;
+
+              await fetch(deleteUrl, { method: "DELETE" });
+              if ((i + 1) % 20 === 0) log(`Deleted ${i + 1}/${docs.length}...`);
+            }
+            log(`✅ Successfully wiped ${docs.length} old documents.`, "ok");
+          } else {
+            log("Database already empty. Proceeding...", "ok");
+          }
+        } catch (e) {
+          log("❌ Error during deletion: " + e.message, "err");
+          btn.disabled = false;
+          btn.textContent = "⬆️ Upload All Menu Data";
+          return;
+        }
+
+        // 2. Re-seed clean data
+        btn.textContent = "⏳ Seeding new data…";
+        let ok = 0,
+          fail = 0;
+        const allItems = [
+          ...SOHO_ITEMS.map((i) => ({ ...i, menu: "soho" })),
+          ...ISTIK_ITEMS.map((i) => ({ ...i, menu: "istik" })),
+        ];
+
+        log(
+          `📦 STEP 2: Starting upload of ${allItems.length} clean items (${SOHO_ITEMS.length} SOHO + ${ISTIK_ITEMS.length} ISTIK)…`,
+          "info",
+        );
+
+        for (const item of allItems) {
+          try {
+            await db.create("menus", item);
+            ok++;
+            if (ok % 20 === 0 || ok === allItems.length) {
+              log(`✅ ${ok}/${allItems.length} uploaded…`, "ok");
+            }
+          } catch (e) {
+            fail++;
+            log(`❌ Failed: ${item.nameAr} — ${e.message}`, "err");
+          }
+          // Small delay to avoid rate limiting
+          await new Promise((r) => setTimeout(r, 80));
+        }
+
+        log("", "info");
+        log(
+          `🎉 Done! ${ok} items uploaded successfully. ${fail ? fail + " failed." : ""}`,
+          ok > 0 ? "ok" : "err",
+        );
+        log(
+          "👉 You can now manage items normally without duplicates or errors.",
+          "info",
+        );
+        btn.textContent = "✅ Upload Complete";
+      }
+    </script>
+  </body>
 </html>
