@@ -1568,6 +1568,8 @@
             "Named from the Arabic word for contentment — إستكنانة — this is a sanctuary of warmth. Spanish lattes, ceremonial matcha, fresh juices, and signature elixirs. Each sip is an invitation to pause, breathe, and stay a little longer.",
           explore: "EXPLORE THE MENUS",
           toggle: "ARABIC",
+          tabSoho: "⚡ SOHO BITES",
+          tabIstik: "☕ ISTIKNANAH",
         },
         ar: {
           eyebrow: "القاهرة · كل بجرأة · تذوق ببطء",
@@ -1585,6 +1587,8 @@
             "مستوحاة من الكلمة العربية للرضا — إستكنانة — هذا احتفال بالتباطؤ. قهوة مختارة بعناية وعصائر طازجة ومشروبات مميزة. ملاذ من العجلة.",
           explore: "استكشف القوائم",
           toggle: "ENGLISH",
+          tabSoho: "⚡ لقمات سوهو",
+          tabIstik: "☕ إستكنانة",
         },
       };
 
@@ -1602,6 +1606,13 @@
         document.getElementById("txt-istik-desc").textContent = t.istikDesc;
         document.getElementById("txt-explore").textContent = t.explore;
         document.getElementById("langToggleBtn").textContent = t.toggle;
+        
+        // Ensure elements exist before modifying
+        const tabSohoEl = document.getElementById("tabSoho");
+        if (tabSohoEl) tabSohoEl.innerHTML = t.tabSoho;
+        const tabIstikEl = document.getElementById("tabIstik");
+        if (tabIstikEl) tabIstikEl.innerHTML = t.tabIstik;
+
         document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
         renderSohoMenu();
         renderIstikMenu();
@@ -1614,7 +1625,8 @@
 
       // ── Data ─────────────────────────────────────────────────────
       let sohoData = {},
-        istikData = {};
+        istikData = {},
+        itemTranslations = {};
 
       // Category display config
       const SOHO_CATS = {
@@ -1678,10 +1690,14 @@
         const nameAr = norm(raw?.name);
         const price = toPrice(raw?.price);
         if (!nameAr || price === null) return null;
+        
+        // Lookup English translation, ignoring exact whitespace match if needed
+        const nameEn = itemTranslations[nameAr] || itemTranslations[raw?.name] || itemTranslations[nameAr.replace(/\s+$/, '')] || nameAr;
+        
         return {
           category,
           nameAr,
-          name: nameAr,
+          name: nameEn,
           descAr: "",
           desc: "",
           price,
@@ -1729,6 +1745,8 @@
           ) {
             // Soho JSON stores many Arabic descriptions as object keys after item rows.
             lastByCategory[currentCategory].descAr = key;
+            const descEn = itemTranslations[key] || itemTranslations[rawKey] || itemTranslations[key.replace(/\s+$/, '')] || key;
+            lastByCategory[currentCategory].desc = descEn;
           }
 
           if (!Array.isArray(list) || !currentCategory) continue;
@@ -1749,9 +1767,10 @@
       // ── Load from local JSON files ────────────────────────────────
       async function loadMenuData() {
         try {
-          const [sohoRes, istikRes] = await Promise.all([
+          const [sohoRes, istikRes, transRes] = await Promise.all([
             fetch("soho_items.json", { cache: "no-store" }),
             fetch("istik_items.json", { cache: "no-store" }),
+            fetch("translations.json", { cache: "no-store" }),
           ]);
 
           if (!sohoRes.ok || !istikRes.ok) {
@@ -1760,10 +1779,14 @@
             );
           }
 
-          const [sohoJson, istikJson] = await Promise.all([
+          const [sohoJson, istikJson, transJson] = await Promise.all([
             sohoRes.json(),
             istikRes.json(),
+            transRes.ok ? transRes.json() : Promise.resolve({}),
           ]);
+          
+          itemTranslations = transJson || {};
+          
           sohoData = parseSohoJson(sohoJson);
           istikData = parseIstikJson(istikJson);
 
