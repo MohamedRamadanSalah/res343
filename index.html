@@ -531,9 +531,35 @@
       }, {threshold:0.1, rootMargin:'0px 0px -50px 0px'});
       document.querySelectorAll('.reveal,.stagger').forEach(el => revealObs.observe(el));
 
+      // ── Auto-refresh (poll for updates) ─────────────────────────
+      const POLL_INTERVAL_MS = 30000; // 30 seconds
+      let pollTimer = null;
+
+      function startPolling() {
+        stopPolling();
+        pollTimer = setInterval(() => {
+          loadMenuData();
+        }, POLL_INTERVAL_MS);
+      }
+
+      function stopPolling() {
+        if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+      }
+
+      // Refresh immediately when tab becomes visible again
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          loadMenuData();
+          startPolling();
+        } else {
+          stopPolling();
+        }
+      });
+
       // ── Init ──────────────────────────────────────────────────────
       applyLang();
       loadMenuData();
+      startPolling();
     </script>
   </body>
 </html>

@@ -19,11 +19,10 @@ class FirebaseClient {
   async _request(endpoint, options = {}) {
     const sep = endpoint.includes('?') ? '&' : '?';
     const url = `${this.baseUrl}${endpoint}${sep}key=${this.apiKey}`;
-    // Note: we do NOT send the auth token to Firestore REST.
-    // The database is in open mode (allow read, write: if true).
-    // Sending a Bearer token would cause Firestore to evaluate
-    // auth-based rules which may reject the request.
     const headers = { 'Content-Type': 'application/json' };
+    if (this.authToken) {
+      headers['Authorization'] = `Bearer ${this.authToken}`;
+    }
     const res = await fetch(url, { headers, ...options });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
@@ -52,6 +51,9 @@ class FirebaseClient {
     // Use separate URL so documentId is never mixed with key param
     const url = `${this.baseUrl}/${collection}?documentId=${encodeURIComponent(docId)}&key=${this.apiKey}`;
     const headers = { 'Content-Type': 'application/json' };
+    if (this.authToken) {
+      headers['Authorization'] = `Bearer ${this.authToken}`;
+    }
     const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body) });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
