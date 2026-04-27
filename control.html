@@ -3,259 +3,1098 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Menu Control Panel (Local/Postgres)</title>
+    <title>Menu Control Panel</title>
     <style>
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f4f6f9;
+      * {
         margin: 0;
-        padding: 20px;
-        color: #333;
-      }
-      h1 {
-        text-align: center;
-        color: #2c3e50;
-        margin-bottom: 30px;
+        padding: 0;
+        box-sizing: border-box;
       }
 
-      .filters {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin-bottom: 25px;
-      }
-      .filter-btn {
-        padding: 10px 20px;
-        border: none;
-        background: #bdc3c7;
-        color: #fff;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: 0.2s;
-      }
-      .filter-btn.active,
-      .filter-btn:hover {
-        background: #3498db;
+      :root {
+        --primary: #1a9ff5;
+        --secondary: #c13b2a;
+        --dark: #0a0e1a;
+        --card: #111827;
+        --text: #e8f4fd;
+        --muted: #8bafc5;
+        --success: #10b981;
+        --danger: #ef4444;
+        --warning: #f59e0b;
       }
 
-      .table-container {
-        max-width: 1200px;
+      body {
+        font-family:
+          "Outfit",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        background: var(--dark);
+        color: var(--text);
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1400px;
         margin: 0 auto;
-        background: #fff;
+        padding: 2rem;
+      }
+
+      header {
+        background: linear-gradient(
+          135deg,
+          rgba(26, 159, 245, 0.1),
+          rgba(193, 59, 42, 0.1)
+        );
+        border: 1px solid rgba(26, 159, 245, 0.2);
         border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
-      table {
-        width: 100%;
-        border-collapse: collapse;
+
+      h1 {
+        font-size: 2.5rem;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
-      th,
-      td {
-        padding: 12px 15px;
-        text-align: left;
-        border-bottom: 1px solid #ecf0f1;
+
+      .controls {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 2rem;
       }
-      th {
-        background-color: #f8f9fa;
-        color: #2c3e50;
-        font-weight: 600;
+
+      .tab-group {
+        display: flex;
+        gap: 0.5rem;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 0.5rem;
+        border-radius: 6px;
+      }
+
+      .tab-btn {
+        padding: 0.7rem 1.5rem;
+        border: 1px solid rgba(26, 159, 245, 0.2);
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+        font-weight: 500;
+      }
+
+      .tab-btn.active {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      .tab-btn:hover {
+        background: rgba(26, 159, 245, 0.1);
+      }
+
+      .section {
+        display: none;
+      }
+
+      .section.active {
+        display: block;
+      }
+
+      h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        color: var(--primary);
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--text);
       }
 
       input,
+      select,
       textarea {
         width: 100%;
-        padding: 8px;
-        border: 1px solid #bdc3c7;
+        padding: 0.8rem;
+        background: rgba(26, 159, 245, 0.05);
+        border: 1px solid rgba(26, 159, 245, 0.2);
         border-radius: 4px;
+        color: var(--text);
         font-family: inherit;
-        box-sizing: border-box;
-      }
-      textarea {
-        resize: vertical;
-        min-height: 40px;
+        transition: all 0.3s;
       }
 
-      .btn-save {
-        padding: 8px 16px;
-        background: #27ae60;
-        color: white;
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        background: rgba(26, 159, 245, 0.1);
+        box-shadow: 0 0 10px rgba(26, 159, 245, 0.2);
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+
+      .btn {
+        padding: 0.8rem 1.5rem;
         border: none;
         border-radius: 4px;
         cursor: pointer;
-        font-weight: bold;
-        transition: background 0.2s;
-      }
-      .btn-save:hover {
-        background: #2ecc71;
-      }
-
-      .toast {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 15px 25px;
-        background: #27ae60;
-        color: white;
-        border-radius: 5px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        opacity: 0;
-        transition: opacity 0.3s;
-        pointer-events: none;
-      }
-      .toast.show {
-        opacity: 1;
-      }
-      .toast.error {
-        background: #e74c3c;
-      }
-
-      .menu-badge {
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s;
         display: inline-block;
-        padding: 4px 8px;
-        border-radius: 12px;
-        font-size: 0.8em;
-        font-weight: bold;
       }
-      .badge-soho {
-        background: #1a9ff5;
+
+      .btn-primary {
+        background: var(--primary);
         color: white;
       }
-      .badge-istik {
-        background: #c13b2a;
+
+      .btn-primary:hover {
+        background: #0080d0;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(26, 159, 245, 0.3);
+      }
+
+      .btn-secondary {
+        background: var(--secondary);
         color: white;
+      }
+
+      .btn-secondary:hover {
+        background: #a02d1f;
+      }
+
+      .btn-danger {
+        background: var(--danger);
+        color: white;
+      }
+
+      .btn-danger:hover {
+        background: #dc2626;
+      }
+
+      .btn-success {
+        background: var(--success);
+        color: white;
+      }
+
+      .btn-success:hover {
+        background: #059669;
+      }
+
+      .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid rgba(26, 159, 245, 0.15);
+        border-radius: 6px;
+        padding: 1.5rem;
+        transition: all 0.3s;
+      }
+
+      .card:hover {
+        border-color: rgba(26, 159, 245, 0.4);
+        box-shadow: 0 8px 20px rgba(26, 159, 245, 0.1);
+      }
+
+      .card h3 {
+        margin-bottom: 1rem;
+        color: var(--primary);
+        word-break: break-word;
+      }
+
+      .card-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .badge-primary {
+        background: rgba(26, 159, 245, 0.2);
+        color: var(--primary);
+      }
+
+      .badge-secondary {
+        background: rgba(193, 59, 42, 0.2);
+        color: var(--secondary);
+      }
+
+      .badge-success {
+        background: rgba(16, 185, 129, 0.2);
+        color: var(--success);
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(4px);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal.active {
+        display: flex;
+      }
+
+      .modal-content {
+        background: var(--card);
+        border: 1px solid rgba(26, 159, 245, 0.2);
+        border-radius: 8px;
+        padding: 2rem;
+        max-width: 600px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .modal-close {
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: color 0.3s;
+      }
+
+      .modal-close:hover {
+        color: var(--text);
+      }
+
+      .alert {
+        padding: 1rem 1.5rem;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+        display: none;
+      }
+
+      .alert.show {
+        display: block;
+      }
+
+      .alert-success {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        color: var(--success);
+      }
+
+      .alert-danger {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: var(--danger);
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .stat-card {
+        background: rgba(26, 159, 245, 0.1);
+        border: 1px solid rgba(26, 159, 245, 0.2);
+        border-radius: 6px;
+        padding: 1.5rem;
+        text-align: center;
+      }
+
+      .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary);
+      }
+
+      .stat-label {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-top: 0.5rem;
+      }
+
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(26, 159, 245, 0.3);
+        border-radius: 50%;
+        border-top-color: var(--primary);
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .input-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+
+      @media (max-width: 768px) {
+        .input-row {
+          grid-template-columns: 1fr;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+
+      .price-badge {
+        background: linear-gradient(
+          135deg,
+          rgba(26, 159, 245, 0.2),
+          rgba(193, 59, 42, 0.2)
+        );
+        padding: 0.25rem 0.6rem;
+        border-radius: 3px;
+        font-weight: 600;
+        color: var(--primary);
       }
     </style>
   </head>
   <body>
-    <h1>Data Engine Control Center</h1>
+    <div class="container">
+      <header>
+        <div>
+          <h1>🎛️ Menu Control Panel</h1>
+          <p style="color: var(--muted); margin-top: 0.5rem">
+            Manage all restaurant menu data
+          </p>
+        </div>
+        <div style="text-align: right">
+          <p style="font-size: 0.9rem; color: var(--muted)">
+            API: http://localhost:5000
+          </p>
+          <p
+            id="statusIndicator"
+            style="
+              font-size: 0.85rem;
+              color: var(--success);
+              margin-top: 0.5rem;
+            "
+          >
+            ● Connected
+          </p>
+        </div>
+      </header>
 
-    <div class="filters" id="filters">
-      <button class="filter-btn active" data-type="all">All Menus</button>
-      <button class="filter-btn" data-type="soho">Soho Bites</button>
-      <button class="filter-btn" data-type="istik">Istiknanah</button>
+      <div id="alert" class="alert"></div>
+
+      <div class="controls">
+        <div class="tab-group">
+          <button class="tab-btn active" onclick="switchTab('dashboard')">
+            📊 Dashboard
+          </button>
+          <button class="tab-btn" onclick="switchTab('restaurants')">
+            🏪 Restaurants
+          </button>
+          <button class="tab-btn" onclick="switchTab('categories')">
+            📂 Categories
+          </button>
+          <button class="tab-btn" onclick="switchTab('items')">🍽️ Items</button>
+        </div>
+      </div>
+
+      <!-- DASHBOARD -->
+      <section id="dashboard" class="section active">
+        <h2>Dashboard</h2>
+        <div class="info-grid" id="statsGrid">
+          <div class="stat-card">
+            <div class="stat-number" id="restaurantCount">-</div>
+            <div class="stat-label">Restaurants</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="categoryCount">-</div>
+            <div class="stat-label">Categories</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="itemCount">-</div>
+            <div class="stat-label">Menu Items</div>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="refreshDashboard()">
+          🔄 Refresh Stats
+        </button>
+      </section>
+
+      <!-- RESTAURANTS -->
+      <section id="restaurants" class="section">
+        <h2>Manage Restaurants</h2>
+        <button class="btn btn-primary" onclick="openModal('restaurantModal')">
+          ➕ Add Restaurant
+        </button>
+        <div class="grid" id="restaurantsList" style="margin-top: 2rem"></div>
+      </section>
+
+      <!-- CATEGORIES -->
+      <section id="categories" class="section">
+        <h2>Manage Categories</h2>
+        <button class="btn btn-primary" onclick="openModal('categoryModal')">
+          ➕ Add Category
+        </button>
+        <div class="form-group" style="margin-top: 1rem; margin-bottom: 1rem">
+          <label>Filter by Restaurant</label>
+          <select id="categoryRestaurantFilter" onchange="loadCategories()">
+            <option value="">All Restaurants</option>
+          </select>
+        </div>
+        <div class="grid" id="categoriesList"></div>
+      </section>
+
+      <!-- ITEMS -->
+      <section id="items" class="section">
+        <h2>Manage Items</h2>
+        <button class="btn btn-primary" onclick="openModal('itemModal')">
+          ➕ Add Item
+        </button>
+        <div class="input-row" style="margin-top: 1rem; margin-bottom: 1rem">
+          <div class="form-group" style="margin-bottom: 0">
+            <label>Filter by Restaurant</label>
+            <select id="itemRestaurantFilter" onchange="loadItems()">
+              <option value="">All Restaurants</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom: 0">
+            <label>Filter by Category</label>
+            <select id="itemCategoryFilter" onchange="loadItems()">
+              <option value="">All Categories</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid" id="itemsList"></div>
+      </section>
     </div>
 
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Menu</th>
-            <th>Name (EN)</th>
-            <th>Name (AR)</th>
-            <th>Desc (EN)</th>
-            <th>Desc (AR)</th>
-            <th>Price</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="table-body">
-          <tr>
-            <td colspan="7" style="text-align: center">Loading data...</td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- MODALS -->
+
+    <!-- Restaurant Modal -->
+    <div id="restaurantModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="restaurantModalTitle">Add Restaurant</h3>
+          <button class="modal-close" onclick="closeModal('restaurantModal')">
+            ✕
+          </button>
+        </div>
+        <form onsubmit="saveRestaurant(event)">
+          <div class="form-group">
+            <label>Restaurant Name (English)</label>
+            <input type="text" id="restaurantName" required />
+          </div>
+          <div class="form-group">
+            <label>Restaurant Name (Arabic)</label>
+            <input type="text" id="restaurantNameAr" required dir="rtl" />
+          </div>
+          <div style="display: flex; gap: 1rem">
+            <button type="submit" class="btn btn-success">💾 Save</button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              onclick="closeModal('restaurantModal')"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
-    <div class="toast" id="toast">Saved Successfully!</div>
+    <!-- Category Modal -->
+    <div id="categoryModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="categoryModalTitle">Add Category</h3>
+          <button class="modal-close" onclick="closeModal('categoryModal')">
+            ✕
+          </button>
+        </div>
+        <form onsubmit="saveCategory(event)">
+          <div class="form-group">
+            <label>Restaurant</label>
+            <select id="categoryRestaurant" required>
+              <option value="">Select Restaurant</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Category Name (Arabic)</label>
+            <input type="text" id="categoryNameAr" required dir="rtl" />
+          </div>
+          <div class="form-group">
+            <label>Category Name (English)</label>
+            <input type="text" id="categoryNameEn" required />
+          </div>
+          <div style="display: flex; gap: 1rem">
+            <button type="submit" class="btn btn-success">💾 Save</button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              onclick="closeModal('categoryModal')"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Item Modal -->
+    <div id="itemModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="itemModalTitle">Add Item</h3>
+          <button class="modal-close" onclick="closeModal('itemModal')">
+            ✕
+          </button>
+        </div>
+        <form onsubmit="saveItem(event)">
+          <div class="form-group">
+            <label>Restaurant</label>
+            <select
+              id="itemRestaurant"
+              required
+              onchange="loadCategoriesForItem()"
+            >
+              <option value="">Select Restaurant</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select id="itemCategory" required>
+              <option value="">Select Category</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Item Name (Arabic)</label>
+            <input type="text" id="itemNameAr" required dir="rtl" />
+          </div>
+          <div class="form-group">
+            <label>Item Name (English)</label>
+            <input type="text" id="itemNameEn" required />
+          </div>
+          <div class="form-group">
+            <label>Price</label>
+            <input type="number" id="itemPrice" required step="0.01" min="0" />
+          </div>
+          <div class="form-group">
+            <label>Available</label>
+            <select id="itemAvailable">
+              <option value="true" selected>Yes</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+          <div style="display: flex; gap: 1rem">
+            <button type="submit" class="btn btn-success">💾 Save</button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              onclick="closeModal('itemModal')"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <script>
-      // NOTE: In production, point this to your actual deployed backend URL (like Render or Heroku)
-      const API_URL = "http://localhost:3000/api/menu";
-      let allData = [];
+      const API = "http://localhost:5000/api";
+      let currentData = {
+        restaurants: [],
+        categories: [],
+        items: [],
+      };
+      let editingId = null;
+      let editingType = null;
 
-      // ── Notification ──
-      function showToast(message, isError = false) {
-        const toast = document.getElementById("toast");
-        toast.textContent = message;
-        toast.className = "toast show " + (isError ? "error" : "");
-        setTimeout(() => (toast.className = "toast"), 3000);
+      // ── INITIALIZATION ────────────────────
+      async function init() {
+        await loadDashboard();
+        await loadRestaurants();
+        await loadCategories();
+        await loadItems();
+        await populateSelects();
       }
 
-      // ── Fetch & Render ──
-      async function loadData() {
+      // ── DASHBOARD ────────────────────
+      async function loadDashboard() {
         try {
-          const res = await fetch(API_URL);
-          if (!res.ok) throw new Error("Failed to fetch data");
-          allData = await res.json();
-          renderTable("all");
+          const [rest, cats, items] = await Promise.all([
+            fetch(`${API}/restaurants`).then((r) => r.json()),
+            fetch(`${API}/categories`).then((r) => r.json()),
+            fetch(`${API}/items`).then((r) => r.json()),
+          ]);
+
+          document.getElementById("restaurantCount").textContent =
+            rest.data?.length || 0;
+          document.getElementById("categoryCount").textContent =
+            cats.data?.length || 0;
+          document.getElementById("itemCount").textContent =
+            items.data?.length || 0;
+
+          currentData = {
+            restaurants: rest.data || [],
+            categories: cats.data || [],
+            items: items.data || [],
+          };
         } catch (err) {
-          console.error(err);
-          document.getElementById("table-body").innerHTML =
-            `<tr><td colspan="7" style="color:red; text-align:center;">Make sure your PostgreSQL backend is running on http://localhost:3000</td></tr>`;
+          showAlert("Error loading dashboard", "danger");
         }
       }
 
-      function renderTable(filterType) {
-        const tbody = document.getElementById("table-body");
-        tbody.innerHTML = "";
-
-        let filtered = allData;
-        if (filterType !== "all") {
-          filtered = allData.filter((i) => i.menu_type === filterType);
-        }
-
-        filtered.forEach((item) => {
-          const tr = document.createElement("tr");
-          const badgeClass =
-            item.menu_type === "soho" ? "badge-soho" : "badge-istik";
-
-          tr.innerHTML = `
-            <td>
-              <span class="menu-badge ${badgeClass}">${item.menu_type.toUpperCase()}</span>
-              <br><small style="color:#7f8c8d; margin-top:4px; display:inline-block">${item.category}</small>
-            </td>
-            <td><input type="text" id="name_en_${item.id}" value="${item.name_en || ""}" /></td>
-            <td><input type="text" id="name_ar_${item.id}" value="${item.name_ar || ""}" dir="rtl" /></td>
-            <td><textarea id="desc_en_${item.id}">${item.desc_en || ""}</textarea></td>
-            <td><textarea id="desc_ar_${item.id}" dir="rtl">${item.desc_ar || ""}</textarea></td>
-            <td style="width: 80px;"><input type="number" step="0.01" id="price_${item.id}" value="${item.price}" /></td>
-            <td><button class="btn-save" onclick="saveItem(${item.id})">Save</button></td>
-          `;
-          tbody.appendChild(tr);
-        });
+      async function refreshDashboard() {
+        await loadDashboard();
+        await loadRestaurants();
+        await loadCategories();
+        await loadItems();
+        showAlert("Data refreshed!", "success");
       }
 
-      // ── Save Updates ──
-      async function saveItem(id) {
-        // Collect current input values safely
-        const payload = {
-          name_en: document.getElementById("name_en_" + id).value,
-          name_ar: document.getElementById("name_ar_" + id).value,
-          desc_en: document.getElementById("desc_en_" + id).value,
-          desc_ar: document.getElementById("desc_ar_" + id).value,
-          price: parseFloat(document.getElementById("price_" + id).value),
-        };
+      // ── RESTAURANTS ────────────────────
+      async function loadRestaurants() {
+        try {
+          const res = await fetch(`${API}/restaurants`);
+          const data = await res.json();
+          currentData.restaurants = data.data || [];
+          renderRestaurants();
+        } catch (err) {
+          showAlert("Error loading restaurants", "danger");
+        }
+      }
+
+      function renderRestaurants() {
+        const html = currentData.restaurants
+          .map(
+            (r) => `
+                <div class="card">
+                    <h3>${r.name}</h3>
+                    <span class="badge badge-secondary">${r.name_ar}</span>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-primary" onclick="editRestaurant(${r.id})">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteRestaurant(${r.id})">Delete</button>
+                    </div>
+                </div>
+            `,
+          )
+          .join("");
+        document.getElementById("restaurantsList").innerHTML =
+          html || "<p>No restaurants</p>";
+      }
+
+      function editRestaurant(id) {
+        const restaurant = currentData.restaurants.find((r) => r.id === id);
+        if (!restaurant) return;
+
+        editingId = id;
+        editingType = "restaurant";
+        document.getElementById("restaurantName").value = restaurant.name;
+        document.getElementById("restaurantNameAr").value =
+          restaurant.name_ar || "";
+        document.getElementById("restaurantModalTitle").textContent =
+          "Edit Restaurant";
+        openModal("restaurantModal");
+      }
+
+      async function saveRestaurant(e) {
+        e.preventDefault();
+        const name = document.getElementById("restaurantName").value;
+        const nameAr = document.getElementById("restaurantNameAr").value;
 
         try {
-          const res = await fetch(`${API_URL}/${id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
-
-          if (!res.ok) throw new Error("Failed to save");
-          showToast("Changes saved to database!");
+          if (editingId) {
+            await fetch(`${API}/restaurants/${editingId}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name, name_ar: nameAr }),
+            });
+            showAlert("Restaurant updated!", "success");
+          } else {
+            await fetch(`${API}/restaurants`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name, name_ar: nameAr }),
+            });
+            showAlert("Restaurant created!", "success");
+          }
+          closeModal("restaurantModal");
+          editingId = null;
+          await loadRestaurants();
+          await populateSelects();
         } catch (err) {
-          console.error(err);
-          showToast("Error saving changes", true);
+          showAlert("Error saving restaurant", "danger");
         }
       }
 
-      // ── Event Listeners ──
-      document.getElementById("filters").addEventListener("click", (e) => {
-        if (e.target.tagName === "BUTTON") {
-          document
-            .querySelectorAll(".filter-btn")
-            .forEach((b) => b.classList.remove("active"));
-          e.target.classList.add("active");
-          renderTable(e.target.dataset.type);
+      async function deleteRestaurant(id) {
+        if (!confirm("Delete this restaurant?")) return;
+        try {
+          await fetch(`${API}/restaurants/${id}`, { method: "DELETE" });
+          showAlert("Restaurant deleted!", "success");
+          await loadRestaurants();
+        } catch (err) {
+          showAlert("Error deleting restaurant", "danger");
         }
-      });
+      }
 
-      // Init
-      loadData();
+      // ── CATEGORIES ────────────────────
+      async function loadCategories() {
+        try {
+          const filter =
+            document.getElementById("categoryRestaurantFilter")?.value || "";
+          const url = filter
+            ? `${API}/categories?restaurantId=${filter}`
+            : `${API}/categories`;
+          const res = await fetch(url);
+          const data = await res.json();
+          currentData.categories = data.data || [];
+          renderCategories();
+        } catch (err) {
+          showAlert("Error loading categories", "danger");
+        }
+      }
+
+      function renderCategories() {
+        const html = currentData.categories
+          .map(
+            (c) => `
+                <div class="card">
+                    <h3>${c.name_en || c.name_ar}</h3>
+                    <span class="badge badge-secondary">${c.name_ar}</span>
+                    <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted);">
+                        Restaurant ID: ${c.restaurant_id}
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-primary" onclick="editCategory(${c.id})">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteCategory(${c.id})">Delete</button>
+                    </div>
+                </div>
+            `,
+          )
+          .join("");
+        document.getElementById("categoriesList").innerHTML =
+          html || "<p>No categories</p>";
+      }
+
+      function editCategory(id) {
+        const category = currentData.categories.find((c) => c.id === id);
+        if (!category) return;
+
+        editingId = id;
+        editingType = "category";
+        document.getElementById("categoryRestaurant").value =
+          category.restaurant_id;
+        document.getElementById("categoryNameAr").value =
+          category.name_ar || "";
+        document.getElementById("categoryNameEn").value =
+          category.name_en || "";
+        document.getElementById("categoryModalTitle").textContent =
+          "Edit Category";
+        openModal("categoryModal");
+      }
+
+      async function saveCategory(e) {
+        e.preventDefault();
+        const restaurantId =
+          document.getElementById("categoryRestaurant").value;
+        const nameAr = document.getElementById("categoryNameAr").value;
+        const nameEn = document.getElementById("categoryNameEn").value;
+
+        try {
+          if (editingId) {
+            await fetch(`${API}/categories/${editingId}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name_ar: nameAr, name_en: nameEn }),
+            });
+            showAlert("Category updated!", "success");
+          } else {
+            await fetch(`${API}/categories`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                restaurant_id: restaurantId,
+                name_ar: nameAr,
+                name_en: nameEn,
+              }),
+            });
+            showAlert("Category created!", "success");
+          }
+          closeModal("categoryModal");
+          editingId = null;
+          await loadCategories();
+        } catch (err) {
+          showAlert("Error saving category", "danger");
+        }
+      }
+
+      async function deleteCategory(id) {
+        if (!confirm("Delete this category and all its items?")) return;
+        try {
+          await fetch(`${API}/categories/${id}`, { method: "DELETE" });
+          showAlert("Category deleted!", "success");
+          await loadCategories();
+        } catch (err) {
+          showAlert("Error deleting category", "danger");
+        }
+      }
+
+      // ── ITEMS ────────────────────
+      async function loadItems() {
+        try {
+          const restFilter =
+            document.getElementById("itemRestaurantFilter")?.value || "";
+          const catFilter =
+            document.getElementById("itemCategoryFilter")?.value || "";
+          let url = `${API}/items`;
+          const params = [];
+          if (restFilter) params.push(`restaurantId=${restFilter}`);
+          if (catFilter) params.push(`categoryId=${catFilter}`);
+          if (params.length) url += "?" + params.join("&");
+
+          const res = await fetch(url);
+          const data = await res.json();
+          currentData.items = data.data || [];
+          renderItems();
+        } catch (err) {
+          showAlert("Error loading items", "danger");
+        }
+      }
+
+      function renderItems() {
+        const html = currentData.items
+          .map(
+            (i) => `
+                <div class="card">
+                    <h3>${i.name_en || i.name_ar}</h3>
+                    <span class="badge badge-secondary">${i.name_ar}</span>
+                    <span class="price-badge">SAR ${parseFloat(i.price).toFixed(2)}</span>
+                    ${i.is_available ? '<span class="badge badge-success">Available</span>' : '<span class="badge">Unavailable</span>'}
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-primary" onclick="editItem(${i.id})">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteItem(${i.id})">Delete</button>
+                    </div>
+                </div>
+            `,
+          )
+          .join("");
+        document.getElementById("itemsList").innerHTML =
+          html || "<p>No items</p>";
+      }
+
+      function editItem(id) {
+        const item = currentData.items.find((i) => i.id === id);
+        if (!item) return;
+
+        editingId = id;
+        editingType = "item";
+        document.getElementById("itemRestaurant").value = item.restaurant_id;
+        loadCategoriesForItem();
+        setTimeout(() => {
+          document.getElementById("itemCategory").value = item.category_id;
+        }, 100);
+        document.getElementById("itemNameAr").value = item.name_ar || "";
+        document.getElementById("itemNameEn").value = item.name_en || "";
+        document.getElementById("itemPrice").value = item.price;
+        document.getElementById("itemAvailable").value = item.is_available
+          ? "true"
+          : "false";
+        document.getElementById("itemModalTitle").textContent = "Edit Item";
+        openModal("itemModal");
+      }
+
+      async function saveItem(e) {
+        e.preventDefault();
+        const restaurantId = document.getElementById("itemRestaurant").value;
+        const categoryId = document.getElementById("itemCategory").value;
+        const nameAr = document.getElementById("itemNameAr").value;
+        const nameEn = document.getElementById("itemNameEn").value;
+        const price = document.getElementById("itemPrice").value;
+        const isAvailable =
+          document.getElementById("itemAvailable").value === "true";
+
+        try {
+          if (editingId) {
+            await fetch(`${API}/items/${editingId}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                name_ar: nameAr,
+                name_en: nameEn,
+                price,
+                is_available: isAvailable,
+              }),
+            });
+            showAlert("Item updated!", "success");
+          } else {
+            await fetch(`${API}/items`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                restaurant_id: restaurantId,
+                category_id: categoryId,
+                name_ar: nameAr,
+                name_en: nameEn,
+                price,
+                is_available: isAvailable,
+              }),
+            });
+            showAlert("Item created!", "success");
+          }
+          closeModal("itemModal");
+          editingId = null;
+          await loadItems();
+        } catch (err) {
+          showAlert("Error saving item", "danger");
+        }
+      }
+
+      async function deleteItem(id) {
+        if (!confirm("Delete this item?")) return;
+        try {
+          await fetch(`${API}/items/${id}`, { method: "DELETE" });
+          showAlert("Item deleted!", "success");
+          await loadItems();
+        } catch (err) {
+          showAlert("Error deleting item", "danger");
+        }
+      }
+
+      // ── HELPERS ────────────────────
+      async function populateSelects() {
+        // Restaurants for category & item dropdowns
+        const opts = currentData.restaurants
+          .map((r) => `<option value="${r.id}">${r.name}</option>`)
+          .join("");
+        document.getElementById("categoryRestaurant").innerHTML =
+          '<option value="">Select Restaurant</option>' + opts;
+        document.getElementById("itemRestaurant").innerHTML =
+          '<option value="">Select Restaurant</option>' + opts;
+
+        // Restaurant filters
+        document.getElementById("categoryRestaurantFilter").innerHTML =
+          '<option value="">All Restaurants</option>' + opts;
+        document.getElementById("itemRestaurantFilter").innerHTML =
+          '<option value="">All Restaurants</option>' + opts;
+      }
+
+      async function loadCategoriesForItem() {
+        const restId = document.getElementById("itemRestaurant").value;
+        if (!restId) {
+          document.getElementById("itemCategory").innerHTML =
+            '<option value="">Select Category</option>';
+          return;
+        }
+
+        try {
+          const res = await fetch(`${API}/categories?restaurantId=${restId}`);
+          const data = await res.json();
+          const opts = (data.data || [])
+            .map(
+              (c) =>
+                `<option value="${c.id}">${c.name_en || c.name_ar}</option>`,
+            )
+            .join("");
+          document.getElementById("itemCategory").innerHTML =
+            '<option value="">Select Category</option>' + opts;
+        } catch (err) {
+          showAlert("Error loading categories", "danger");
+        }
+      }
+
+      function switchTab(tabName) {
+        document
+          .querySelectorAll(".section")
+          .forEach((s) => s.classList.remove("active"));
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((b) => b.classList.remove("active"));
+        document.getElementById(tabName).classList.add("active");
+        event.target.classList.add("active");
+      }
+
+      function openModal(modalId) {
+        document.getElementById(modalId).classList.add("active");
+      }
+
+      function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove("active");
+        editingId = null;
+        // Reset forms
+        document.querySelectorAll("form").forEach((f) => f.reset());
+        document.getElementById("restaurantModalTitle").textContent =
+          "Add Restaurant";
+        document.getElementById("categoryModalTitle").textContent =
+          "Add Category";
+        document.getElementById("itemModalTitle").textContent = "Add Item";
+      }
+
+      function showAlert(message, type = "success") {
+        const alert = document.getElementById("alert");
+        alert.textContent = message;
+        alert.className = `alert show alert-${type}`;
+        setTimeout(() => alert.classList.remove("show"), 3000);
+      }
+
+      // Initialize
+      init();
     </script>
   </body>
 </html>

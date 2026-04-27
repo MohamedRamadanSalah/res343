@@ -1606,7 +1606,7 @@
         document.getElementById("txt-istik-desc").textContent = t.istikDesc;
         document.getElementById("txt-explore").textContent = t.explore;
         document.getElementById("langToggleBtn").textContent = t.toggle;
-        
+
         // Ensure elements exist before modifying
         const tabSohoEl = document.getElementById("tabSoho");
         if (tabSohoEl) tabSohoEl.innerHTML = t.tabSoho;
@@ -1690,10 +1690,14 @@
         const nameAr = norm(raw?.name);
         const price = toPrice(raw?.price);
         if (!nameAr || price === null) return null;
-        
+
         // Lookup English translation, ignoring exact whitespace match if needed
-        const nameEn = itemTranslations[nameAr] || itemTranslations[raw?.name] || itemTranslations[nameAr.replace(/\s+$/, '')] || nameAr;
-        
+        const nameEn =
+          itemTranslations[nameAr] ||
+          itemTranslations[raw?.name] ||
+          itemTranslations[nameAr.replace(/\s+$/, "")] ||
+          nameAr;
+
         return {
           category,
           nameAr,
@@ -1703,6 +1707,47 @@
           price,
           order,
         };
+      }
+
+      // ── Transform API data to menu format ────────────────────
+      function transformApiDataToMenu(apiData) {
+        const result = {};
+
+        if (!apiData || !apiData.categories) return result;
+
+        apiData.categories.forEach((category) => {
+          const categoryName = category.name_en || category.name_ar;
+          result[categoryName] = [];
+
+          if (Array.isArray(category.items)) {
+            category.items.forEach((item, order) => {
+              if (!item) return;
+
+              // Get English name from API or fallback to translations
+              let englishName = item.name_en || "";
+              if (!englishName) {
+                englishName = itemTranslations[item.name_ar] || "";
+              }
+
+              // Get English description from API or fallback to translations
+              let englishDesc = item.description_en || "";
+              if (!englishDesc && item.description_ar) {
+                englishDesc = itemTranslations[item.description_ar] || "";
+              }
+
+              result[categoryName].push({
+                nameAr: item.name_ar || "",
+                name: englishName,
+                descAr: item.description_ar || "",
+                desc: englishDesc,
+                price: parseFloat(item.price),
+                order: order + 1,
+              });
+            });
+          }
+        });
+
+        return result;
       }
 
       function parseIstikJson(istikJson) {
@@ -1745,7 +1790,11 @@
           ) {
             // Soho JSON stores many Arabic descriptions as object keys after item rows.
             lastByCategory[currentCategory].descAr = key;
-            const descEn = itemTranslations[key] || itemTranslations[rawKey] || itemTranslations[key.replace(/\s+$/, '')] || key;
+            const descEn =
+              itemTranslations[key] ||
+              itemTranslations[rawKey] ||
+              itemTranslations[key.replace(/\s+$/, "")] ||
+              key;
             lastByCategory[currentCategory].desc = descEn;
           }
 
@@ -1764,31 +1813,36 @@
         return result;
       }
 
-      // ── Load from local JSON files ────────────────────────────────
+      // ── Load from Backend API ────────────────────────────────
       async function loadMenuData() {
         try {
+          const API_URL = "http://localhost:5000/api";
+
+          // Fetch restaurants with categories and items
           const [sohoRes, istikRes, transRes] = await Promise.all([
-            fetch("soho_items.json", { cache: "no-store" }),
-            fetch("istik_items.json", { cache: "no-store" }),
-            fetch("translations.json", { cache: "no-store" }),
+            fetch(`${API_URL}/restaurants/2`), // Soho
+            fetch(`${API_URL}/restaurants/1`), // Istiknanah
+            fetch("translations.json", { cache: "no-store" }).catch(() =>
+              Promise.resolve({ ok: true }),
+            ),
           ]);
 
           if (!sohoRes.ok || !istikRes.ok) {
             throw new Error(
-              `Could not load static menu files (${sohoRes.status}/${istikRes.status})`,
+              `Could not load menu from API (${sohoRes.status}/${istikRes.status})`,
             );
           }
 
-          const [sohoJson, istikJson, transJson] = await Promise.all([
-            sohoRes.json(),
-            istikRes.json(),
-            transRes.ok ? transRes.json() : Promise.resolve({}),
-          ]);
-          
+          const sohoApiData = await sohoRes.json();
+          const istikApiData = await istikRes.json();
+          const transJson = transRes.ok ? await transRes.json() : {};
+
+          // Load translations FIRST (before transform)
           itemTranslations = transJson || {};
-          
-          sohoData = parseSohoJson(sohoJson);
-          istikData = parseIstikJson(istikJson);
+
+          // Transform API data to match expected format
+          sohoData = transformApiDataToMenu(sohoApiData.data);
+          istikData = transformApiDataToMenu(istikApiData.data);
 
           // Update stats
           const sohoTotal = Object.values(sohoData).reduce(
@@ -1805,7 +1859,7 @@
           renderSohoMenu();
           renderIstikMenu();
         } catch (e) {
-          console.error("Failed to load static menu data:", e);
+          console.error("Failed to load menu from API:", e);
           document.getElementById("sohoMenuContent").innerHTML =
             '<div class="menu-loading">⚠ Could not load menu. Please try again.</div>';
           document.getElementById("istikMenuContent").innerHTML =
