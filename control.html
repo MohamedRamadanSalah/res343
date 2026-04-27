@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu Control Panel (Local/Postgres)</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f6f9;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+      }
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 30px;
+      }
+
+      .filters {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+      .filter-btn {
+        padding: 10px 20px;
+        border: none;
+        background: #bdc3c7;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.2s;
+      }
+      .filter-btn.active,
+      .filter-btn:hover {
+        background: #3498db;
+      }
+
+      .table-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ecf0f1;
+      }
+      th {
+        background-color: #f8f9fa;
+        color: #2c3e50;
+        font-weight: 600;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #bdc3c7;
+        border-radius: 4px;
+        font-family: inherit;
+        box-sizing: border-box;
+      }
+      textarea {
+        resize: vertical;
+        min-height: 40px;
+      }
+
+      .btn-save {
+        padding: 8px 16px;
+        background: #27ae60;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.2s;
+      }
+      .btn-save:hover {
+        background: #2ecc71;
+      }
+
+      .toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        background: #27ae60;
+        color: white;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+      }
+      .toast.show {
+        opacity: 1;
+      }
+      .toast.error {
+        background: #e74c3c;
+      }
+
+      .menu-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8em;
+        font-weight: bold;
+      }
+      .badge-soho {
+        background: #1a9ff5;
+        color: white;
+      }
+      .badge-istik {
+        background: #c13b2a;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Data Engine Control Center</h1>
+
+    <div class="filters" id="filters">
+      <button class="filter-btn active" data-type="all">All Menus</button>
+      <button class="filter-btn" data-type="soho">Soho Bites</button>
+      <button class="filter-btn" data-type="istik">Istiknanah</button>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Menu</th>
+            <th>Name (EN)</th>
+            <th>Name (AR)</th>
+            <th>Desc (EN)</th>
+            <th>Desc (AR)</th>
+            <th>Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <tr>
+            <td colspan="7" style="text-align: center">Loading data...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="toast" id="toast">Saved Successfully!</div>
+
+    <script>
+      // NOTE: In production, point this to your actual deployed backend URL (like Render or Heroku)
+      const API_URL = "http://localhost:3000/api/menu";
+      let allData = [];
+
+      // ── Notification ──
+      function showToast(message, isError = false) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.className = "toast show " + (isError ? "error" : "");
+        setTimeout(() => (toast.className = "toast"), 3000);
+      }
+
+      // ── Fetch & Render ──
+      async function loadData() {
+        try {
+          const res = await fetch(API_URL);
+          if (!res.ok) throw new Error("Failed to fetch data");
+          allData = await res.json();
+          renderTable("all");
+        } catch (err) {
+          console.error(err);
+          document.getElementById("table-body").innerHTML =
+            `<tr><td colspan="7" style="color:red; text-align:center;">Make sure your PostgreSQL backend is running on http://localhost:3000</td></tr>`;
+        }
+      }
+
+      function renderTable(filterType) {
+        const tbody = document.getElementById("table-body");
+        tbody.innerHTML = "";
+
+        let filtered = allData;
+        if (filterType !== "all") {
+          filtered = allData.filter((i) => i.menu_type === filterType);
+        }
+
+        filtered.forEach((item) => {
+          const tr = document.createElement("tr");
+          const badgeClass =
+            item.menu_type === "soho" ? "badge-soho" : "badge-istik";
+
+          tr.innerHTML = `
+            <td>
+              <span class="menu-badge ${badgeClass}">${item.menu_type.toUpperCase()}</span>
+              <br><small style="color:#7f8c8d; margin-top:4px; display:inline-block">${item.category}</small>
+            </td>
+            <td><input type="text" id="name_en_${item.id}" value="${item.name_en || ""}" /></td>
+            <td><input type="text" id="name_ar_${item.id}" value="${item.name_ar || ""}" dir="rtl" /></td>
+            <td><textarea id="desc_en_${item.id}">${item.desc_en || ""}</textarea></td>
+            <td><textarea id="desc_ar_${item.id}" dir="rtl">${item.desc_ar || ""}</textarea></td>
+            <td style="width: 80px;"><input type="number" step="0.01" id="price_${item.id}" value="${item.price}" /></td>
+            <td><button class="btn-save" onclick="saveItem(${item.id})">Save</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      // ── Save Updates ──
+      async function saveItem(id) {
+        // Collect current input values safely
+        const payload = {
+          name_en: document.getElementById("name_en_" + id).value,
+          name_ar: document.getElementById("name_ar_" + id).value,
+          desc_en: document.getElementById("desc_en_" + id).value,
+          desc_ar: document.getElementById("desc_ar_" + id).value,
+          price: parseFloat(document.getElementById("price_" + id).value),
+        };
+
+        try {
+          const res = await fetch(`${API_URL}/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          if (!res.ok) throw new Error("Failed to save");
+          showToast("Changes saved to database!");
+        } catch (err) {
+          console.error(err);
+          showToast("Error saving changes", true);
+        }
+      }
+
+      // ── Event Listeners ──
+      document.getElementById("filters").addEventListener("click", (e) => {
+        if (e.target.tagName === "BUTTON") {
+          document
+            .querySelectorAll(".filter-btn")
+            .forEach((b) => b.classList.remove("active"));
+          e.target.classList.add("active");
+          renderTable(e.target.dataset.type);
+        }
+      });
+
+      // Init
+      loadData();
+    </script>
+  </body>
+</html>
