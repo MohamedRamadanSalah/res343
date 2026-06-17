@@ -1530,6 +1530,7 @@
         الساندوتشات: "🍔 Burgers & Sandwiches",
         "ركن الباستا": "🍝 Pasta",
         "الاطباق الرئيسية": "🥩 Main Courses",
+        البيتزا: "🍕 Pizza",
         اكسترا: "🍟 Sides",
         "السايد ( بوم فريت- ماش بوتيتو-ارز-سلطة كولوسلو-خضار سوتيه-كوب ذرة-ماك تشيز)":
           "🍟 Sides",
@@ -1606,7 +1607,7 @@
         document.getElementById("txt-istik-desc").textContent = t.istikDesc;
         document.getElementById("txt-explore").textContent = t.explore;
         document.getElementById("langToggleBtn").textContent = t.toggle;
-        
+
         // Ensure elements exist before modifying
         const tabSohoEl = document.getElementById("tabSoho");
         if (tabSohoEl) tabSohoEl.innerHTML = t.tabSoho;
@@ -1637,6 +1638,7 @@
         "🍔 Burgers & Sandwiches": { ar: "الساندوتشات والبرجر", icon: null },
         "🍝 Pasta": { ar: "ركن الباستا", icon: null },
         "🥩 Main Courses": { ar: "الاطباق الرئيسية", icon: null },
+        "🍕 Pizza": { ar: "البيتزا", icon: null },
         "🍟 Sides": { ar: "اكسترا (السايد)", icon: "assets/sides.png" },
         "👶 Kids Menu": { ar: "وجبات الاطفال", icon: "assets/kids_meal.png" },
         "🧂 Sauces (Extra)": { ar: "الصوصات", icon: "assets/sauces.png" },
@@ -1690,10 +1692,14 @@
         const nameAr = norm(raw?.name);
         const price = toPrice(raw?.price);
         if (!nameAr || price === null) return null;
-        
+
         // Lookup English translation, ignoring exact whitespace match if needed
-        const nameEn = itemTranslations[nameAr] || itemTranslations[raw?.name] || itemTranslations[nameAr.replace(/\s+$/, '')] || nameAr;
-        
+        const nameEn =
+          itemTranslations[nameAr] ||
+          itemTranslations[raw?.name] ||
+          itemTranslations[nameAr.replace(/\s+$/, "")] ||
+          nameAr;
+
         return {
           category,
           nameAr,
@@ -1745,7 +1751,11 @@
           ) {
             // Soho JSON stores many Arabic descriptions as object keys after item rows.
             lastByCategory[currentCategory].descAr = key;
-            const descEn = itemTranslations[key] || itemTranslations[rawKey] || itemTranslations[key.replace(/\s+$/, '')] || key;
+            const descEn =
+              itemTranslations[key] ||
+              itemTranslations[rawKey] ||
+              itemTranslations[key.replace(/\s+$/, "")] ||
+              key;
             lastByCategory[currentCategory].desc = descEn;
           }
 
@@ -1784,9 +1794,9 @@
             istikRes.json(),
             transRes.ok ? transRes.json() : Promise.resolve({}),
           ]);
-          
+
           itemTranslations = transJson || {};
-          
+
           sohoData = parseSohoJson(sohoJson);
           istikData = parseIstikJson(istikJson);
 
