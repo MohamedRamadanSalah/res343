@@ -1700,12 +1700,16 @@
           itemTranslations[nameAr.replace(/\s+$/, "")] ||
           nameAr;
 
+        // Get description from raw item
+        const descAr = raw?.description || "";
+        const desc = itemTranslations[descAr] || descAr;
+
         return {
           category,
           nameAr,
           name: nameEn,
-          descAr: "",
-          desc: "",
+          descAr,
+          desc,
           price,
           order,
         };
