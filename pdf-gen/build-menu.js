@@ -181,8 +181,10 @@ table.doc .body-cell{padding:0 13mm;vertical-align:top;}
 .brand{font-family:'Segoe UI',sans-serif;font-weight:700;letter-spacing:.5em;
   direction:ltr;font-size:90px;color:var(--gold-2);text-indent:.5em;
   text-shadow:0 2px 18px rgba(201,162,74,.25);line-height:1;}
+.brand-word{font-family:'Segoe UI',sans-serif;font-weight:400;letter-spacing:.62em;
+  direction:ltr;font-size:30px;color:var(--cream);text-indent:.62em;margin-top:5mm;}
 .brand-sub{font-family:'Aldhabi','Majalla',serif;font-size:40px;color:var(--cream);
-  margin-top:10mm;}
+  margin-top:7mm;}
 .cover .est{font-family:'Segoe UI',sans-serif;letter-spacing:.45em;font-size:13px;
   direction:ltr;color:var(--muted);margin-top:8mm;text-indent:.45em;}
 .diamond{display:flex;align-items:center;gap:10px;margin:9mm 0;color:var(--gold);}
@@ -231,7 +233,8 @@ table.doc .body-cell{padding:0 13mm;vertical-align:top;}
 <section class="cover">
   <div class="diamond"><span class="ln"></span><span class="dot">&#9670;</span><span class="ln r"></span></div>
   <div class="brand">SOHO</div>
-  <div class="brand-sub">سوهو</div>
+  <div class="brand-word">BITES</div>
+  <div class="brand-sub">سوهو بايتس</div>
   <div class="diamond"><span class="ln"></span><span class="dot">&#9670;</span><span class="ln r"></span></div>
   <div class="tag">مطعم &amp; جريل</div>
   <div class="est">R E S T A U R A N T &nbsp;&middot;&nbsp; G R I L L &nbsp;&middot;&nbsp; C A F E</div>
