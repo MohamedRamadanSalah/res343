@@ -144,7 +144,8 @@ ${fontCss}
   --line:#3a3026;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{background:var(--bg);color:var(--cream);
+html{background:var(--bg);}
+body{background:transparent;color:var(--cream);
   font-family:'Majalla','Segoe UI',sans-serif;
   -webkit-print-color-adjust:exact;print-color-adjust:exact;}
 
