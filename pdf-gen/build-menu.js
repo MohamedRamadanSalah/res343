@@ -195,8 +195,9 @@ table.doc .body-cell{padding:0 13mm;vertical-align:top;}
 .cover .est{font-family:'Segoe UI',sans-serif;letter-spacing:.45em;font-size:13px;
   direction:ltr;color:var(--muted);margin-top:8mm;text-indent:.45em;}
 .diamond{display:flex;align-items:center;gap:10px;margin:9mm 0;color:var(--gold);}
-.diamond .ln{width:38mm;height:1px;background:linear-gradient(90deg,transparent,var(--gold));}
-.diamond .ln.r{background:linear-gradient(270deg,transparent,var(--gold));}
+.diamond .ln{width:38mm;height:0.45mm;border-radius:1px;
+  background:linear-gradient(90deg,rgba(201,162,74,0),var(--gold));}
+.diamond .ln.r{background:linear-gradient(270deg,rgba(201,162,74,0),var(--gold));}
 .diamond .dot{font-size:14px;}
 .cover .tag{font-family:'Aldhabi','Majalla',serif;font-size:26px;color:var(--gold-2);
   margin-top:2mm;}
