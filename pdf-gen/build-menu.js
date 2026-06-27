@@ -172,9 +172,12 @@ table.doc .pad-top{height:17mm;}
 table.doc .pad-bot{height:15mm;}
 table.doc .body-cell{padding:0 13mm;vertical-align:top;}
 
-/* ---------- COVER ---------- */
+/* ---------- COVER ----------
+   Height is kept just UNDER a full page (not exactly 297mm): a block that
+   exactly fills the page AND forces a break makes many viewers emit a trailing
+   blank page. Slightly-under + break-after gives one clean break, no blank. */
 .cover{display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;height:297mm;break-after:page;}
+  text-align:center;height:293mm;break-after:page;}
 .brand{font-family:'Segoe UI',sans-serif;font-weight:700;letter-spacing:.5em;
   direction:ltr;font-size:90px;color:var(--gold-2);text-indent:.5em;
   text-shadow:0 2px 18px rgba(201,162,74,.25);line-height:1;}
