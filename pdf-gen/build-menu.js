@@ -10,6 +10,9 @@ const ROOT = path.resolve(__dirname, "..");
 const items = JSON.parse(fs.readFileSync(path.join(ROOT, "soho_items.json"), "utf8"));
 const tr = JSON.parse(fs.readFileSync(path.join(ROOT, "translations.json"), "utf8"));
 
+// ---- Restaurant contact ----
+const PHONE = "01065770011";
+
 // ---- Category metadata: Arabic key -> {en, order, note} ----
 const CATS = {
   "المقبلات":          { en: "Appetizers", order: 1 },
@@ -169,7 +172,11 @@ body{background:transparent;color:var(--cream);
    split across a page break. */
 table.doc{width:100%;border-collapse:collapse;}
 table.doc .pad-top{height:17mm;}
-table.doc .pad-bot{height:15mm;}
+table.doc .pad-bot{height:15mm;vertical-align:bottom;}
+.foot{padding-bottom:6mm;text-align:center;font-family:'Segoe UI',sans-serif;
+  direction:ltr;font-size:12px;font-weight:700;letter-spacing:.22em;text-indent:.22em;
+  color:var(--gold);opacity:.9;}
+.foot .ic{font-weight:400;}
 table.doc .body-cell{padding:0 13mm;vertical-align:top;}
 
 /* ---------- COVER ----------
@@ -193,6 +200,12 @@ table.doc .body-cell{padding:0 13mm;vertical-align:top;}
 .diamond .dot{font-size:14px;}
 .cover .tag{font-family:'Aldhabi','Majalla',serif;font-size:26px;color:var(--gold-2);
   margin-top:2mm;}
+.cover .contact{margin-top:12mm;display:flex;flex-direction:column;align-items:center;gap:3mm;}
+.cover .contact .cc-label{font-family:'Aldhabi','Majalla',serif;font-size:20px;color:var(--muted);}
+.cover .contact .cc-phone{font-family:'Segoe UI',sans-serif;font-weight:700;direction:ltr;
+  font-size:26px;letter-spacing:.14em;color:var(--gold-2);text-indent:.14em;
+  display:flex;align-items:center;gap:9px;}
+.cover .contact .cc-phone .ic{font-size:20px;color:var(--gold);}
 
 /* ---------- CATEGORY ---------- */
 /* No break-inside:avoid on the whole category (a category can be taller than a
@@ -238,11 +251,15 @@ table.doc .body-cell{padding:0 13mm;vertical-align:top;}
   <div class="diamond"><span class="ln"></span><span class="dot">&#9670;</span><span class="ln r"></span></div>
   <div class="tag">مطعم &amp; جريل</div>
   <div class="est">R E S T A U R A N T &nbsp;&middot;&nbsp; G R I L L &nbsp;&middot;&nbsp; C A F E</div>
+  <div class="contact">
+    <div class="cc-label">للحجز والطلبات</div>
+    <div class="cc-phone"><span class="ic">&#9742;</span>${PHONE}</div>
+  </div>
 </section>
 
 <table class="doc">
   <thead><tr><td class="pad-top"></td></tr></thead>
-  <tfoot><tr><td class="pad-bot"></td></tr></tfoot>
+  <tfoot><tr><td class="pad-bot"><div class="foot"><span class="ic">&#9742;</span>&nbsp; ${PHONE}</div></td></tr></tfoot>
   <tbody><tr><td class="body-cell">
 ${sections}
   </td></tr></tbody>
